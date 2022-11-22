@@ -38,11 +38,11 @@ public class MapLoader {
                             new Skeleton(cell);
                             break;
                         case 'o':
-                            cell.setType(CellType.OCTOPUS);
+                            cell.setType(CellType.FLOOR);
                             new Octopus(cell);
                             break;
                         case 'c':
-                            cell.setType(CellType.CROCODILE);
+                            cell.setType(CellType.FLOOR);
                             new Crocodile(cell);
                             break;
                         case '@':
