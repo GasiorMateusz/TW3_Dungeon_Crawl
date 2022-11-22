@@ -30,6 +30,10 @@ public abstract class Actor implements Drawable {
         }
     }
 
+    public void monsterMove(){
+
+    }
+
     private boolean isValidMove(Cell origin, Cell cellTested) {
 
 //    ==================================    to będzie do walidowania ruchu
