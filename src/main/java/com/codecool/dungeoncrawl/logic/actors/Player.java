@@ -2,11 +2,13 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 
+
 public class Player extends Actor implements CanPick, CanAttack{
 
 
     public Player(Cell cell) {
         super(cell);
+        setStrikeStrength(5);
     }
 
     public String getTileName() {
