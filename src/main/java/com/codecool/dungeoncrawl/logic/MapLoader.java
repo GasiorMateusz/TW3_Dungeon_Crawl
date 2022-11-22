@@ -41,11 +41,11 @@ public class MapLoader {
                             break;
                         case 'o':
                             cell.setType(CellType.FLOOR);
-                            new Octopus(cell);
+                            map.addMonsterToMonstersList(new Octopus(cell));
                             break;
                         case 'c':
                             cell.setType(CellType.FLOOR);
-                            new Crocodile(cell);
+                            map.addMonsterToMonstersList(new Crocodile(cell));
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
