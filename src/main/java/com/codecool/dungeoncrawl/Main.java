@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Actor;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -51,6 +52,7 @@ public class Main extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
+        map.getMonstersList().stream().forEach(Actor::monsterMove);
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
@@ -79,6 +81,8 @@ public class Main extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
+                } else if (cell.getItem() != null) {
+                    Tiles.drawTile(context, cell.getItem(), x, y);
                 } else {
                     Tiles.drawTile(context, cell, x, y);
                 }
