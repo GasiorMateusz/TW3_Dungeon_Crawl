@@ -52,7 +52,6 @@ public class Main extends Application {
 
     private void onKeyPressed(KeyEvent keyEvent) {
         map.getOctopus().moveRandom();
-//        map.getOctopus().move(0,1);
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
