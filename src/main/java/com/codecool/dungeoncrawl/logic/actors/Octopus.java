@@ -20,7 +20,8 @@ public class Octopus extends Actor {
 
 
 
-    public void moveRandom(){
+    @Override
+    public void monsterMove(){
         Direction direction = selectRandomDirection();
         int[] coordinates = convertDirectionToCoordinates(direction);
         move(coordinates[0],coordinates[1]);
