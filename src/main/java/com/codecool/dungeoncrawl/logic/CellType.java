@@ -4,7 +4,9 @@ public enum CellType {
 
     EMPTY("empty"),
     FLOOR("floor"),
-    WALL("wall");
+    WALL("wall"),
+    CROCODILE("crocodile"),
+    OCTOPUS("octopus");
     // =========================================================================
 //     chyba nie potrzebujemy tego xtra stringa i konstruktora (może w przyszłości jakieś wartości doklejone
 //                                                              do enuma się przydadzą ¯\_(ツ)_/¯ )
