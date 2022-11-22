@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 
 public class Cell implements Drawable {
     private CellType type;
@@ -32,7 +33,11 @@ public class Cell implements Drawable {
     }
 
     public Cell getNeighbor(int dx, int dy) {
-        return gameMap.getCell(x + dx, y + dy);
+        if (isOutOfMap(x + dx, y + dy)) {
+            return null;
+        } else {
+            return gameMap.getCell(x + dx, y + dy);
+        }
     }
 
     @Override
@@ -46,5 +51,22 @@ public class Cell implements Drawable {
 
     public int getY() {
         return y;
+    }
+
+
+    public boolean isFloor() {
+        return this.getType().equals(CellType.FLOOR);
+    }
+
+    public boolean isActor() {
+        return this.actor != null;
+    }
+
+    public boolean isPlayer() {
+        return this.actor instanceof Player;
+    }
+
+    public boolean isOutOfMap(int x, int y) {
+        return x * y < 0 || x >= gameMap.getWidth() || y >= gameMap.getHeight();
     }
 }
