@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.logic.actors.Octopus;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 
 public class GameMap {
@@ -8,6 +9,7 @@ public class GameMap {
     private Cell[][] cells;
 
     private Player player;
+    private Octopus octopus;
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -28,8 +30,18 @@ public class GameMap {
         this.player = player;
     }
 
+
+
     public Player getPlayer() {
         return player;
+    }
+
+    public Octopus getOctopus() {
+        return octopus;
+    }
+
+    public void setOctopus(Octopus octopus) {
+        this.octopus = octopus;
     }
 
     public int getWidth() {

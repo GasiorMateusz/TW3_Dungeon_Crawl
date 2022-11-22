@@ -41,7 +41,7 @@ public class MapLoader {
                             break;
                         case 'o':
                             cell.setType(CellType.FLOOR);
-                            new Octopus(cell);
+                            map.setOctopus(new Octopus(cell));
                             break;
                         case 'c':
                             cell.setType(CellType.FLOOR);
