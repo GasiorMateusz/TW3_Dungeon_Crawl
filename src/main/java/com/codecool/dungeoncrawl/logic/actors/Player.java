@@ -8,6 +8,7 @@ public class Player extends Actor implements CanPick, CanAttack{
 
     public Player(Cell cell) {
         super(cell);
+        setStrikeStrength(5);
     }
 
     public String getTileName() {
