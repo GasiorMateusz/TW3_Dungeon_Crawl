@@ -37,7 +37,7 @@ public class MapLoader {
                             break;
                         case 's':
                             cell.setType(CellType.FLOOR);
-                            new Skeleton(cell);
+                            map.addMonsterToMonstersList(new Skeleton(cell));
                             break;
                         case 'o':
                             cell.setType(CellType.FLOOR);
