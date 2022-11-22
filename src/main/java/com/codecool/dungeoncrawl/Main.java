@@ -5,10 +5,13 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -23,6 +26,8 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    Label inventoryListLabel= new Label();
+    Button pickUpButton= new Button("Pick Up");
 
     public static void main(String[] args) {
         launch(args);
@@ -36,7 +41,21 @@ public class Main extends Application {
 
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
+        ui.add(new Label("Inventory: "), 0, 1);
+        ui.add(inventoryListLabel, 0, 2);
+        ui.add(pickUpButton,0,3);
+        pickUpButton.setFocusTraversable(false);
+        inventoryListLabel.setMinHeight(50);
+        pickUpButton.setVisible(false);
 
+
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                pickUpItemEvent();
+            }
+        };
+        pickUpButton.setOnAction(event);
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
@@ -70,7 +89,12 @@ public class Main extends Application {
                 map.getPlayer().move(1,0);
                 refresh();
                 break;
+            case ENTER:
+                pickUpItemEvent();
+                refresh();
+                break;
         }
+
     }
 
     private void refresh() {
@@ -89,5 +113,15 @@ public class Main extends Application {
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
+        pickUpButton.setVisible(map.getPlayer().canPickUp());
+    }
+    private void pickUpItemEvent(){
+        map.getPlayer().pickUp();
+        String items="";
+        for(int i=0; i<map.getPlayer().getItems().size(); i++) {
+            inventoryListLabel.setText(map.getPlayer().getItems().get(i).getTileName());
+            items=items+map.getPlayer().getItems().get(i).getTileName()+"\n";
+        }
+        inventoryListLabel.setText(items);
     }
 }
