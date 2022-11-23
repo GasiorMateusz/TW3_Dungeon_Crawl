@@ -72,6 +72,13 @@ public class Cell implements Drawable {
         return this.actor instanceof Player;
     }
 
+    public boolean isOpen() {
+        return this.getType().equals(CellType.OPEN_DOOR);
+    }
+    public boolean isStairs() {
+        return this.getType().equals(CellType.STAIRS);
+    }
+
     public boolean isOutOfMap(int x, int y) {
         return x < 0 || y < 0 || x >= gameMap.getWidth() || y >= gameMap.getHeight();
     }
