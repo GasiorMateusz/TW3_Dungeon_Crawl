@@ -24,7 +24,6 @@ import java.awt.*;
 
 public class Main extends Application {
 
-    int[] cameraSizePx;
     int[] cameraSize = new int[]{25, 35};
     Cell centralCell;
     GameMap map = MapLoader.loadMap();
@@ -53,7 +52,6 @@ public class Main extends Application {
         inventoryListLabel.setMinHeight(50);
         pickUpButton.setVisible(false);
 
-
         EventHandler<ActionEvent> event = e -> pickUpItemEvent();
         pickUpButton.setOnAction(event);
         BorderPane borderPane = new BorderPane();
@@ -62,7 +60,7 @@ public class Main extends Application {
         canvas = new Canvas(
                 size.getWidth() * 0.9,
                 size.getHeight() * 0.9);
-        cameraSizePx = new int[]{(int) (size.getHeight() * 0.9), (int) (size.getWidth() * 0.9)};
+
         context = canvas.getGraphicsContext2D();
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
@@ -71,7 +69,7 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         initMap();
         scene.setOnKeyPressed(this::onKeyPressed);
-
+        primaryStage.setMaximized(true);
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
     }
@@ -111,8 +109,8 @@ public class Main extends Application {
     }
 
     private void refresh() {
-        context.setFill(Color.BLACK);
-        context.fillRect(0, 0, cameraSizePx[1], cameraSizePx[0]);
+        context.setFill(Color.rgb(71, 45, 60));
+        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         healthLabel.setText("" + map.getPlayer().getHealth());
         pickUpButton.setVisible(map.getPlayer().canPickUp());
     }
