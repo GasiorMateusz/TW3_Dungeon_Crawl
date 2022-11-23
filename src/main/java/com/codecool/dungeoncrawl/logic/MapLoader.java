@@ -11,11 +11,11 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class MapLoader {
-    private static final String mapName = "/map.txt";
-    public static GameMap loadMap() {
-        InputStream is = MapLoader.class.getResourceAsStream(mapName);
+    public static GameMap loadMap(String mapFile) {
+
+        InputStream is = MapLoader.class.getResourceAsStream(mapFile);
         int [] size = getMapSize(is);
-        is = MapLoader.class.getResourceAsStream(mapName);
+        is = MapLoader.class.getResourceAsStream(mapFile);
         Scanner scanner = new Scanner(is);
         int width = size[0];
         int height = size[1];
@@ -38,7 +38,16 @@ public class MapLoader {
                             break;
                         case 's':
                             cell.setType(CellType.FLOOR);
-                            map.addMonsterToMonstersList(new Skeleton(cell));
+                            new Skeleton(cell);
+                            break;
+//                        case 'd':
+//                            cell.setType(CellType.DOOR);
+//                            break;
+//                        case 'D':
+//                            cell.setType(CellType.OPEN);
+//                            break;
+                        case 'X':
+                            cell.setType(CellType.STAIRS);
                             break;
                         case 'o':
                             cell.setType(CellType.FLOOR);
