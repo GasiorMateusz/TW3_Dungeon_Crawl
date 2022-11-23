@@ -1,10 +1,9 @@
 package com.codecool.dungeoncrawl;
 
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.Direction;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.userCom.Popup;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,21 +25,34 @@ import java.awt.*;
 
 public class Main extends Application {
 
+    public GameMap temporaryMap;
+    private boolean teleported = false;
     int[] cameraSize = new int[]{25, 35};
     Cell centralCell;
-    GameMap map = MapLoader.loadMap();
-    Canvas canvas;
-    GraphicsContext context;
+    MultiMap multiMap = new MultiMap();
+
+    String firstMap = multiMap.getMapFromSet(0);
+    GameMap map = MapLoader.loadMap(multiMap.getMapFromSet(0), false);
+
+    int currentMapIndex = 0;
+    Stage currentStage;
+    Canvas canvas = new Canvas(
+            map.getWidth() * Tiles.TILE_WIDTH,
+            map.getHeight() * Tiles.TILE_WIDTH);
+    GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label inventoryListLabel = new Label();
     Button pickUpButton = new Button("Pick Up");
+
     Label name = new Label();
+    private Player currentPlayer = map.getPlayer();
 
     public static void main(String[] args) {
         launch(args);
     }
 
     private void setPlayerName() {
+        System.out.println("SETTING NAME");
         Stage stage = new Stage();
         stage.setTitle("Player name");
         VBox vBox = new VBox();
@@ -63,22 +75,26 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
+        currentStage = primaryStage;
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
-        ui.add(new Label("Name: "), 0, 0);
-        ui.add(name, 1, 0);
-        ui.add(new Label("Health: "), 0, 1);
-        ui.add(healthLabel, 1, 1);
-        ui.add(new Label("Inventory: "), 0, 2);
-        ui.add(inventoryListLabel, 0, 3);
-        ui.add(pickUpButton, 0, 4);
+        ui.add(new Label("Health: "), 0, 0);
+        ui.add(healthLabel, 1, 0);
+        ui.add(new Label("Inventory: "), 0, 1);
+        ui.add(inventoryListLabel, 0, 2);
+        ui.add(pickUpButton, 0, 3);
         pickUpButton.setFocusTraversable(false);
         inventoryListLabel.setMinHeight(50);
         pickUpButton.setVisible(false);
 
-        EventHandler<ActionEvent> event = e -> pickUpItemEvent();
+
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                pickUpItemEvent();
+            }
+        };
         pickUpButton.setOnAction(event);
         BorderPane borderPane = new BorderPane();
         Dimension size
@@ -90,15 +106,16 @@ public class Main extends Application {
         context = canvas.getGraphicsContext2D();
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
-
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         initMap();
         scene.setOnKeyPressed(this::onKeyPressed);
         primaryStage.setMaximized(true);
-        primaryStage.setTitle("Dungeon Crawl");
+        primaryStage.setTitle("DUNGEON CRAWL by TeamONE");
         primaryStage.show();
-        setPlayerName();
+        if (!teleported) {
+            setPlayerName();
+        }
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
@@ -137,6 +154,26 @@ public class Main extends Application {
                 break;
         }
         moveCamera(direction);
+        if (!map.getPlayer().isAlive) {
+            teleported = false;
+            restart();
+            System.out.println(" RESTART =======================================================");
+        }
+
+        if (map.getPlayer().teleport) {
+            System.out.println("TELEPORT " + map.getPlayer().getName());
+            teleportation();
+        }
+    }
+
+    public void teleportation() {
+        map = MapLoader.loadMap(multiMap.getMapFromSet(++currentMapIndex), true, map.getPlayer());
+        refresh();
+    }
+
+    public void restart() {
+        Popup.display();
+        map = MapLoader.loadMap(multiMap.getMapFromSet(0), false);
     }
 
     private void refresh() {
@@ -151,6 +188,7 @@ public class Main extends Application {
         refresh();
         centerCamera();
         moveCamera(Direction.UP);
+        // TOCONSIDER: Direction.NOMOVE x=0 y=0
     }
 
     private void centerCamera() {
@@ -159,7 +197,6 @@ public class Main extends Application {
 
     private void pickUpItemEvent() {
         map.getPlayer().pickUp();
-
         inventoryListLabel.setText(getInventoryDescription());
     }
 
