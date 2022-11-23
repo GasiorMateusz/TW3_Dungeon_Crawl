@@ -55,9 +55,9 @@ public class GameMap {
         return height;
     }
 
-    public boolean isInBound(int x, int y){
+    public boolean isInBounds(int x, int y){
         if(x<0 || y<0) return false;
-        return x <= width && y <= height;
+        return x < width && y < height;
     }
 
     public List<Actor> getMonstersList() {
