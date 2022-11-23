@@ -11,15 +11,13 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class MapLoader {
-    public static GameMap loadMap(String mapFile) {
-
+    public static GameMap loadMap(String mapFile, boolean comingFromTeleport, Player... currentPlayer) {
         InputStream is = MapLoader.class.getResourceAsStream(mapFile);
-        int [] size = getMapSize(is);
+        int[] size = getMapSize(is);
         is = MapLoader.class.getResourceAsStream(mapFile);
         Scanner scanner = new Scanner(is);
         int width = size[0];
         int height = size[1];
-
         GameMap map = new GameMap(width, height, CellType.EMPTY);
         for (int y = 0; y < height; y++) {
             String line = scanner.nextLine();
@@ -30,51 +28,67 @@ public class MapLoader {
                         case ' ':
                             cell.setType(CellType.EMPTY);
                             break;
+
                         case '#':
                             cell.setType(CellType.WALL);
                             break;
+
                         case '.':
                             cell.setType(CellType.FLOOR);
                             break;
+
                         case 's':
                             cell.setType(CellType.FLOOR);
                             new Skeleton(cell);
                             break;
-//                        case 'd':
-//                            cell.setType(CellType.DOOR);
-//                            break;
-//                        case 'D':
-//                            cell.setType(CellType.OPEN);
-//                            break;
+
                         case 'X':
                             cell.setType(CellType.STAIRS);
                             break;
+
                         case 'o':
                             cell.setType(CellType.FLOOR);
                             map.addMonsterToMonstersList(new Octopus(cell));
                             break;
+
                         case 'c':
                             cell.setType(CellType.FLOOR);
                             map.addMonsterToMonstersList(new Crocodile(cell));
                             break;
+
                         case '@':
                             cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell));
+                            if (comingFromTeleport) {
+                                currentPlayer[0].setCell(cell);
+                                map.setPlayer(new Player(cell));
+                                map.getPlayer().setHealth(currentPlayer[0].getHealth());
+                                map.getPlayer().setName(currentPlayer[0].getName());
+                                // TODO? pass inventory information from currentPlayer to new player?
+
+                            } else {
+                                map.setPlayer(new Player(cell));
+
+                            }
                             break;
+
                         case 'K':
                             cell.setType(CellType.FLOOR);
                             new Key(cell);
                             break;
+
                         case 'W':
                             cell.setType(CellType.FLOOR);
                             new Sword(cell);
                             break;
-                        case'O':
+
+                        case 'O':
                             cell.setType(CellType.OPEN_DOOR);
                             break;
-                        case'C':
+
+                        case 'C':
                             cell.setType(CellType.CLOSED_DOOR);
                             break;
+
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }
@@ -84,19 +98,18 @@ public class MapLoader {
         return map;
     }
 
-    private static int[] getMapSize(InputStream is){
+    private static int[] getMapSize(InputStream is) {
         int width = 0;
         int height = 0;
         Scanner scanner = new Scanner(is);
-        while(scanner.hasNextLine()){
+        while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            if(line.length()>width){
+            if (line.length() > width) {
                 width = line.length();
             }
-            height ++;
+            height++;
         }
         scanner.close();
-        return new int []{width, height };
+        return new int[]{width, height};
     }
-
 }
