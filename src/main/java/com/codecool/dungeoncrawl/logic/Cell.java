@@ -77,4 +77,12 @@ public class Cell implements Drawable {
     public boolean isOutOfMap(int x, int y) {
         return x * y < 0 || x >= gameMap.getWidth() || y >= gameMap.getHeight();
     }
+
+    public boolean isClosedDoor(){
+        return this.getType().equals(CellType.CLOSED_DOOR);
+    }
+
+    public boolean isOpenDoor(){
+        return this.getType().equals(CellType.OPEN_DOOR);
+    }
 }
