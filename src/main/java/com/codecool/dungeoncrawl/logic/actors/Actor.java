@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 // =================test007===test008==ania===Dominika
 import com.codecool.dungeoncrawl.enums.Direction;
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.GameMap;
 
@@ -10,9 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 public abstract class Actor implements Drawable {
-    public void setCell(Cell cell) {
-        this.cell = cell;
-    }
+
 
     private Cell cell;
     private int attack;
@@ -29,7 +28,7 @@ public abstract class Actor implements Drawable {
 
     public void move(int dx, int dy) {
 
-        Cell nextCell = cell.getNeighbor(dx, dy);  //Todo DD do we create new cell here?
+        Cell nextCell = cell.getNeighbor(dx, dy);
 
         if (isValidMove(cell, nextCell)) {
 
@@ -66,8 +65,7 @@ public abstract class Actor implements Drawable {
         return coordinates;
     }
 
-
-    public boolean isValidMove(Cell origin, Cell cellTested) {
+    boolean isValidMove(Cell origin, Cell cellTested) {
 
 //    ==================================    to będzie do walidowania ruchu
 //    ==================================    i triggerowania akcji np. walki
@@ -78,20 +76,26 @@ public abstract class Actor implements Drawable {
             //   if (cellTested.isOutOfMap(cellTested.getX(), cellTested.getY()))
 
             if (cellTested.isActor()) {
-                checkActorsCollision(cell, cellTested);
+                checkActorsCollision(origin, cellTested);
                 return accessibility;
             }
-            if (cellTested.isFloor()) {
+            if (cellTested.isFloor() || cellTested.isOpenDoor()) {
                 accessibility = true;
             }
-
+            if (origin.isPlayer() && cellTested.isClosedDoor() && ((Player) origin.getActor()).hasKey()) {
+                cellTested.setType(CellType.OPEN_DOOR);
+                ((Player) origin.getActor()).deleteKeyFromInventory();
+            }
+            if (origin.isPlayer() && ((Player) origin.getActor()).hasDeveloperName()) {
+                accessibility = true;
+            }
             return accessibility;
         } else return accessibility;
     }
 
 
     private void checkActorsCollision(Cell origin, Cell cellTested) {
-        if (cell.isPlayer()) {
+        if (origin.isPlayer()) {
             fight(cellTested.getActor());
         }
     }
@@ -117,7 +121,8 @@ public abstract class Actor implements Drawable {
     }
 
     public void setHealth(int health) {
-        this.health = health;}
+        this.health = health;
+    }
 
     public boolean isDead(){
         return false;
@@ -140,7 +145,9 @@ public abstract class Actor implements Drawable {
     public Cell getCell() {
         return cell;
     }
-
+    public void setCell(Cell cell) {
+        this.cell = cell;
+    }
     public int getX() {
         return cell.getX();
     }
