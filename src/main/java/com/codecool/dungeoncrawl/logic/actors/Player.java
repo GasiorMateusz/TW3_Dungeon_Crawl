@@ -9,11 +9,17 @@ import java.util.List;
 
 public class Player extends Actor implements CanPick, CanAttack{
 
-
+    private String name;
     private List<Item> items= new ArrayList<>();
     private boolean ifHasKey=false;
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Player(Cell cell) {
         super(cell);
@@ -21,15 +27,20 @@ public class Player extends Actor implements CanPick, CanAttack{
     }
 
     public boolean hasKey() {
+        for(int i=0; i<items.size();i++){
+            if (items.get(i).getTileName().equals("key")) {
+                ifHasKey = true;
+                return ifHasKey;
+            }
+        }
+        ifHasKey=false;
         return ifHasKey;
     }
     @Override
     public void pickUp(){
         if(canPickUp()){
                 items.add(getCell().getItem());
-                if (getCell().getItem().getTileName().equals("key")){
-                    ifHasKey=true;
-                }
+
             }
         getCell().setItem(null);
         }
@@ -59,6 +70,19 @@ public class Player extends Actor implements CanPick, CanAttack{
     }
     public List<Item> getItems() {
         return items;
+    }
+    public void deleteKeyFromInventory(){
+        for(int i=0; i<items.size();i++){
+            if (items.get(i).getTileName().equals("key")) {
+                items.remove(i);
+                break;
+            }
+        }
+    }
+    public boolean hasDeveloperName(){
+        return getName().equalsIgnoreCase("Dominika") || getName().equalsIgnoreCase("Ania")
+                || getName().equalsIgnoreCase("Dawid") || getName().equalsIgnoreCase("Mateusz")
+                || getName().equalsIgnoreCase("Marcin");
     }
 
 }
