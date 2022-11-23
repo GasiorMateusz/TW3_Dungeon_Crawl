@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.Direction;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import javafx.application.Application;
@@ -15,12 +16,16 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.awt.*;
+
 public class Main extends Application {
+
+    int[] cameraSizePx;
+    int[] cameraSize = new int[]{5, 5};
+    Cell centralCell;
     GameMap map = MapLoader.loadMap();
-    Canvas canvas = new Canvas(
-            map.getWidth() * Tiles.TILE_WIDTH,
-            map.getHeight() * Tiles.TILE_WIDTH);
-    GraphicsContext context = canvas.getGraphicsContext2D();
+    Canvas canvas;
+    GraphicsContext context;
     Label healthLabel = new Label();
 
     public static void main(String[] args) {
@@ -28,7 +33,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
@@ -37,13 +42,19 @@ public class Main extends Application {
         ui.add(healthLabel, 1, 0);
 
         BorderPane borderPane = new BorderPane();
-
+        Dimension size
+                = Toolkit.getDefaultToolkit().getScreenSize();
+        canvas = new Canvas(
+                size.getWidth() * 0.9,
+                size.getHeight() * 0.9);
+        cameraSizePx = new int[]{(int) (size.getHeight() * 0.9), (int) (size.getWidth() * 0.9)};
+        context = canvas.getGraphicsContext2D();
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
-        refresh();
+        initMap();
         scene.setOnKeyPressed(this::onKeyPressed);
 
         primaryStage.setTitle("Dungeon Crawl");
@@ -51,29 +62,41 @@ public class Main extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
+        Direction direction = null;
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
                 refresh();
+                direction = Direction.UP;
                 break;
             case DOWN:
                 map.getPlayer().move(0, 1);
                 refresh();
+                direction = Direction.DOWN;
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
                 refresh();
+                direction = Direction.LEFT;
                 break;
             case RIGHT:
-                map.getPlayer().move(1,0);
+                map.getPlayer().move(1, 0);
                 refresh();
+                direction = Direction.RIGHT;
                 break;
         }
+        moveCamera(direction);
     }
 
     private void refresh() {
         context.setFill(Color.BLACK);
-        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        context.fillRect(0, 0, cameraSizePx[1], cameraSizePx[0]);
+        healthLabel.setText("" + map.getPlayer().getHealth());
+    }
+
+    private void initMap() {
+        context.setFill(Color.BLACK);
+        context.fillRect(0, 0, cameraSizePx[1], cameraSizePx[0]);
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 Cell cell = map.getCell(x, y);
@@ -84,6 +107,27 @@ public class Main extends Application {
                 }
             }
         }
+        centralCell = map.getPlayer().getCell();
         healthLabel.setText("" + map.getPlayer().getHealth());
+    }
+
+    private void moveCamera(Direction direction) {
+        for (int xFactor = 0; xFactor < cameraSize[0]; xFactor++) {
+            for (int yFactor = 0; yFactor < cameraSize[1]; yFactor++) {
+                int x = centralCell.getX() + xFactor - cameraSize[0] / 2 + direction.getValue().getX();
+                int y = centralCell.getY() + yFactor - cameraSize[1] / 2 + direction.getValue().getY();
+                if (map.isInBound(x, y)) {
+                    Cell cell = map.getCell(x, y);
+                    if (cell.getActor() != null) {
+                        Tiles.drawTile(context, cell.getActor(), x, y);
+                    } else {
+                        Tiles.drawTile(context, cell, x, y);
+                    }
+                } else {
+                    Tiles.drawTile(context, map.getCell(0, 0), x, y);
+                }
+            }
+        }
+        centralCell = map.getPlayer().getCell();
     }
 }
