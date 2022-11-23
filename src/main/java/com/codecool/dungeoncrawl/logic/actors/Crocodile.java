@@ -33,7 +33,7 @@ public class Crocodile extends Actor {
             System.out.println(coordinateX + " " + coordinateY + " " +  teleportationCount);
 
 
-            Cell nextCell = map.getCell(coordinateX, coordinateY);;
+            Cell nextCell = map.getCell(coordinateX, coordinateY);
             if (isValidMove(getCell(),nextCell)) {
 
 
