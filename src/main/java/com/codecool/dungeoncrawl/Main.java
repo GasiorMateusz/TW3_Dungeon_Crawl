@@ -32,15 +32,15 @@ public class Main extends Application {
     Canvas canvas;
     GraphicsContext context;
     Label healthLabel = new Label();
-    Label inventoryListLabel= new Label();
-    Button pickUpButton= new Button("Pick Up");
+    Label inventoryListLabel = new Label();
+    Button pickUpButton = new Button("Pick Up");
     Label name = new Label();
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    private void setPlayerName(){
+    private void setPlayerName() {
         Stage stage = new Stage();
         stage.setTitle("Player name");
         VBox vBox = new VBox();
@@ -104,9 +104,10 @@ public class Main extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         Direction direction = null;
         for (Actor monster : map.getMonstersList()) {
-            if(monster.getHealth()>0){
-            monster.monsterMove(map);
-            refresh();}
+            if (monster.getHealth() > 0) {
+                monster.monsterMove(map);
+                refresh();
+            }
         }
 //        map.getMonstersList().stream().forEach(monster -> monster.monsterMove(map)); //todo why it does not work?
         switch (keyEvent.getCode()) {
@@ -132,6 +133,7 @@ public class Main extends Application {
                 break;
             case ENTER:
                 pickUpItemEvent();
+                direction = Direction.UP;
                 break;
         }
         moveCamera(direction);
@@ -160,11 +162,12 @@ public class Main extends Application {
 
         inventoryListLabel.setText(getInventoryDescription());
     }
-    private String getInventoryDescription(){
-        String items="";
-        for(int i=0; i<map.getPlayer().getItems().size(); i++) {
+
+    private String getInventoryDescription() {
+        String items = "";
+        for (int i = 0; i < map.getPlayer().getItems().size(); i++) {
             inventoryListLabel.setText(map.getPlayer().getItems().get(i).getTileName());
-            items.append(map.getPlayer().getItems().get(i).getTileName()).append("\n");
+            items = items + map.getPlayer().getItems().get(i).getTileName() + "\n";
         }
         return items;
     }
@@ -178,6 +181,8 @@ public class Main extends Application {
                     Cell cell = map.getCell(x, y);
                     if (cell.getActor() != null) {
                         Tiles.drawTile(context, cell.getActor(), xFactor, yFactor);
+                    } else if (cell.getItem() != null) {
+                        Tiles.drawTile(context, cell.getItem(), xFactor, yFactor);
                     } else {
                         Tiles.drawTile(context, cell, xFactor, yFactor);
                     }
