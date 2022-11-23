@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.actors;
 // =================test007===test008==ania===Dominika
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
 
 public abstract class Actor implements Drawable {
@@ -22,12 +23,14 @@ public abstract class Actor implements Drawable {
         Cell nextCell = cell.getNeighbor(dx, dy);
 
         if (isValidMove(cell, nextCell)) {
-
-
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
         }
+    }
+
+    public void monsterMove(){
+
     }
 
     private boolean isValidMove(Cell origin, Cell cellTested) {
@@ -41,20 +44,21 @@ public abstract class Actor implements Drawable {
             //   if (cellTested.isOutOfMap(cellTested.getX(), cellTested.getY()))
 
             if (cellTested.isActor()) {
-                checkActorsCollision(cell, cellTested);
+                checkActorsCollision(origin, cellTested);
                 return accessibility;
             }
-            if (cellTested.isFloor()) {
+            if (cellTested.isFloor() || cellTested.isOpenDoor()) {
                 accessibility = true;
             }
-
+            if (origin.isPlayer() && cellTested.isClosedDoor() && ((Player) origin.getActor()).hasKey()) {
+                cellTested.setType(CellType.OPEN_DOOR);
+            }
             return accessibility;
         } else return accessibility;
     }
 
-
     private void checkActorsCollision(Cell origin, Cell cellTested) {
-        if (cell.isPlayer()) {
+        if (origin.isPlayer()) {
             fight(cellTested.getActor());
         }
     }
@@ -79,19 +83,19 @@ public abstract class Actor implements Drawable {
     }
 
     public void setHealth(int health) {
-        this.health = health;}
+        this.health = health;
+    }
 
-    public boolean isDead(){
+    public boolean isDead() {
         return false;
     }
 
 
-
-    public void updateHealth(int healthChange){
+    public void updateHealth(int healthChange) {
 
     }
 
-    public boolean tryToMove(int dx, int dy){
+    public boolean tryToMove(int dx, int dy) {
         return false;
     }
 
