@@ -9,8 +9,6 @@ public class Cell implements Drawable {
     private Actor actor;
 
 
-
-
     private Item item;
     private GameMap gameMap;
     private int x, y;
@@ -75,14 +73,14 @@ public class Cell implements Drawable {
     }
 
     public boolean isOutOfMap(int x, int y) {
-        return x * y < 0 || x >= gameMap.getWidth() || y >= gameMap.getHeight();
+        return x < 0 || y < 0 || x >= gameMap.getWidth() || y >= gameMap.getHeight();
     }
 
-    public boolean isClosedDoor(){
+    public boolean isClosedDoor() {
         return this.getType().equals(CellType.CLOSED_DOOR);
     }
 
-    public boolean isOpenDoor(){
+    public boolean isOpenDoor() {
         return this.getType().equals(CellType.OPEN_DOOR);
     }
 }
