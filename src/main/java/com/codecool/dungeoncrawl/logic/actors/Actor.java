@@ -16,8 +16,9 @@ public abstract class Actor implements Drawable {
     private Cell cell;
     private int attack;
 
-    private int health = 10;
-
+    private int health = 7;
+    public boolean isAlive = true;
+    public boolean teleport = false;
 
     private int strikeStrength;
 
@@ -66,11 +67,6 @@ public abstract class Actor implements Drawable {
     }
 
     boolean isValidMove(Cell origin, Cell cellTested) {
-
-//    ==================================    to będzie do walidowania ruchu
-//    ==================================    i triggerowania akcji np. walki
-//    ==================================    do rozbudowania w miarę rozwoju programu
-
         boolean accessibility = false;
         if (cellTested != null) {
             //   if (cellTested.isOutOfMap(cellTested.getX(), cellTested.getY()))
@@ -79,6 +75,11 @@ public abstract class Actor implements Drawable {
                 checkActorsCollision(origin, cellTested);
                 return accessibility;
             }
+            if (cellTested.isStairs() && origin.isPlayer()) {
+                goDownstairs();
+
+            }
+
             if (cellTested.isFloor() || cellTested.isOpenDoor()) {
                 accessibility = true;
             }
@@ -94,6 +95,14 @@ public abstract class Actor implements Drawable {
     }
 
 
+    private void goDownstairs() {
+        String mapFilePath = "/map.txt";
+        this.teleport = true;
+    //    System.exit(0);
+
+    }
+
+
     private void checkActorsCollision(Cell origin, Cell cellTested) {
         if (origin.isPlayer()) {
             fight(cellTested.getActor());
@@ -106,7 +115,7 @@ public abstract class Actor implements Drawable {
         opponent.setHealth(opponent.getHealth() - this.getStrikeStrength());
         if (opponent.getHealth() > 0) {
             this.setHealth(this.getHealth() - opponent.getStrikeStrength());
-            if (this.getHealth() < 0) {
+            if (this.getHealth() < 1) {
                 defeated(this);
             }
         } else {
@@ -118,7 +127,24 @@ public abstract class Actor implements Drawable {
 
     private void defeated(Actor killedInAction) {
         System.out.println(killedInAction.getClass().getSimpleName() + " is dead ");
+        if (killedInAction instanceof Player) {
+            System.out.println("\n\n [Y] [O] [U]   [D] [I] [E] [D]   [!]\n");
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            this.isAlive = false;
+            // ===== RESET !!!!!
+            //   Main.restart();
+
+        }
     }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
 
     public void setHealth(int health) {
         this.health = health;
