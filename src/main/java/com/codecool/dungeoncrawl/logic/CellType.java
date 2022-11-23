@@ -5,8 +5,6 @@ public enum CellType {
     EMPTY("empty"),
     FLOOR("floor"),
     WALL("wall"),
-    CROCODILE("crocodile"),
-    OCTOPUS("octopus"),
     CLOSED_DOOR ("closedDoor"),
     OPEN_DOOR ("openDoor");
     // =========================================================================
