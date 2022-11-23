@@ -83,7 +83,9 @@ public class Main extends Application {
 
     private void onKeyPressed(KeyEvent keyEvent) {
         Direction direction = null;
-        map.getMonstersList().stream().forEach(Actor::monsterMove);
+        if(map.getMonstersList() != null){
+            map.getMonstersList().forEach(Actor::monsterMove);
+        }
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
