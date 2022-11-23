@@ -13,9 +13,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -26,11 +28,34 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
-    Label inventoryListLabel= new Label();
-    Button pickUpButton= new Button("Pick Up");
+    Label inventoryListLabel = new Label();
+    Button pickUpButton = new Button("Pick Up");
+    Label name = new Label();
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    private void setPlayerName(){
+        Stage stage = new Stage();
+        stage.setTitle("Player name");
+        VBox vBox = new VBox();
+        Label label = new Label("Enter player name: ");
+        TextField playerName = new TextField();
+        Button acceptButton = new Button();
+        acceptButton.setText("Accept");
+        acceptButton.setDefaultButton(true);
+        acceptButton.setOnAction(event -> {
+            map.getPlayer().setName(playerName.getText());
+            name.setText("" + map.getPlayer().getName());
+            stage.close();
+        });
+        vBox.getChildren().add(label);
+        vBox.getChildren().add(playerName);
+        vBox.getChildren().add(acceptButton);
+        Scene scene = new Scene(vBox, 250, 150);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @Override
@@ -38,20 +63,19 @@ public class Main extends Application {
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
-
-        ui.add(new Label("Health: "), 0, 0);
-        ui.add(healthLabel, 1, 0);
-        ui.add(new Label("Inventory: "), 0, 1);
-        ui.add(inventoryListLabel, 0, 2);
-        ui.add(pickUpButton,0,3);
+        ui.add(new Label("Name: "), 0, 0);
+        ui.add(name, 1, 0);
+        ui.add(new Label("Health: "), 0, 1);
+        ui.add(healthLabel, 1, 1);
+        ui.add(new Label("Inventory: "), 0, 2);
+        ui.add(inventoryListLabel, 0, 3);
+        ui.add(pickUpButton, 0, 4);
         pickUpButton.setFocusTraversable(false);
         inventoryListLabel.setMinHeight(50);
         pickUpButton.setVisible(false);
 
-
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e)
-            {
+            public void handle(ActionEvent e) {
                 pickUpItemEvent();
             }
         };
@@ -68,6 +92,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
+        setPlayerName();
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
@@ -86,7 +111,7 @@ public class Main extends Application {
                 refresh();
                 break;
             case RIGHT:
-                map.getPlayer().move(1,0);
+                map.getPlayer().move(1, 0);
                 refresh();
                 break;
             case ENTER:
@@ -115,12 +140,13 @@ public class Main extends Application {
         healthLabel.setText("" + map.getPlayer().getHealth());
         pickUpButton.setVisible(map.getPlayer().canPickUp());
     }
-    private void pickUpItemEvent(){
+
+    private void pickUpItemEvent() {
         map.getPlayer().pickUp();
-        String items="";
-        for(int i=0; i<map.getPlayer().getItems().size(); i++) {
+        String items = "";
+        for (int i = 0; i < map.getPlayer().getItems().size(); i++) {
             inventoryListLabel.setText(map.getPlayer().getItems().get(i).getTileName());
-            items=items+map.getPlayer().getItems().get(i).getTileName()+"\n";
+            items = items + map.getPlayer().getItems().get(i).getTileName() + "\n";
         }
         inventoryListLabel.setText(items);
     }
