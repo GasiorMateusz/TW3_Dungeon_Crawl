@@ -39,4 +39,9 @@ public class GameMap {
     public int getHeight() {
         return height;
     }
+
+    public boolean isInBound(int x, int y){
+        if(x<0 || y<0) return false;
+        return x <= width && y <= height;
+    }
 }
