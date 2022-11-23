@@ -25,14 +25,14 @@ import java.awt.*;
 public class Main extends Application {
 
     int[] cameraSizePx;
-    int[] cameraSize = new int[]{5, 5};
+    int[] cameraSize = new int[]{25, 35};
     Cell centralCell;
     GameMap map = MapLoader.loadMap();
     Canvas canvas;
     GraphicsContext context;
     Label healthLabel = new Label();
-    Label inventoryListLabel= new Label();
-    Button pickUpButton= new Button("Pick Up");
+    Label inventoryListLabel = new Label();
+    Button pickUpButton = new Button("Pick Up");
 
     public static void main(String[] args) {
         launch(args);
@@ -48,18 +48,13 @@ public class Main extends Application {
         ui.add(healthLabel, 1, 0);
         ui.add(new Label("Inventory: "), 0, 1);
         ui.add(inventoryListLabel, 0, 2);
-        ui.add(pickUpButton,0,3);
+        ui.add(pickUpButton, 0, 3);
         pickUpButton.setFocusTraversable(false);
         inventoryListLabel.setMinHeight(50);
         pickUpButton.setVisible(false);
 
 
-        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e)
-            {
-                pickUpItemEvent();
-            }
-        };
+        EventHandler<ActionEvent> event = e -> pickUpItemEvent();
         pickUpButton.setOnAction(event);
         BorderPane borderPane = new BorderPane();
         Dimension size
@@ -83,7 +78,7 @@ public class Main extends Application {
 
     private void onKeyPressed(KeyEvent keyEvent) {
         Direction direction = null;
-        if(map.getMonstersList() != null){
+        if (map.getMonstersList() != null) {
             map.getMonstersList().forEach(Actor::monsterMove);
         }
         switch (keyEvent.getCode()) {
@@ -119,51 +114,41 @@ public class Main extends Application {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, cameraSizePx[1], cameraSizePx[0]);
         healthLabel.setText("" + map.getPlayer().getHealth());
+        pickUpButton.setVisible(map.getPlayer().canPickUp());
     }
 
     private void initMap() {
-        context.setFill(Color.BLACK);
-        context.fillRect(0, 0, cameraSizePx[1], cameraSizePx[0]);
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Cell cell = map.getCell(x, y);
-                if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), x, y);
-                } else if (cell.getItem() != null) {
-                    Tiles.drawTile(context, cell.getItem(), x, y);
-                } else {
-                    Tiles.drawTile(context, cell, x, y);
-                }
-            }
-        }
-        centralCell = map.getPlayer().getCell();
-        healthLabel.setText("" + map.getPlayer().getHealth());
-        pickUpButton.setVisible(map.getPlayer().canPickUp());
+        refresh();
+        centerCamera();
+        moveCamera(Direction.UP);
     }
-    private void pickUpItemEvent(){
+
+    private void centerCamera() {
+        centralCell = map.getPlayer().getCell();
+    }
+
+    private void pickUpItemEvent() {
         map.getPlayer().pickUp();
-        String items="";
-        for(int i=0; i<map.getPlayer().getItems().size(); i++) {
+        StringBuilder items = new StringBuilder();
+        for (int i = 0; i < map.getPlayer().getItems().size(); i++) {
             inventoryListLabel.setText(map.getPlayer().getItems().get(i).getTileName());
-            items=items+map.getPlayer().getItems().get(i).getTileName()+"\n";
+            items.append(map.getPlayer().getItems().get(i).getTileName()).append("\n");
         }
-        inventoryListLabel.setText(items);
+        inventoryListLabel.setText(items.toString());
     }
 
     private void moveCamera(Direction direction) {
-        for (int xFactor = 0; xFactor < cameraSize[0]; xFactor++) {
+        for (int xFactor = 0; xFactor < cameraSize[0] + 18; xFactor++) {
             for (int yFactor = 0; yFactor < cameraSize[1]; yFactor++) {
-                int x = centralCell.getX() + xFactor - cameraSize[0] / 2 + direction.getValue().getX();
-                int y = centralCell.getY() + yFactor - cameraSize[1] / 2 + direction.getValue().getY();
-                if (map.isInBound(x, y)) {
+                int x = centralCell.getX() + xFactor - cameraSize[0] / 2 + direction.getValue().getX() - 10;
+                int y = centralCell.getY() + yFactor - cameraSize[1] / 2 + direction.getValue().getY() + 5;
+                if (map.isInBounds(x, y)) {
                     Cell cell = map.getCell(x, y);
                     if (cell.getActor() != null) {
-                        Tiles.drawTile(context, cell.getActor(), x, y);
+                        Tiles.drawTile(context, cell.getActor(), xFactor, yFactor);
                     } else {
-                        Tiles.drawTile(context, cell, x, y);
+                        Tiles.drawTile(context, cell, xFactor, yFactor);
                     }
-                } else {
-                    Tiles.drawTile(context, map.getCell(0, 0), x, y);
                 }
             }
         }
