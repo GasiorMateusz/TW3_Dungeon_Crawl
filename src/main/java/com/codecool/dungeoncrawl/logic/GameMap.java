@@ -35,8 +35,6 @@ public class GameMap {
         this.player = player;
     }
 
-
-
     public Player getPlayer() {
         return player;
     }
@@ -55,6 +53,11 @@ public class GameMap {
 
     public int getHeight() {
         return height;
+    }
+
+    public boolean isInBounds(int x, int y){
+        if(x<0 || y<0) return false;
+        return x < width && y < height;
     }
 
     public List<Actor> getMonstersList() {
