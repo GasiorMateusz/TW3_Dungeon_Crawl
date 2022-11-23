@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.Random;
 
 public abstract class Actor implements Drawable {
+    public void setCell(Cell cell) {
+        this.cell = cell;
+    }
+
     private Cell cell;
     private int attack;
 

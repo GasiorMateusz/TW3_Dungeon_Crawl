@@ -24,36 +24,28 @@ public class Crocodile extends Actor {
     public void monsterMove(GameMap map) {
         int mapWidth = map.getWidth();
         int mapHeight = map.getHeight();
-        if(true){
-//        if (teleportationCount == 0) {
+
+        if (teleportationCount == 0) {
             Random random = new Random();
             teleportationCount = random.nextInt(6);
             int coordinateX = random.nextInt(mapWidth);
             int coordinateY = random.nextInt(mapHeight);
-            System.out.println(coordinateX+ " " + coordinateY );
-
-//            Cell nextCell = map.getCell(coordinateX,coordinateY);
-            Cell cell = getCell();
-
-            if (isValidMove(cell, map.getCell(coordinateX,coordinateY))) {
+            System.out.println(coordinateX + " " + coordinateY + " " +  teleportationCount);
 
 
-                cell.setActor(null);
-                Cell nextCell = map.getCell(coordinateX,coordinateY);
+            Cell nextCell = map.getCell(coordinateX, coordinateY);;
+            if (isValidMove(getCell(),nextCell)) {
+
+
+                getCell().setActor(null);
+                setCell(nextCell);
                 nextCell.setActor(this);
-//                 = map.getCell(coordinateX,coordinateY);
-                cell = nextCell;
             }
-
-
-
-//            move(coordinateX,coordinateY);
-
-//        } else {
-//            Direction direction = selectRandomDirection();
-//            int[] coordinates = convertDirectionToCoordinates(direction);
-//            move(coordinates[0], coordinates[1]);
-//        teleportationCount--;
+        } else {
+            Direction direction = selectRandomDirection();
+            int[] coordinates = convertDirectionToCoordinates(direction);
+            move(coordinates[0], coordinates[1]);
+        teleportationCount--;
         }
     }
 }
