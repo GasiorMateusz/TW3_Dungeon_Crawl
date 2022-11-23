@@ -12,6 +12,9 @@ public class Player extends Actor implements CanPick, CanAttack{
     private String name;
     private List<Item> items= new ArrayList<>();
     private boolean ifHasKey=false;
+    private final int normalStrikeStrength=5;
+    private boolean ifHasSword=false;
+    private boolean ifHasBow=false;
 
     public String getName() {
         return name;
@@ -36,11 +39,32 @@ public class Player extends Actor implements CanPick, CanAttack{
         ifHasKey=false;
         return ifHasKey;
     }
+    public boolean hasSword() {
+        for(int i=0; i<items.size();i++){
+            if (items.get(i).getTileName().equals("sword")) {
+                ifHasSword = true;
+                return ifHasSword;
+            }
+        }
+        ifHasSword=false;
+        return ifHasSword;
+    }
+    public boolean hasBow() {
+        for(int i=0; i<items.size();i++){
+            if (items.get(i).getTileName().equals("bow")) {
+                ifHasBow = true;
+                return ifHasBow;
+            }
+        }
+        ifHasBow=false;
+        return ifHasBow;
+    }
+
+
     @Override
     public void pickUp(){
         if(canPickUp()){
                 items.add(getCell().getItem());
-
             }
         getCell().setItem(null);
         }
@@ -84,5 +108,4 @@ public class Player extends Actor implements CanPick, CanAttack{
                 || getName().equalsIgnoreCase("Dawid") || getName().equalsIgnoreCase("Mateusz")
                 || getName().equalsIgnoreCase("Marcin");
     }
-
 }

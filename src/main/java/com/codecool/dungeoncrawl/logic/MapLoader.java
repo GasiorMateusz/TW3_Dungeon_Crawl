@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.actors.Crocodile;
 import com.codecool.dungeoncrawl.logic.actors.Octopus;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.items.Bow;
 import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.items.Sword;
 
@@ -59,6 +60,10 @@ public class MapLoader {
                         case 'W':
                             cell.setType(CellType.FLOOR);
                             new Sword(cell);
+                            break;
+                        case 'B':
+                            cell.setType(CellType.FLOOR);
+                            new Bow(cell);
                             break;
                         case'O':
                             cell.setType(CellType.OPEN_DOOR);
