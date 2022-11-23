@@ -91,7 +91,6 @@ public class Main extends Application {
                 break;
             case ENTER:
                 pickUpItemEvent();
-                refresh();
                 break;
         }
 
@@ -114,14 +113,19 @@ public class Main extends Application {
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
         pickUpButton.setVisible(map.getPlayer().canPickUp());
+        inventoryListLabel.setText(getInventoryDescription());
     }
     private void pickUpItemEvent(){
         map.getPlayer().pickUp();
+
+        inventoryListLabel.setText(getInventoryDescription());
+    }
+    private String getInventoryDescription(){
         String items="";
         for(int i=0; i<map.getPlayer().getItems().size(); i++) {
             inventoryListLabel.setText(map.getPlayer().getItems().get(i).getTileName());
             items=items+map.getPlayer().getItems().get(i).getTileName()+"\n";
         }
-        inventoryListLabel.setText(items);
+        return items;
     }
 }
