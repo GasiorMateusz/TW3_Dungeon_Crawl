@@ -2,11 +2,9 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.items.Item;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-
 
 public class Player extends Actor implements CanPick {
 
@@ -27,6 +25,10 @@ public class Player extends Actor implements CanPick {
         setStrikeStrength(5);
     }
 
+    public Player getPlayer() {
+        return this;
+    }
+
     public boolean hasKey() {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getTileName().equals("key")) {
@@ -42,7 +44,6 @@ public class Player extends Actor implements CanPick {
     public void pickUp() {
         if (canPickUp()) {
             items.add(getCell().getItem());
-
         }
         getCell().setItem(null);
     }
@@ -56,25 +57,6 @@ public class Player extends Actor implements CanPick {
         return "player";
     }
 
-//    @Override
-//    public boolean canAttack() {
-//        return false;
-//    }
-//
-//    @Override
-//    public int countAttack() {
-//        return 0;
-//    }
-
-//    @Override
-//    public void attack(Actor opponent) {
-//        super.fight(opponent);
-//    }
-
-    //
-//    public void fight() {
-//        super.fight();
-//    }
     public List<Item> getItems() {
         return items;
     }
@@ -96,6 +78,3 @@ public class Player extends Actor implements CanPick {
         return false;
     }
 }
-
-
-
