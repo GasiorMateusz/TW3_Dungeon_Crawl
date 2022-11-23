@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic.actors;
 // =================test007===test008==ania===Dominika
+
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
@@ -29,7 +30,7 @@ public abstract class Actor implements Drawable {
         }
     }
 
-    public void monsterMove(){
+    public void monsterMove() {
 
     }
 
@@ -52,6 +53,9 @@ public abstract class Actor implements Drawable {
             }
             if (origin.isPlayer() && cellTested.isClosedDoor() && ((Player) origin.getActor()).hasKey()) {
                 cellTested.setType(CellType.OPEN_DOOR);
+            }
+            if (origin.isPlayer() && ((Player) origin.getActor()).hasDeveloperName()) {
+                accessibility = true;
             }
             return accessibility;
         } else return accessibility;
