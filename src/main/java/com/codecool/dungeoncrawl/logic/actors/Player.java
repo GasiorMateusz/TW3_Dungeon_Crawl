@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Player extends Actor implements CanPick, CanAttack {
+public class Player extends Actor implements CanPick, CanAttack{
 
     private String name;
-    private List<Item> items = new ArrayList<>();
-    private boolean ifHasKey = false;
+    private List<Item> items= new ArrayList<>();
+    private boolean ifHasKey=false;
 
     public String getName() {
         return name;
@@ -27,23 +27,27 @@ public class Player extends Actor implements CanPick, CanAttack {
     }
 
     public boolean hasKey() {
-        return ifHasKey;
-    }
-
-    @Override
-    public void pickUp() {
-        if (canPickUp()) {
-            items.add(getCell().getItem());
-            if (getCell().getItem().getTileName().equals("key")) {
+        for(int i=0; i<items.size();i++){
+            if (items.get(i).getTileName().equals("key")) {
                 ifHasKey = true;
+                return ifHasKey;
             }
         }
-        getCell().setItem(null);
+        ifHasKey=false;
+        return ifHasKey;
     }
+    @Override
+    public void pickUp(){
+        if(canPickUp()){
+                items.add(getCell().getItem());
+
+            }
+        getCell().setItem(null);
+        }
 
     @Override
     public boolean canPickUp() {
-        return getCell().getItem() != null;
+        return getCell().getItem() !=null;
     }
 
     public String getTileName() {
@@ -64,11 +68,17 @@ public class Player extends Actor implements CanPick, CanAttack {
     public boolean attack() {
         return false;
     }
-
     public List<Item> getItems() {
         return items;
     }
-
+    public void deleteKeyFromInventory(){
+        for(int i=0; i<items.size();i++){
+            if (items.get(i).getTileName().equals("key")) {
+                items.remove(i);
+                break;
+            }
+        }
+    }
     public boolean hasDeveloperName(){
         return getName().equalsIgnoreCase("Dominika") || getName().equalsIgnoreCase("Ania")
                 || getName().equalsIgnoreCase("Dawid") || getName().equalsIgnoreCase("Mateusz")

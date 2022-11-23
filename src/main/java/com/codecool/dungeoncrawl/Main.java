@@ -28,8 +28,8 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
-    Label inventoryListLabel = new Label();
-    Button pickUpButton = new Button("Pick Up");
+    Label inventoryListLabel= new Label();
+    Button pickUpButton= new Button("Pick Up");
     Label name = new Label();
 
     public static void main(String[] args) {
@@ -74,8 +74,10 @@ public class Main extends Application {
         inventoryListLabel.setMinHeight(50);
         pickUpButton.setVisible(false);
 
+
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
+            public void handle(ActionEvent e)
+            {
                 pickUpItemEvent();
             }
         };
@@ -111,12 +113,11 @@ public class Main extends Application {
                 refresh();
                 break;
             case RIGHT:
-                map.getPlayer().move(1, 0);
+                map.getPlayer().move(1,0);
                 refresh();
                 break;
             case ENTER:
                 pickUpItemEvent();
-                refresh();
                 break;
         }
 
@@ -139,15 +140,19 @@ public class Main extends Application {
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
         pickUpButton.setVisible(map.getPlayer().canPickUp());
+        inventoryListLabel.setText(getInventoryDescription());
     }
-
-    private void pickUpItemEvent() {
+    private void pickUpItemEvent(){
         map.getPlayer().pickUp();
-        String items = "";
-        for (int i = 0; i < map.getPlayer().getItems().size(); i++) {
+
+        inventoryListLabel.setText(getInventoryDescription());
+    }
+    private String getInventoryDescription(){
+        String items="";
+        for(int i=0; i<map.getPlayer().getItems().size(); i++) {
             inventoryListLabel.setText(map.getPlayer().getItems().get(i).getTileName());
-            items = items + map.getPlayer().getItems().get(i).getTileName() + "\n";
+            items=items+map.getPlayer().getItems().get(i).getTileName()+"\n";
         }
-        inventoryListLabel.setText(items);
+        return items;
     }
 }

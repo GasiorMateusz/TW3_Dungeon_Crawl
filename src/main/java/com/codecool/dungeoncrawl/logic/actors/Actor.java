@@ -53,6 +53,7 @@ public abstract class Actor implements Drawable {
             }
             if (origin.isPlayer() && cellTested.isClosedDoor() && ((Player) origin.getActor()).hasKey()) {
                 cellTested.setType(CellType.OPEN_DOOR);
+                ((Player) origin.getActor()).deleteKeyFromInventory();
             }
             if (origin.isPlayer() && ((Player) origin.getActor()).hasDeveloperName()) {
                 accessibility = true;
