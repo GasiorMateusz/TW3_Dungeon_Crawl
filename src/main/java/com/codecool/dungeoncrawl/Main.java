@@ -52,7 +52,12 @@ public class Main extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
-        map.getMonstersList().stream().forEach(Actor::monsterMove);
+        for (Actor monster : map.getMonstersList()) {
+            if(monster.getHealth()>0){
+            monster.monsterMove(map);
+            refresh();}
+        }
+//        map.getMonstersList().stream().forEach(monster -> monster.monsterMove(map)); //todo why it does not work?
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
@@ -67,10 +72,11 @@ public class Main extends Application {
                 refresh();
                 break;
             case RIGHT:
-                map.getPlayer().move(1,0);
+                map.getPlayer().move(1, 0);
                 refresh();
                 break;
         }
+
     }
 
     private void refresh() {

@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.GameMap;
 
 public class Skeleton extends Actor {
     public Skeleton(Cell cell) {
@@ -14,6 +15,6 @@ public class Skeleton extends Actor {
     }
 
     @Override
-    public void monsterMove() {
+    public void monsterMove(GameMap map) {
     }
 }

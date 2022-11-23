@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.enums.Direction;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.GameMap;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +25,7 @@ public abstract class Actor implements Drawable {
 
     public void move(int dx, int dy) {
 
-        Cell nextCell = cell.getNeighbor(dx, dy);
+        Cell nextCell = cell.getNeighbor(dx, dy);  //Todo DD do we create new cell here?
 
         if (isValidMove(cell, nextCell)) {
 
@@ -35,7 +36,7 @@ public abstract class Actor implements Drawable {
         }
     }
 
-    public void monsterMove(){
+    public void monsterMove(GameMap map){
         Direction direction = selectRandomDirection();
         int[] coordinates = convertDirectionToCoordinates(direction);
         move(coordinates[0],coordinates[1]);
@@ -43,14 +44,14 @@ public abstract class Actor implements Drawable {
 
 
 
-    private Direction selectRandomDirection(){
+    Direction selectRandomDirection(){
         List<Direction> directionList = Arrays.asList(Direction.RIGHT, Direction.LEFT, Direction.UP, Direction.DOWN);
         Random random = new Random();
         return directionList.get(random.nextInt(directionList.size()));
     }
 
 
-    private int[] convertDirectionToCoordinates(Direction direction){
+    int[] convertDirectionToCoordinates(Direction direction){
         int[] coordinates = new int[2];
         switch (direction){
             case RIGHT: coordinates[0]=0; coordinates[1]=1; break;
@@ -62,7 +63,7 @@ public abstract class Actor implements Drawable {
     }
 
 
-    private boolean isValidMove(Cell origin, Cell cellTested) {
+    public boolean isValidMove(Cell origin, Cell cellTested) {
 
 //    ==================================    to będzie do walidowania ruchu
 //    ==================================    i triggerowania akcji np. walki
@@ -103,6 +104,7 @@ public abstract class Actor implements Drawable {
         } else {
             defeated(opponent);
             opponent.getCell().setActor(null);
+
         }
     }
 
