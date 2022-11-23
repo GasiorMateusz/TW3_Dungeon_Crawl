@@ -9,11 +9,17 @@ import java.util.List;
 
 public class Player extends Actor implements CanPick, CanAttack{
 
-
+    private String name;
     private List<Item> items= new ArrayList<>();
     private boolean ifHasKey=false;
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Player(Cell cell) {
         super(cell);
@@ -72,6 +78,11 @@ public class Player extends Actor implements CanPick, CanAttack{
                 break;
             }
         }
+    }
+    public boolean hasDeveloperName(){
+        return getName().equalsIgnoreCase("Dominika") || getName().equalsIgnoreCase("Ania")
+                || getName().equalsIgnoreCase("Dawid") || getName().equalsIgnoreCase("Mateusz")
+                || getName().equalsIgnoreCase("Marcin");
     }
 
 }
