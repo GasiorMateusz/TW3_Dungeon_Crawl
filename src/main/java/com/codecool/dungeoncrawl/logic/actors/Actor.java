@@ -17,7 +17,7 @@ public abstract class Actor implements Drawable {
     public boolean isAlive = true;
     public boolean teleport = false;
     private int strikeStrength;
-    private final int normalStrikeStrength = 5;
+
 
     public Actor(Cell cell) {
         this.cell = cell;
@@ -89,7 +89,7 @@ public abstract class Actor implements Drawable {
 
             if (origin.isPlayer() && cellTested.isClosedDoor() && ((Player) origin.getActor()).getInventory().hasKey()) {
                 cellTested.setType(CellType.OPEN_DOOR);
-                ((Player) origin.getActor()).deleteKeyFromInventory();
+                ((Player) origin.getActor()).getInventory().deleteKeyFromInventory();
             }
             if (origin.isPlayer() && ((Player) origin.getActor()).hasDeveloperName()) {
                 accessibility = true;
@@ -104,7 +104,6 @@ public abstract class Actor implements Drawable {
         } else return accessibility;
     }
 
-
     private void goDownstairs() {
         this.teleport = true;
     }
@@ -116,7 +115,6 @@ public abstract class Actor implements Drawable {
     }
 
     private void fight(Actor opponent) {
-        refreshPlayerStrikeStrenth();
         System.out.println(" FIGHT:  " + this.getClass().getSimpleName() + " health:" + this.getHealth() +
                 " vs. " + opponent.getClass().getSimpleName() + " health:" + opponent.getHealth());
         opponent.setHealth(opponent.getHealth() - this.getStrikeStrength());
@@ -130,20 +128,6 @@ public abstract class Actor implements Drawable {
             defeated(opponent);
             opponent.getCell().setActor(null);
         }
-    }
-
-    public void refreshPlayerStrikeStrenth() {
-        int strength = normalStrikeStrength;
-        if (((Player) cell.getActor()).getInventory().hasSword() && ((Player) cell.getActor()).getInventory().hasBow()) {
-            strength = strength + 3;
-        } else if (((Player) cell.getActor()).getInventory().hasBow()) {
-            strength = strength + 1;
-        } else if (((Player) cell.getActor()).getInventory().hasSword()) {
-            strength = strength + 2;
-        } else {
-            strength = normalStrikeStrength;
-        }
-        this.setStrikeStrength(strength);
     }
 
     private void defeated(Actor killedInAction) {
