@@ -9,15 +9,12 @@ public abstract class Weapon extends Item {
 
     private int weaponStrength;
 
-    public Weapon(Cell cell) {
+    public Weapon(Cell cell, int strength) {
         super(cell);
+        this.weaponStrength = strength;
     }
 
     public int getWeaponStrength() {
         return weaponStrength;
-    }
-
-    public void setAdditionalWeaponStrength(int weaponStrength) {
-        this.weaponStrength = weaponStrength;
     }
 }
