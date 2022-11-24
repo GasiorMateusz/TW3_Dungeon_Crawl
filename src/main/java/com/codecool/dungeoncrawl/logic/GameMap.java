@@ -57,6 +57,11 @@ public class GameMap {
         return height;
     }
 
+    public boolean isInBounds(int x, int y){
+        if(x<0 || y<0) return false;
+        return x < width && y < height;
+    }
+
     public Cell[][] getCells() {
         return cells;
     }

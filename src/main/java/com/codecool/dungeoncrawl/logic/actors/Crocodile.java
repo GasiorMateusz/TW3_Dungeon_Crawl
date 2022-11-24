@@ -33,7 +33,7 @@ public class Crocodile extends Actor {
             int coordinateX = random.nextInt(mapWidth);
             int coordinateY = random.nextInt(mapHeight);
 
-            Cell nextCell = map.getCell(coordinateX, coordinateY);;
+            Cell nextCell = map.getCell(coordinateX, coordinateY);
             if (isValidMove(getCell(),nextCell)) {
                 getCell().setActor(null);
                 setCell(nextCell);
