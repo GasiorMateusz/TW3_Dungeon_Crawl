@@ -2,15 +2,20 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.items.Item;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 public class Player extends Actor implements CanPick {
 
-    private String name = "Gordon Freeman";
-    private List<Item> items = new ArrayList<>();
-    private boolean ifHasKey = false;
+
+    private String name;
+    private List<Item> items= new ArrayList<>();
+    private boolean ifHasKey=false;
+    private final int normalStrikeStrength=5;
+    private boolean ifHasSword=false;
+    private boolean ifHasBow=false;
 
     public String getName() {
         return name;
@@ -30,15 +35,36 @@ public class Player extends Actor implements CanPick {
     }
 
     public boolean hasKey() {
-        for (int i = 0; i < items.size(); i++) {
+        for(int i=0; i<items.size();i++){
             if (items.get(i).getTileName().equals("key")) {
                 ifHasKey = true;
                 return ifHasKey;
             }
         }
-        ifHasKey = false;
+        ifHasKey=false;
         return ifHasKey;
     }
+    public boolean hasSword() {
+        for(int i=0; i<items.size();i++){
+            if (items.get(i).getTileName().equals("sword")) {
+                ifHasSword = true;
+                return ifHasSword;
+            }
+        }
+        ifHasSword=false;
+        return ifHasSword;
+    }
+    public boolean hasBow() {
+        for(int i=0; i<items.size();i++){
+            if (items.get(i).getTileName().equals("bow")) {
+                ifHasBow = true;
+                return ifHasBow;
+            }
+        }
+        ifHasBow=false;
+        return ifHasBow;
+    }
+
 
     @Override
     public void pickUp() {
@@ -46,7 +72,7 @@ public class Player extends Actor implements CanPick {
             items.add(getCell().getItem());
         }
         getCell().setItem(null);
-    }
+        }
 
     @Override
     public boolean canPickUp() {
@@ -77,4 +103,5 @@ public class Player extends Actor implements CanPick {
         }
         return false;
     }
+
 }

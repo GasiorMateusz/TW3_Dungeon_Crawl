@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.actors.Crocodile;
 import com.codecool.dungeoncrawl.logic.actors.Octopus;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.items.Bow;
 import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.items.Sword;
 
@@ -18,6 +19,7 @@ public class MapLoader {
         Scanner scanner = new Scanner(is);
         int width = size[0];
         int height = size[1];
+
         GameMap map = new GameMap(width, height, CellType.EMPTY);
         for (int y = 0; y < height; y++) {
             String line = scanner.nextLine();
@@ -28,18 +30,15 @@ public class MapLoader {
                         case ' ':
                             cell.setType(CellType.EMPTY);
                             break;
-
                         case '#':
                             cell.setType(CellType.WALL);
                             break;
-
                         case '.':
                             cell.setType(CellType.FLOOR);
                             break;
-
                         case 's':
                             cell.setType(CellType.FLOOR);
-                            new Skeleton(cell);
+                            map.addMonsterToMonstersList(new Skeleton(cell));
                             break;
 
                         case 'X':
@@ -50,12 +49,10 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             map.addMonsterToMonstersList(new Octopus(cell));
                             break;
-
                         case 'c':
                             cell.setType(CellType.FLOOR);
                             map.addMonsterToMonstersList(new Crocodile(cell));
                             break;
-
                         case '@':
                             cell.setType(CellType.FLOOR);
                             if (comingFromTeleport) {
@@ -70,25 +67,24 @@ public class MapLoader {
 
                             }
                             break;
-
                         case 'K':
                             cell.setType(CellType.FLOOR);
                             new Key(cell);
                             break;
-
                         case 'W':
                             cell.setType(CellType.FLOOR);
                             new Sword(cell);
                             break;
-
-                        case 'O':
+                        case 'B':
+                            cell.setType(CellType.FLOOR);
+                            new Bow(cell);
+                            break;
+                        case'O':
                             cell.setType(CellType.OPEN_DOOR);
                             break;
-
-                        case 'C':
+                        case'C':
                             cell.setType(CellType.CLOSED_DOOR);
                             break;
-
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }
@@ -112,4 +108,5 @@ public class MapLoader {
         scanner.close();
         return new int[]{width, height};
     }
+
 }

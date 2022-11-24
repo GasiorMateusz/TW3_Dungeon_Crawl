@@ -95,6 +95,7 @@ public abstract class Actor implements Drawable {
     }
 
     private void fight(Actor opponent) {
+        refreshPlayerStrikeStrenth();
         System.out.println(" FIGHT:  " + this.getClass().getSimpleName() + " health:" + this.getHealth() +
                 " vs. " + opponent.getClass().getSimpleName() + " health:" + opponent.getHealth());
         opponent.setHealth(opponent.getHealth() - this.getStrikeStrength());
@@ -108,6 +109,19 @@ public abstract class Actor implements Drawable {
             defeated(opponent);
             opponent.getCell().setActor(null);
         }
+    }
+    public void refreshPlayerStrikeStrenth(){
+        int strength=getStrikeStrength();
+        if(((Player) cell.getActor()).hasSword()){
+            strength=7;
+        }
+        if(((Player) cell.getActor()).hasBow()){
+            strength=6;
+        }
+        if(((Player) cell.getActor()).hasSword() &&((Player) cell.getActor()).hasBow()){
+            strength=8;
+        }
+       this.setStrikeStrength(strength);
     }
 
     private void defeated(Actor killedInAction) {
