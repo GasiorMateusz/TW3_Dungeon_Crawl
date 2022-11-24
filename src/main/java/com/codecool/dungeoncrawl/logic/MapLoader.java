@@ -1,9 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.actors.Crocodile;
-import com.codecool.dungeoncrawl.logic.actors.Octopus;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.items.Bow;
 import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.items.Sword;
@@ -44,7 +41,10 @@ public class MapLoader {
                         case 'X':
                             cell.setType(CellType.STAIRS);
                             break;
-
+                        case 'g':
+                            cell.setType(CellType.FLOOR);
+                            map.addMonsterToMonstersList(new Ghosts(cell));
+                            break;
                         case 'o':
                             cell.setType(CellType.FLOOR);
                             map.addMonsterToMonstersList(new Octopus(cell));

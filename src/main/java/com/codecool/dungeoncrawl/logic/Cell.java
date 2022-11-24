@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Ghosts;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
@@ -76,6 +77,10 @@ public class Cell implements Drawable {
 
     public boolean isPlayer() {
         return this.actor instanceof Player;
+    }
+
+    public boolean isGhosts() {
+        return this.actor instanceof Ghosts;
     }
 
     public boolean isOpen() {
