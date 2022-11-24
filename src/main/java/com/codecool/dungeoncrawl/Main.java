@@ -80,11 +80,13 @@ public class Main extends Application {
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
-        ui.add(new Label("Health: "), 0, 0);
-        ui.add(healthLabel, 1, 0);
-        ui.add(new Label("Inventory: "), 0, 1);
-        ui.add(inventoryListLabel, 0, 2);
-        ui.add(pickUpButton, 0, 3);
+        ui.add(new Label("Name: "), 0, 0);
+        ui.add(name, 1, 0);
+        ui.add(new Label("Health: "), 0, 1);
+        ui.add(healthLabel, 1, 1);
+        ui.add(new Label("Inventory: "), 0, 2);
+        ui.add(inventoryListLabel, 0, 3);
+        ui.add(pickUpButton, 0, 4);
         pickUpButton.setFocusTraversable(false);
         inventoryListLabel.setMinHeight(50);
         pickUpButton.setVisible(false);
@@ -174,7 +176,7 @@ public class Main extends Application {
 
     public void restart() {
         Popup.display();
-        map = MapLoader.loadMap(multiMap.getMapFromSet(0), false);
+        map = MapLoader.loadMap(multiMap.getMapFromSet(0), false, map.getPlayer());
     }
 
     private void refresh() {

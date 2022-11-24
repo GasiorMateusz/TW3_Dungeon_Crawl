@@ -61,10 +61,11 @@ public class MapLoader {
                                 map.getPlayer().setHealth(currentPlayer[0].getHealth());
                                 map.getPlayer().setName(currentPlayer[0].getName());
                                 // TODO? pass inventory information from currentPlayer to new player?
-
                             } else {
                                 map.setPlayer(new Player(cell));
-
+                                if (currentPlayer.length != 0) {
+                                    map.getPlayer().setName(currentPlayer[0].getName());
+                                }
                             }
                             break;
                         case 'K':
@@ -79,10 +80,10 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             new Bow(cell);
                             break;
-                        case'O':
+                        case 'O':
                             cell.setType(CellType.OPEN_DOOR);
                             break;
-                        case'C':
+                        case 'C':
                             cell.setType(CellType.CLOSED_DOOR);
                             break;
                         default:
