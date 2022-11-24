@@ -93,6 +93,12 @@ public abstract class Actor implements Drawable {
             if (origin.isPlayer() && ((Player) origin.getActor()).hasDeveloperName()) {
                 accessibility = true;
             }
+
+            if (origin.isGhosts()) {
+                accessibility = true;
+            }
+
+
             return accessibility;
         } else return accessibility;
     }
