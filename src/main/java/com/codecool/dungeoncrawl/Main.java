@@ -12,7 +12,6 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -142,7 +141,6 @@ public class Main extends Application {
     private void onKeyPressedAction(Direction direction) {
         map.getPlayer().move(direction.getValue().getX(), direction.getValue().getY());
         worldMakeMove();
-        refresh();
         moveCamera(direction);
     }
 
@@ -180,7 +178,8 @@ public class Main extends Application {
 
     public void teleportation() {
         map = MapLoader.loadMap(multiMap.getMapFromSet(++currentMapIndex), true, map.getPlayer());
-        refresh();
+        centerCamera();
+        moveCamera(Direction.NONE);
     }
 
     public void restart() {
@@ -194,7 +193,6 @@ public class Main extends Application {
         healthLabel.setText("" + map.getPlayer().getHealth());
         pickUpButton.setVisible(map.getPlayer().canPickUp());
         inventoryListLabel.setText(getInventoryDescription());
-
     }
 
     private void initMap() {
@@ -212,6 +210,7 @@ public class Main extends Application {
             map.getPlayer().increaseLifeCounter();
         }
         inventoryListLabel.setText(getInventoryDescription());
+        pickUpButton.setVisible(false);
         livesLabel.setText(Integer.toString(map.getPlayer().getLifeCounter()));
     }
 
@@ -225,6 +224,7 @@ public class Main extends Application {
     }
 
     private void moveCamera(Direction direction) {
+        refresh();
         for (int xFactor = 0; xFactor < cameraSize[0] + 18; xFactor++) {
             for (int yFactor = 0; yFactor < cameraSize[1]; yFactor++) {
                 int x = centralCell.getX() + xFactor - cameraSize[0] / 2 +
