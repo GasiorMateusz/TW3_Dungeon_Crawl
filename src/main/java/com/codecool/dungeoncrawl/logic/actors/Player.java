@@ -11,6 +11,9 @@ public class Player extends Actor implements CanPick {
 
 
     private String name;
+
+
+    private int lifeCounter=0;
     private List<Item> items = new ArrayList<>();
     private boolean ifHasKey = false;
     private final int normalStrikeStrength = 5;
@@ -29,6 +32,14 @@ public class Player extends Actor implements CanPick {
         super(cell);
         setStrikeStrength(5);
     }
+    public int getLifeCounter() {
+        return lifeCounter;
+    }
+
+    public void setLifeCounter(int lifeCounter) {
+        this.lifeCounter = lifeCounter;
+    }
+
 
     public Player getPlayer() {
         return this;
@@ -69,11 +80,21 @@ public class Player extends Actor implements CanPick {
 
 
     @Override
-    public void pickUp() {
+    public Item pickUp() {
+        Item item=getCell().getItem();
         if (canPickUp()) {
-            items.add(getCell().getItem());
+            items.add(item);
         }
         getCell().setItem(null);
+        return item;
+    }
+
+    public void increaseLifeCounter(){
+            lifeCounter++;
+
+    }
+    public void decreaseLifeCounter(){
+        lifeCounter--;
     }
 
     @Override

@@ -4,9 +4,12 @@ import com.codecool.dungeoncrawl.logic.actors.Crocodile;
 import com.codecool.dungeoncrawl.logic.actors.Octopus;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
-import com.codecool.dungeoncrawl.logic.items.Bow;
+import com.codecool.dungeoncrawl.logic.items.careThings.Bandage;
+import com.codecool.dungeoncrawl.logic.items.careThings.Medicine;
+import com.codecool.dungeoncrawl.logic.items.careThings.NewLife;
+import com.codecool.dungeoncrawl.logic.items.weapons.Bow;
 import com.codecool.dungeoncrawl.logic.items.Key;
-import com.codecool.dungeoncrawl.logic.items.Sword;
+import com.codecool.dungeoncrawl.logic.items.weapons.Sword;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -40,11 +43,9 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             map.addMonsterToMonstersList(new Skeleton(cell));
                             break;
-
                         case 'X':
                             cell.setType(CellType.STAIRS);
                             break;
-
                         case 'o':
                             cell.setType(CellType.FLOOR);
                             map.addMonsterToMonstersList(new Octopus(cell));
@@ -79,6 +80,18 @@ public class MapLoader {
                         case 'B':
                             cell.setType(CellType.FLOOR);
                             new Bow(cell);
+                            break;
+                        case 'H':
+                            cell.setType(CellType.FLOOR);
+                            new NewLife(cell);
+                            break;
+                        case 'M':
+                            cell.setType(CellType.FLOOR);
+                            new Medicine(cell);
+                            break;
+                        case 'D':
+                            cell.setType(CellType.FLOOR);
+                            new Bandage(cell);
                             break;
                         case 'O':
                             cell.setType(CellType.OPEN_DOOR);
