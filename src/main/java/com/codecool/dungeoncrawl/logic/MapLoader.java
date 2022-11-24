@@ -65,6 +65,8 @@ public class MapLoader {
                                 map.setPlayer(new Player(cell));
                                 map.getPlayer().setHealth(currentPlayer[0].getHealth());
                                 map.getPlayer().setName(currentPlayer[0].getName());
+                                map.getPlayer().setInventory(currentPlayer[0].getInventory());
+
                                 // TODO? pass inventory information from currentPlayer to new player?
                             } else {
                                 map.setPlayer(new Player(cell));
