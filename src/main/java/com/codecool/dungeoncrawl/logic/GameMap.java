@@ -36,7 +36,6 @@ public class GameMap {
     }
 
 
-
     public Player getPlayer() {
         return player;
     }
@@ -57,8 +56,8 @@ public class GameMap {
         return height;
     }
 
-    public boolean isInBounds(int x, int y){
-        if(x<0 || y<0) return false;
+    public boolean isInBounds(int x, int y) {
+        if (x < 0 || y < 0) return false;
         return x < width && y < height;
     }
 
@@ -71,7 +70,7 @@ public class GameMap {
     }
 
     public void addMonsterToMonstersList(Actor monster) {
-        if(this.monstersList == null){
+        if (this.monstersList == null) {
             this.monstersList = new ArrayList<>();
         }
         this.monstersList.add(monster);

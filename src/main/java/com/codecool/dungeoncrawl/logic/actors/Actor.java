@@ -1,9 +1,11 @@
 package com.codecool.dungeoncrawl.logic.actors;
+
 import com.codecool.dungeoncrawl.enums.Direction;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.GameMap;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -30,27 +32,39 @@ public abstract class Actor implements Drawable {
         }
     }
 
-    public void monsterMove(GameMap map){
+    public void monsterMove(GameMap map) {
         Direction direction = selectRandomDirection();
         int[] coordinates = convertDirectionToCoordinates(direction);
-        move(coordinates[0],coordinates[1]);
+        move(coordinates[0], coordinates[1]);
     }
 
-    Direction selectRandomDirection(){
+    Direction selectRandomDirection() {
         // TOCONSIDER: use enum instead?
         List<Direction> directionList = Arrays.asList(Direction.RIGHT, Direction.LEFT, Direction.UP, Direction.DOWN);
         Random random = new Random();
         return directionList.get(random.nextInt(directionList.size()));
     }
 
-    int[] convertDirectionToCoordinates(Direction direction){
+    int[] convertDirectionToCoordinates(Direction direction) {
         // TOCONSIDER: maybe use enum values to do the same
         int[] coordinates = new int[2];
-        switch (direction){
-            case RIGHT: coordinates[0]=0; coordinates[1]=1; break;
-            case LEFT: coordinates[0]=0; coordinates[1]=-1; break;
-            case UP: coordinates[0]=-1; coordinates[1]=0; break;
-            case DOWN: coordinates[0]=1; coordinates[1]=0; break;
+        switch (direction) {
+            case RIGHT:
+                coordinates[0] = 0;
+                coordinates[1] = 1;
+                break;
+            case LEFT:
+                coordinates[0] = 0;
+                coordinates[1] = -1;
+                break;
+            case UP:
+                coordinates[0] = -1;
+                coordinates[1] = 0;
+                break;
+            case DOWN:
+                coordinates[0] = 1;
+                coordinates[1] = 0;
+                break;
         }
         return coordinates;
     }
@@ -110,18 +124,19 @@ public abstract class Actor implements Drawable {
             opponent.getCell().setActor(null);
         }
     }
-    public void refreshPlayerStrikeStrenth(){
-        int strength=getStrikeStrength();
-        if(((Player) cell.getActor()).hasSword()){
-            strength=7;
+
+    public void refreshPlayerStrikeStrenth() {
+        int strength = getStrikeStrength();
+        if (((Player) cell.getActor()).hasSword()) {
+            strength = 7;
         }
-        if(((Player) cell.getActor()).hasBow()){
-            strength=6;
+        if (((Player) cell.getActor()).hasBow()) {
+            strength = 6;
         }
-        if(((Player) cell.getActor()).hasSword() &&((Player) cell.getActor()).hasBow()){
-            strength=8;
+        if (((Player) cell.getActor()).hasSword() && ((Player) cell.getActor()).hasBow()) {
+            strength = 8;
         }
-       this.setStrikeStrength(strength);
+        this.setStrikeStrength(strength);
     }
 
     private void defeated(Actor killedInAction) {

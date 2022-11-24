@@ -35,8 +35,14 @@ public class Cell implements Drawable {
     public Actor getActor() {
         return actor;
     }
-    public Item getItem() { return item;}
-    public void setItem(Item item) {this.item = item;}
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
 
     public Cell getNeighbor(int dx, int dy) {
         if (isOutOfMap(x + dx, y + dy)) {
@@ -75,6 +81,7 @@ public class Cell implements Drawable {
     public boolean isOpen() {
         return this.getType().equals(CellType.OPEN_DOOR);
     }
+
     public boolean isStairs() {
         return this.getType().equals(CellType.STAIRS);
     }

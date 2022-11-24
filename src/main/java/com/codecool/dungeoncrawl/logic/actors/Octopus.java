@@ -19,12 +19,4 @@ public class Octopus extends Actor {
     }
 
 
-
-
-
-
-
-
-
-
 }

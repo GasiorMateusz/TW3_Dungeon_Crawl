@@ -34,7 +34,7 @@ public class Crocodile extends Actor {
             int coordinateY = random.nextInt(mapHeight);
 
             Cell nextCell = map.getCell(coordinateX, coordinateY);
-            if (isValidMove(getCell(),nextCell)) {
+            if (isValidMove(getCell(), nextCell)) {
                 getCell().setActor(null);
                 setCell(nextCell);
                 nextCell.setActor(this);
@@ -43,11 +43,11 @@ public class Crocodile extends Actor {
             Direction direction = selectRandomDirection();
             int[] coordinates = convertDirectionToCoordinates(direction);
             move(coordinates[0], coordinates[1]);
-        teleportationCount--;
+            teleportationCount--;
         }
     }
 
-    private void teleportation(GameMap map){
+    private void teleportation(GameMap map) {
 
     }
 }
