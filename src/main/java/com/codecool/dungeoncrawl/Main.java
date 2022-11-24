@@ -292,6 +292,7 @@ public class Main extends Application {
             winPopUp();
         }
         inventoryListLabel.setText(getInventoryDescription());
+        healthLabel.setText("" + map.getPlayer().getHealth());
         pickUpButton.setVisible(false);
         livesLabel.setText(Integer.toString(map.getPlayer().getLifeCounter()));
         setMessage();

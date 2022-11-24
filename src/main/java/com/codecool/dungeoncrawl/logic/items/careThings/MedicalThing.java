@@ -7,14 +7,12 @@ public abstract class MedicalThing extends Item {
 
 
     private int increaseHealth;
-    public MedicalThing(Cell cell) {
+    public MedicalThing(Cell cell, int increaseHealth) {
         super(cell);
+        this.increaseHealth=increaseHealth;
     }
     public int getIncreaseHealth() {
         return increaseHealth;
     }
 
-    public void setIncreaseHealth(int increaseHealth) {
-        this.increaseHealth = increaseHealth;
-    }
 }

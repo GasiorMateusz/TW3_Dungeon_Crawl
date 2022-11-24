@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.items.Inventory;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.items.careThings.MedicalThing;
 import com.codecool.dungeoncrawl.logic.items.weapons.Weapon;
 
 import java.util.stream.Stream;
@@ -20,7 +21,7 @@ public class Player extends Actor implements CanPick {
 
     public Player(Cell cell) {
         super(cell);
-        setStrikeStrength(5);
+        setStrikeStrength(normalStrikeStrength);
         setHealth(25);
     }
 
@@ -76,6 +77,10 @@ public class Player extends Actor implements CanPick {
             if (item instanceof Weapon) {
                 refreshPlayerStrikeStrenth();
             }
+            if (item instanceof MedicalThing) {
+                refreshHealthValue();
+                System.out.printf(Integer.toString(getCell().getActor().getHealth()));
+            }
         }
         getCell().setItem(null);
         if (item != null) {
@@ -87,7 +92,8 @@ public class Player extends Actor implements CanPick {
 
     public void refreshPlayerStrikeStrenth() {
         int strength = normalStrikeStrength;
-        if (((Player) getCell().getActor()).getInventory().hasSword() && ((Player) getCell().getActor()).getInventory().hasBow()) {
+
+       if (((Player) getCell().getActor()).getInventory().hasSword() && ((Player) getCell().getActor()).getInventory().hasBow()) {
             strength = strength + 3;
         } else if (((Player) getCell().getActor()).getInventory().hasBow()) {
             strength = strength + 1;
@@ -97,6 +103,11 @@ public class Player extends Actor implements CanPick {
             strength = normalStrikeStrength;
         }
         this.setStrikeStrength(strength);
+    }
+    public void refreshHealthValue() {
+        int health = getHealth();
+            health = health +  ((MedicalThing)getCell().getItem()).getIncreaseHealth();
+        this.setHealth(health);
     }
 
     public String getPickedUpItemName() {

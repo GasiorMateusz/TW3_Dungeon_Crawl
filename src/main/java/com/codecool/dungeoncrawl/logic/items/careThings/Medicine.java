@@ -4,8 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 
 public class Medicine extends MedicalThing{
     public Medicine(Cell cell) {
-        super(cell);
-        setIncreaseHealth(7); //set default value
+        super(cell, 4); //set default health value
     }
 
     @Override
