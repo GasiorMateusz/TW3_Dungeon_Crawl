@@ -205,6 +205,7 @@ public class Main extends Application {
     private void pickUpItemEvent() {
         map.getPlayer().pickUp();
         inventoryListLabel.setText(getInventoryDescription());
+        pickUpButton.setVisible(false);
     }
 
     private String getInventoryDescription() {
