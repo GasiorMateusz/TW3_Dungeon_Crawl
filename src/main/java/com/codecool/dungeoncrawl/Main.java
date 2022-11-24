@@ -101,42 +101,42 @@ public class Main extends Application {
         setPlayerName();
     }
 
-    private void onKeyPressed(KeyEvent keyEvent) {
-        Direction direction = null;
+    private void worldMakeMove() {
         for (Actor monster : map.getMonstersList()) {
             if (monster.getHealth() > 0) {
                 monster.monsterMove(map);
-                refresh();
             }
         }
-//        map.getMonstersList().stream().forEach(monster -> monster.monsterMove(map)); //todo why it does not work?
+    }
+
+    private void onKeyPressedAction(Direction direction) {
+        map.getPlayer().move(direction.getValue().getX(), direction.getValue().getY());
+        worldMakeMove();
+        refresh();
+        moveCamera(direction);
+    }
+
+    private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                map.getPlayer().move(0, -1);
-                refresh();
-                direction = Direction.UP;
+                onKeyPressedAction(Direction.UP);
                 break;
             case DOWN:
-                map.getPlayer().move(0, 1);
-                refresh();
-                direction = Direction.DOWN;
+                onKeyPressedAction(Direction.DOWN);
                 break;
             case LEFT:
-                map.getPlayer().move(-1, 0);
-                refresh();
-                direction = Direction.LEFT;
+                onKeyPressedAction(Direction.LEFT);
                 break;
             case RIGHT:
-                map.getPlayer().move(1, 0);
-                refresh();
-                direction = Direction.RIGHT;
+                onKeyPressedAction(Direction.RIGHT);
                 break;
             case ENTER:
                 pickUpItemEvent();
-                direction = Direction.NONE;
+                break;
+            default:
                 break;
         }
-        moveCamera(direction);
+
     }
 
     private void refresh() {
