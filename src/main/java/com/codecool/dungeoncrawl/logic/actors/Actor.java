@@ -88,6 +88,7 @@ public abstract class Actor implements Drawable {
             }
 
             if (origin.isPlayer() && cellTested.isClosedDoor() && ((Player) origin.getActor()).getInventory().hasKey()) {
+                ((Player) origin.getActor()).setUnlockedDoor(true);
                 cellTested.setType(CellType.OPEN_DOOR);
                 ((Player) origin.getActor()).getInventory().deleteKeyFromInventory();
             }
@@ -110,6 +111,7 @@ public abstract class Actor implements Drawable {
 
     private void checkActorsCollision(Cell origin, Cell cellTested) {
         if (origin.isPlayer()) {
+            ((Player) this).setOpponent(cellTested.getActor());
             fight(cellTested.getActor());
         }
     }
@@ -141,6 +143,7 @@ public abstract class Actor implements Drawable {
             }
             this.isAlive = false;
         }
+        killedInAction.isAlive = false;
     }
 
     public boolean isAlive() {

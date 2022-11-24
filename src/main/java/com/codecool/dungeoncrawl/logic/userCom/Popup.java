@@ -14,13 +14,13 @@ public class Popup {
         Stage popupwindow = new Stage();
 
         popupwindow.initModality(Modality.APPLICATION_MODAL);
-        popupwindow.setTitle("This is a pop up window");
+        popupwindow.setTitle("GAME OVER");
 
 
-        Label label1 = new Label("Pop up window now displayed");
+        Label label1 = new Label("YOU DIED!");
 
 
-        Button button1 = new Button("Close this pop up window");
+        Button button1 = new Button("TRY AGAIN");
 
 
         button1.setOnAction(e -> popupwindow.close());
