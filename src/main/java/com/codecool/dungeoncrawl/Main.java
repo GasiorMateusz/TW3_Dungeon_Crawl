@@ -1,6 +1,10 @@
 package com.codecool.dungeoncrawl;
 
-import com.codecool.dungeoncrawl.logic.*;
+import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.Direction;
+import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.MultiMap;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
@@ -20,6 +24,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.awt.*;
 
@@ -55,6 +60,7 @@ public class Main extends Application {
         System.out.println("SETTING NAME");
         Stage stage = new Stage();
         stage.setTitle("Player name");
+        stage.initStyle(StageStyle.UNDECORATED);
         VBox vBox = new VBox();
         Label label = new Label("Enter player name: ");
         TextField playerName = new TextField();
@@ -62,9 +68,11 @@ public class Main extends Application {
         acceptButton.setText("Accept");
         acceptButton.setDefaultButton(true);
         acceptButton.setOnAction(event -> {
-            map.getPlayer().setName(playerName.getText());
-            name.setText("" + map.getPlayer().getName());
-            stage.close();
+            if (!playerName.getText().isEmpty()) {
+                map.getPlayer().setName(playerName.getText());
+                name.setText("" + map.getPlayer().getName());
+                stage.close();
+            }
         });
         vBox.getChildren().add(label);
         vBox.getChildren().add(playerName);
