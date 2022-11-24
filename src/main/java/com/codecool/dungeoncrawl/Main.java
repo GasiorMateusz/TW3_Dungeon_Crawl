@@ -186,6 +186,7 @@ public class Main extends Application {
         Popup.display();
         map = MapLoader.loadMap(multiMap.getMapFromSet(0), false, map.getPlayer());
         moveCamera(Direction.NONE);
+        moveCamera(Direction.NONE);
     }
 
     private void refresh() {
