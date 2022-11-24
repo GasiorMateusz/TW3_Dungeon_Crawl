@@ -171,11 +171,11 @@ public abstract class Actor implements Drawable {
         return cell.getY();
     }
 
-    protected int getStrikeStrength() {
+    public int getStrikeStrength() {
         return strikeStrength;
     }
 
-    protected void setStrikeStrength(int strikeStrength) {
+    public void setStrikeStrength(int strikeStrength) {
         this.strikeStrength = strikeStrength;
     }
 }
