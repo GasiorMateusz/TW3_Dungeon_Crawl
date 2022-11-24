@@ -12,13 +12,49 @@ public class Player extends Actor implements CanPick {
 
     private String name;
 
+    public Actor getOpponent() {
+        return opponent;
+    }
 
-    private int lifeCounter=0;
+    public void setOpponent(Actor opponent) {
+        this.opponent = opponent;
+    }
+
+    private Actor opponent;
+
+
+    private int lifeCounter = 0;
     private List<Item> items = new ArrayList<>();
     private boolean ifHasKey = false;
     private final int normalStrikeStrength = 5;
     private boolean ifHasSword = false;
     private boolean ifHasBow = false;
+    private boolean unlockedDoor = false;
+    private String pickedUpItemName = "";
+
+    public boolean isLifeCounterIncreased() {
+        return lifeCounterIncreased;
+    }
+
+    private boolean lifeCounterIncreased = false;
+
+    public boolean hasPickedUp() {
+        return pickedUp;
+    }
+
+    public void setPick(boolean pick) {
+        this.pickedUp = pick;
+    }
+
+    private boolean pickedUp = false;
+
+    public boolean isUnlockedDoor() {
+        return unlockedDoor;
+    }
+
+    public void setUnlockedDoor(boolean unlockedDoor) {
+        this.unlockedDoor = unlockedDoor;
+    }
 
     public String getName() {
         return name;
@@ -33,6 +69,7 @@ public class Player extends Actor implements CanPick {
         setStrikeStrength(5);
         setHealth(25);
     }
+
     public int getLifeCounter() {
         return lifeCounter;
     }
@@ -82,19 +119,29 @@ public class Player extends Actor implements CanPick {
 
     @Override
     public Item pickUp() {
-        Item item=getCell().getItem();
+        Item item = getCell().getItem();
         if (canPickUp()) {
             items.add(item);
         }
         getCell().setItem(null);
+        if(item != null){
+            pickedUpItemName = item.getTileName();
+            pickedUp = true;
+        }
         return item;
     }
 
-    public void increaseLifeCounter(){
-            lifeCounter++;
+    public String getPickedUpItemName(){
+        return pickedUpItemName;
+    }
+
+    public void increaseLifeCounter() {
+        lifeCounter++;
+        lifeCounterIncreased = true;
 
     }
-    public void decreaseLifeCounter(){
+
+    public void decreaseLifeCounter() {
         lifeCounter--;
     }
 

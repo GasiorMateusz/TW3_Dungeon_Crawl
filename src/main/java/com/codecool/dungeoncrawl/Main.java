@@ -8,6 +8,7 @@ import com.codecool.dungeoncrawl.logic.MultiMap;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -25,6 +26,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.awt.*;
 
@@ -46,9 +48,10 @@ public class Main extends Application {
     Stage currentStage;
     Label healthLabel = new Label();
     Label inventoryListLabel = new Label();
-    Label livesLabel=new Label();
+    Label livesLabel = new Label();
     Button pickUpButton = new Button("Pick Up");
     Label name = new Label();
+    Label message = new Label();
     private boolean teleported = false;
 
     public static void main(String[] args) {
@@ -85,7 +88,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         currentStage = primaryStage;
         GridPane ui = new GridPane();
-        ui.setPrefWidth(200);
+        ui.setPrefWidth(250);
+        ui.setPrefHeight(200);
         ui.setPadding(new Insets(10));
         ui.add(new Label("Name: "), 0, 0);
         ui.add(name, 1, 0);
@@ -100,6 +104,16 @@ public class Main extends Application {
         inventoryListLabel.setMinHeight(50);
         pickUpButton.setVisible(false);
 
+        GridPane messages = new GridPane();
+        messages.setPrefWidth(250);
+        messages.setPrefHeight(200);
+        messages.setPadding(new Insets(10));
+        messages.add(message, 0, 0);
+
+        VBox layout = new VBox();
+        layout.setPrefWidth(250);
+        layout.getChildren().addAll(ui, messages);
+        layout.setPadding(new Insets(10));
 
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
@@ -111,13 +125,12 @@ public class Main extends Application {
         Dimension size
                 = Toolkit.getDefaultToolkit().getScreenSize();
         canvas = new Canvas(
-                size.getWidth() * 0.9,
+                size.getWidth() * 0.85,
                 size.getHeight() * 0.9);
 
         context = canvas.getGraphicsContext2D();
         borderPane.setCenter(canvas);
-        borderPane.setRight(ui);
-
+        borderPane.setRight(layout);
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         initMap();
@@ -138,6 +151,50 @@ public class Main extends Application {
         }
     }
 
+    private void setMessage() {
+        String text = "";
+        if (map.getPlayer().isUnlockedDoor()) {
+            text = "Key used to open the door!";
+            map.getPlayer().setUnlockedDoor(false);
+        }
+        if (teleported) {
+            text = "You teleported to another map!";
+            teleported = false;
+        }
+        if (map.getPlayer().getOpponent() != null && !map.getPlayer().getOpponent().isAlive()) {
+            text = map.getPlayer().getOpponent().getTileName() + " is dead!";
+            map.getPlayer().setOpponent(null);
+        }
+        if (map.getPlayer().hasPickedUp()) {
+            String itemName = map.getPlayer().getPickedUpItemName();
+            switch (itemName) {
+                case "sword":
+                    text = "You have a sword! Strength strike +2";
+                    break;
+                case "bow":
+                    text = "You have a bow! Strength strike +1";
+                    break;
+                case "bandage":
+                    text = "You have a bandage!";
+                    break;
+                case "life":
+                    text = "You have an extra life!";
+                    break;
+                case "medicine":
+                    text = "You have a medicine!";
+                    break;
+                case "":
+                    break;
+            }
+            map.getPlayer().setPick(false);
+        }
+        message.setText(text);
+    }
+
+    private void clearMessage() {
+        message.setText("");
+    }
+
     private void onKeyPressedAction(Direction direction) {
         map.getPlayer().move(direction.getValue().getX(), direction.getValue().getY());
         worldMakeMove();
@@ -145,6 +202,9 @@ public class Main extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
+        PauseTransition pause = new PauseTransition(Duration.seconds(10));
+        pause.setOnFinished(event -> clearMessage());
+        pause.play();
         switch (keyEvent.getCode()) {
             case UP:
                 onKeyPressedAction(Direction.UP);
@@ -177,6 +237,7 @@ public class Main extends Application {
     }
 
     public void teleportation() {
+        teleported = true;
         map = MapLoader.loadMap(multiMap.getMapFromSet(++currentMapIndex), true, map.getPlayer());
         centerCamera();
         moveCamera(Direction.NONE);
@@ -193,6 +254,7 @@ public class Main extends Application {
         healthLabel.setText("" + map.getPlayer().getHealth());
         pickUpButton.setVisible(map.getPlayer().canPickUp());
         inventoryListLabel.setText(getInventoryDescription());
+        setMessage();
     }
 
     private void initMap() {
@@ -206,12 +268,13 @@ public class Main extends Application {
     }
 
     private void pickUpItemEvent() {
-        if(map.getPlayer().pickUp().getTileName().equals("life")){
+        if (map.getPlayer().pickUp().getTileName().equals("life")) {
             map.getPlayer().increaseLifeCounter();
         }
         inventoryListLabel.setText(getInventoryDescription());
         pickUpButton.setVisible(false);
         livesLabel.setText(Integer.toString(map.getPlayer().getLifeCounter()));
+        setMessage();
     }
 
     private String getInventoryDescription() {
