@@ -133,7 +133,7 @@ public class Main extends Application {
                 break;
             case ENTER:
                 pickUpItemEvent();
-                direction = Direction.UP;
+                direction = Direction.NONE;
                 break;
         }
         moveCamera(direction);
@@ -150,7 +150,7 @@ public class Main extends Application {
     private void initMap() {
         refresh();
         centerCamera();
-        moveCamera(Direction.UP);
+        moveCamera(Direction.NONE);
     }
 
     private void centerCamera() {
