@@ -138,7 +138,6 @@ public class Main extends Application {
     private void onKeyPressedAction(Direction direction) {
         map.getPlayer().move(direction.getValue().getX(), direction.getValue().getY());
         worldMakeMove();
-        refresh();
         moveCamera(direction);
     }
 
@@ -176,7 +175,8 @@ public class Main extends Application {
 
     public void teleportation() {
         map = MapLoader.loadMap(multiMap.getMapFromSet(++currentMapIndex), true, map.getPlayer());
-        refresh();
+        centerCamera();
+        moveCamera(Direction.NONE);
     }
 
     public void restart() {
@@ -217,6 +217,7 @@ public class Main extends Application {
     }
 
     private void moveCamera(Direction direction) {
+        refresh();
         for (int xFactor = 0; xFactor < cameraSize[0] + 18; xFactor++) {
             for (int yFactor = 0; yFactor < cameraSize[1]; yFactor++) {
                 int x = centralCell.getX() + xFactor - cameraSize[0] / 2 +
