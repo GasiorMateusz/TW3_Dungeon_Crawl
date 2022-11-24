@@ -209,6 +209,7 @@ public class Main extends Application {
     public void restart() {
         Popup.display();
         map = MapLoader.loadMap(multiMap.getMapFromSet(0), false, map.getPlayer());
+        //nieeleganckie obejscie buga
         moveCamera(Direction.NONE);
         moveCamera(Direction.NONE);
     }

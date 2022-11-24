@@ -9,6 +9,7 @@ public class MultiMap {
 
     public String getMapFromSet(int index) {
         if ((index > -1) && (index < this.maps.length)) {
+            //zmieniono kolejność wczytawiania map na od końca
             return maps[maps.length-1-index];
         } else {
             return this.maps[0];
