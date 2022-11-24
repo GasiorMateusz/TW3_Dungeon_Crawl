@@ -57,6 +57,10 @@ public class GameMap {
         return height;
     }
 
+    public Cell[][] getCells() {
+        return cells;
+    }
+
     public List<Actor> getMonstersList() {
         return monstersList;
     }
