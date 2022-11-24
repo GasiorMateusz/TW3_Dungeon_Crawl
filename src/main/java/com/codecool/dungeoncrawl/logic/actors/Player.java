@@ -1,24 +1,21 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.items.Inventory;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
 public class Player extends Actor implements CanPick {
-
-
+    private Inventory inventory = new Inventory();
     private String name;
+    private int lifeCounter = 0;
 
-
-    private int lifeCounter=0;
-    private List<Item> items = new ArrayList<>();
-    private boolean ifHasKey = false;
-    private final int normalStrikeStrength = 5;
-    private boolean ifHasSword = false;
-    private boolean ifHasBow = false;
+    public Player(Cell cell) {
+        super(cell);
+        setStrikeStrength(5);
+        setHealth(25);
+    }
 
     public String getName() {
         return name;
@@ -28,73 +25,29 @@ public class Player extends Actor implements CanPick {
         this.name = name;
     }
 
-    public Player(Cell cell) {
-        super(cell);
-        setStrikeStrength(5);
-        setHealth(25);
-    }
     public int getLifeCounter() {
         return lifeCounter;
     }
-
-    public void setLifeCounter(int lifeCounter) {
-        this.lifeCounter = lifeCounter;
-    }
-
 
     public Player getPlayer() {
         return this;
     }
 
-    public boolean hasKey() {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getTileName().equals("key")) {
-                ifHasKey = true;
-                return ifHasKey;
-            }
-        }
-        ifHasKey = false;
-        return ifHasKey;
-    }
-
-    public boolean hasSword() {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getTileName().equals("sword")) {
-                ifHasSword = true;
-                return ifHasSword;
-            }
-        }
-        ifHasSword = false;
-        return ifHasSword;
-    }
-
-    public boolean hasBow() {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getTileName().equals("bow")) {
-                ifHasBow = true;
-                return ifHasBow;
-            }
-        }
-        ifHasBow = false;
-        return ifHasBow;
-    }
-
-
     @Override
     public Item pickUp() {
-        Item item=getCell().getItem();
+        Item item = getCell().getItem();
         if (canPickUp()) {
-            items.add(item);
+            inventory.getItems().add(item);
         }
         getCell().setItem(null);
         return item;
     }
 
-    public void increaseLifeCounter(){
-            lifeCounter++;
-
+    public void increaseLifeCounter() {
+        lifeCounter++;
     }
-    public void decreaseLifeCounter(){
+
+    public void decreaseLifeCounter() {
         lifeCounter--;
     }
 
@@ -107,14 +60,10 @@ public class Player extends Actor implements CanPick {
         return "player";
     }
 
-    public List<Item> getItems() {
-        return items;
-    }
-
     public void deleteKeyFromInventory() {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getTileName().equals("key")) {
-                items.remove(i);
+        for (int i = 0; i < inventory.getItems().size(); i++) {
+            if (inventory.getItems().get(i).getTileName().equals("key")) {
+                inventory.getItems().remove(i);
                 break;
             }
         }
@@ -126,6 +75,14 @@ public class Player extends Actor implements CanPick {
                     .anyMatch(s -> (getName().equalsIgnoreCase(s)));
         }
         return false;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 
 }

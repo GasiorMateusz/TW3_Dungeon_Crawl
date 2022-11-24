@@ -17,6 +17,7 @@ public abstract class Actor implements Drawable {
     public boolean isAlive = true;
     public boolean teleport = false;
     private int strikeStrength;
+    private final int normalStrikeStrength = 5;
 
     public Actor(Cell cell) {
         this.cell = cell;
@@ -86,7 +87,7 @@ public abstract class Actor implements Drawable {
                 accessibility = true;
             }
 
-            if (origin.isPlayer() && cellTested.isClosedDoor() && ((Player) origin.getActor()).hasKey()) {
+            if (origin.isPlayer() && cellTested.isClosedDoor() && ((Player) origin.getActor()).getInventory().hasKey()) {
                 cellTested.setType(CellType.OPEN_DOOR);
                 ((Player) origin.getActor()).deleteKeyFromInventory();
             }
@@ -132,15 +133,15 @@ public abstract class Actor implements Drawable {
     }
 
     public void refreshPlayerStrikeStrenth() {
-        int strength = getStrikeStrength();
-        if (((Player) cell.getActor()).hasSword()) {
-            strength = 7;
-        }
-        if (((Player) cell.getActor()).hasBow()) {
-            strength = 6;
-        }
-        if (((Player) cell.getActor()).hasSword() && ((Player) cell.getActor()).hasBow()) {
-            strength = 8;
+        int strength = normalStrikeStrength;
+        if (((Player) cell.getActor()).getInventory().hasSword() && ((Player) cell.getActor()).getInventory().hasBow()) {
+            strength = strength + 3;
+        } else if (((Player) cell.getActor()).getInventory().hasBow()) {
+            strength = strength + 1;
+        } else if (((Player) cell.getActor()).getInventory().hasSword()) {
+            strength = strength + 2;
+        } else {
+            strength = normalStrikeStrength;
         }
         this.setStrikeStrength(strength);
     }

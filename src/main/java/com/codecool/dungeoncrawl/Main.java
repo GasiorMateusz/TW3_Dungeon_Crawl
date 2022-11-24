@@ -216,9 +216,9 @@ public class Main extends Application {
 
     private String getInventoryDescription() {
         String items = "";
-        for (int i = 0; i < map.getPlayer().getItems().size(); i++) {
-            inventoryListLabel.setText(map.getPlayer().getItems().get(i).getTileName());
-            items = items + map.getPlayer().getItems().get(i).getTileName() + "\n";
+        for (int i = 0; i < map.getPlayer().getInventory().getItems().size(); i++) {
+            inventoryListLabel.setText(map.getPlayer().getInventory().getItems().get(i).getTileName());
+            items = items + map.getPlayer().getInventory().getItems().get(i).getTileName() + "\n";
         }
         return items;
     }
