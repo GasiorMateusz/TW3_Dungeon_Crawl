@@ -31,6 +31,7 @@ public class Player extends Actor implements CanPick {
     public Player(Cell cell) {
         super(cell);
         setStrikeStrength(5);
+        setHealth(25);
     }
     public int getLifeCounter() {
         return lifeCounter;
