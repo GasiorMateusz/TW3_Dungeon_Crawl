@@ -1,12 +1,9 @@
 package com.codecool.dungeoncrawl;
 
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.Direction;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.MultiMap;
+import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
@@ -24,6 +21,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -56,6 +54,32 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    private void winPopUp() {
+        System.out.println("GAME WON");
+        Stage stage = new Stage();
+        stage.setTitle("GAME OVER");
+        stage.initStyle(StageStyle.UNDECORATED);
+        VBox vBox = new VBox();
+        Text label = new Text("\n\n\tHurray, you have found holy crown.\n" +
+                "\tNow The Great Emperor can finish\n" +
+                "\this bloody plan of lengthening half-lings\n\n");
+        Button acceptButton = new Button();
+        acceptButton.setText("Accept");
+        acceptButton.setDefaultButton(true);
+        acceptButton.setOnAction(event -> {
+            stage.close();
+            map = MapLoader.loadMap(multiMap.getMapFromSet(0), false, map.getPlayer());
+            moveCamera(Direction.NONE);
+            centerCamera();
+            moveCamera(Direction.NONE);
+        });
+        vBox.getChildren().add(label);
+        vBox.getChildren().add(acceptButton);
+        Scene scene = new Scene(vBox, 250, 150);
+        stage.setScene(scene);
+        stage.show();
     }
 
     private void setPlayerName() {
@@ -246,6 +270,7 @@ public class Main extends Application {
     public void restart() {
         Popup.display();
         map = MapLoader.loadMap(multiMap.getMapFromSet(0), false, map.getPlayer());
+        moveCamera(Direction.NONE);
     }
 
     private void refresh() {
@@ -268,8 +293,12 @@ public class Main extends Application {
     }
 
     private void pickUpItemEvent() {
-        if (map.getPlayer().pickUp().getTileName().equals("life")) {
+        Item pickedUpItem = map.getPlayer().pickUp();
+        if (pickedUpItem.getTileName().equals("life")) {
             map.getPlayer().increaseLifeCounter();
+        }
+        if (pickedUpItem.getTileName().equals("crown")) {
+            winPopUp();
         }
         inventoryListLabel.setText(getInventoryDescription());
         pickUpButton.setVisible(false);
@@ -279,9 +308,9 @@ public class Main extends Application {
 
     private String getInventoryDescription() {
         String items = "";
-        for (int i = 0; i < map.getPlayer().getItems().size(); i++) {
-            inventoryListLabel.setText(map.getPlayer().getItems().get(i).getTileName());
-            items = items + map.getPlayer().getItems().get(i).getTileName() + "\n";
+        for (int i = 0; i < map.getPlayer().getInventory().getItems().size(); i++) {
+            inventoryListLabel.setText(map.getPlayer().getInventory().getItems().get(i).getTileName());
+            items = items + map.getPlayer().getInventory().getItems().get(i).getTileName() + "\n";
         }
         return items;
     }

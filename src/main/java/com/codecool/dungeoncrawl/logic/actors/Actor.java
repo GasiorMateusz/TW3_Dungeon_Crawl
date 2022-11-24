@@ -18,6 +18,7 @@ public abstract class Actor implements Drawable {
     public boolean teleport = false;
     private int strikeStrength;
 
+
     public Actor(Cell cell) {
         this.cell = cell;
         this.cell.setActor(this);
@@ -86,10 +87,10 @@ public abstract class Actor implements Drawable {
                 accessibility = true;
             }
 
-            if (origin.isPlayer() && cellTested.isClosedDoor() && ((Player) origin.getActor()).hasKey()) {
+            if (origin.isPlayer() && cellTested.isClosedDoor() && ((Player) origin.getActor()).getInventory().hasKey()) {
                 ((Player) origin.getActor()).setUnlockedDoor(true);
                 cellTested.setType(CellType.OPEN_DOOR);
-                ((Player) origin.getActor()).deleteKeyFromInventory();
+                ((Player) origin.getActor()).getInventory().deleteKeyFromInventory();
             }
             if (origin.isPlayer() && ((Player) origin.getActor()).hasDeveloperName()) {
                 accessibility = true;
@@ -104,7 +105,6 @@ public abstract class Actor implements Drawable {
         } else return accessibility;
     }
 
-
     private void goDownstairs() {
         this.teleport = true;
     }
@@ -117,7 +117,6 @@ public abstract class Actor implements Drawable {
     }
 
     private void fight(Actor opponent) {
-        refreshPlayerStrikeStrenth();
         System.out.println(" FIGHT:  " + this.getClass().getSimpleName() + " health:" + this.getHealth() +
                 " vs. " + opponent.getClass().getSimpleName() + " health:" + opponent.getHealth());
         opponent.setHealth(opponent.getHealth() - this.getStrikeStrength());
@@ -133,22 +132,8 @@ public abstract class Actor implements Drawable {
         }
     }
 
-    public void refreshPlayerStrikeStrenth() {
-        int strength = getStrikeStrength();
-        if (((Player) cell.getActor()).hasSword()) {
-            strength = 7;
-        }
-        if (((Player) cell.getActor()).hasBow()) {
-            strength = 6;
-        }
-        if (((Player) cell.getActor()).hasSword() && ((Player) cell.getActor()).hasBow()) {
-            strength = 8;
-        }
-        this.setStrikeStrength(strength);
-    }
-
     private void defeated(Actor killedInAction) {
-//        System.out.println(killedInAction.getClass().getSimpleName() + " is dead ");
+        System.out.println(killedInAction.getClass().getSimpleName() + " is dead ");
         if (killedInAction instanceof Player) {
             System.out.println("\n\n [Y] [O] [U]   [D] [I] [E] [D]   [!]\n");
             try {
@@ -189,11 +174,11 @@ public abstract class Actor implements Drawable {
         return cell.getY();
     }
 
-    protected int getStrikeStrength() {
+    public int getStrikeStrength() {
         return strikeStrength;
     }
 
-    protected void setStrikeStrength(int strikeStrength) {
+    public void setStrikeStrength(int strikeStrength) {
         this.strikeStrength = strikeStrength;
     }
 }
