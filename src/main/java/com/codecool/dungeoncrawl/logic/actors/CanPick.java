@@ -6,7 +6,7 @@ import com.codecool.dungeoncrawl.logic.items.Item;
 import java.util.List;
 
 public interface CanPick {
-    void pickUp();
+    Item pickUp();
 
     boolean canPickUp();
 }

@@ -46,6 +46,7 @@ public class Main extends Application {
     Stage currentStage;
     Label healthLabel = new Label();
     Label inventoryListLabel = new Label();
+    Label livesLabel=new Label();
     Button pickUpButton = new Button("Pick Up");
     Label name = new Label();
     private boolean teleported = false;
@@ -90,9 +91,11 @@ public class Main extends Application {
         ui.add(name, 1, 0);
         ui.add(new Label("Health: "), 0, 1);
         ui.add(healthLabel, 1, 1);
-        ui.add(new Label("Inventory: "), 0, 2);
-        ui.add(inventoryListLabel, 0, 3);
-        ui.add(pickUpButton, 0, 4);
+        ui.add(new Label("Extra Lives:"), 0, 2);
+        ui.add(livesLabel, 1, 2);
+        ui.add(new Label("Inventory:"), 0, 3);
+        ui.add(inventoryListLabel, 0, 4);
+        ui.add(pickUpButton, 0, 5);
         pickUpButton.setFocusTraversable(false);
         inventoryListLabel.setMinHeight(50);
         pickUpButton.setVisible(false);
@@ -203,9 +206,12 @@ public class Main extends Application {
     }
 
     private void pickUpItemEvent() {
-        map.getPlayer().pickUp();
+        if(map.getPlayer().pickUp().getTileName().equals("life")){
+            map.getPlayer().increaseLifeCounter();
+        }
         inventoryListLabel.setText(getInventoryDescription());
         pickUpButton.setVisible(false);
+        livesLabel.setText(Integer.toString(map.getPlayer().getLifeCounter()));
     }
 
     private String getInventoryDescription() {
