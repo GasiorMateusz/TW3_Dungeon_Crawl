@@ -6,7 +6,7 @@ import com.codecool.dungeoncrawl.logic.items.weapons.Weapon;
 public class Bow extends Weapon {
     public Bow(Cell cell) {
         super(cell);
-        setWeaponStrength(6);
+        setAdditionalWeaponStrength(1);
     }
 
     @Override

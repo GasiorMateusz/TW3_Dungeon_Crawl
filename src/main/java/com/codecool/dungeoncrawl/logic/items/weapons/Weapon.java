@@ -17,7 +17,7 @@ public abstract class Weapon extends Item {
         return weaponStrength;
     }
 
-    public void setWeaponStrength(int weaponStrength) {
+    public void setAdditionalWeaponStrength(int weaponStrength) {
         this.weaponStrength = weaponStrength;
     }
 }
