@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface CanPick {
     void pickUp();
+
     boolean canPickUp();
 }

@@ -4,15 +4,17 @@ import com.codecool.dungeoncrawl.enums.Direction;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Crocodile extends Actor {
     private int teleportationCount;
 
-
     public Crocodile(Cell cell) {
         super(cell);
         setStrikeStrength(2);
+        setHealth(16);
     }
 
     @Override
@@ -22,30 +24,28 @@ public class Crocodile extends Actor {
 
     @Override
     public void monsterMove(GameMap map) {
-        int mapWidth = map.getWidth();
-        int mapHeight = map.getHeight();
-
         if (teleportationCount == 0) {
-            Random random = new Random();
-            teleportationCount = random.nextInt(6);
-            int coordinateX = random.nextInt(mapWidth);
-            int coordinateY = random.nextInt(mapHeight);
-            System.out.println(coordinateX + " " + coordinateY + " " +  teleportationCount);
-
-
-            Cell nextCell = map.getCell(coordinateX, coordinateY);;
-            if (isValidMove(getCell(),nextCell)) {
-
-
-                getCell().setActor(null);
-                setCell(nextCell);
-                nextCell.setActor(this);
-            }
+            teleportation(map);
         } else {
             Direction direction = selectRandomDirection();
             int[] coordinates = convertDirectionToCoordinates(direction);
             move(coordinates[0], coordinates[1]);
-        teleportationCount--;
+            teleportationCount--;
+        }
+    }
+
+    private void teleportation(GameMap map) {
+        Random random = new Random();
+
+        teleportationCount = random.nextInt(6);
+        int coordinateX = random.nextInt(map.getWidth());
+        int coordinateY = random.nextInt(map.getHeight());
+
+        Cell nextCell = map.getCell(coordinateX, coordinateY);
+        if (isValidMove(getCell(), nextCell)) {
+            getCell().setActor(null);
+            setCell(nextCell);
+            nextCell.setActor(this);
         }
     }
 }

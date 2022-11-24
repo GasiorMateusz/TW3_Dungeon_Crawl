@@ -1,10 +1,9 @@
 package com.codecool.dungeoncrawl;
 
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.Direction;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.userCom.Popup;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,22 +25,32 @@ import java.awt.*;
 
 public class Main extends Application {
 
+    public GameMap temporaryMap;
     int[] cameraSize = new int[]{25, 35};
     int[] cameraCenterFactor = new int[]{5, 10};
     Cell centralCell;
-    GameMap map = MapLoader.loadMap();
-    Canvas canvas;
-    GraphicsContext context;
+    MultiMap multiMap = new MultiMap();
+    String firstMap = multiMap.getMapFromSet(0);
+    GameMap map = MapLoader.loadMap(multiMap.getMapFromSet(0), false);
+    Canvas canvas = new Canvas(
+            map.getWidth() * Tiles.TILE_WIDTH,
+            map.getHeight() * Tiles.TILE_WIDTH);
+    GraphicsContext context = canvas.getGraphicsContext2D();
+    private final Player currentPlayer = map.getPlayer();
+    int currentMapIndex = 0;
+    Stage currentStage;
     Label healthLabel = new Label();
     Label inventoryListLabel = new Label();
     Button pickUpButton = new Button("Pick Up");
     Label name = new Label();
+    private boolean teleported = false;
 
     public static void main(String[] args) {
         launch(args);
     }
 
     private void setPlayerName() {
+        System.out.println("SETTING NAME");
         Stage stage = new Stage();
         stage.setTitle("Player name");
         VBox vBox = new VBox();
@@ -64,7 +73,8 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
+        currentStage = primaryStage;
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
@@ -79,7 +89,12 @@ public class Main extends Application {
         inventoryListLabel.setMinHeight(50);
         pickUpButton.setVisible(false);
 
-        EventHandler<ActionEvent> event = e -> pickUpItemEvent();
+
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                pickUpItemEvent();
+            }
+        };
         pickUpButton.setOnAction(event);
         BorderPane borderPane = new BorderPane();
         Dimension size
@@ -97,9 +112,11 @@ public class Main extends Application {
         initMap();
         scene.setOnKeyPressed(this::onKeyPressed);
         primaryStage.setMaximized(true);
-        primaryStage.setTitle("Dungeon Crawl");
+        primaryStage.setTitle("DUNGEON CRAWL by TeamONE");
         primaryStage.show();
-        setPlayerName();
+        if (!teleported) {
+            setPlayerName();
+        }
     }
 
     private void worldMakeMove() {
@@ -137,7 +154,26 @@ public class Main extends Application {
             default:
                 break;
         }
+        if (!map.getPlayer().isAlive) {
+            teleported = false;
+            restart();
+            System.out.println(" RESTART =======================================================");
+        }
 
+        if (map.getPlayer().teleport) {
+            System.out.println("TELEPORT " + map.getPlayer().getName());
+            teleportation();
+        }
+    }
+
+    public void teleportation() {
+        map = MapLoader.loadMap(multiMap.getMapFromSet(++currentMapIndex), true, map.getPlayer());
+        refresh();
+    }
+
+    public void restart() {
+        Popup.display();
+        map = MapLoader.loadMap(multiMap.getMapFromSet(0), false, map.getPlayer());
     }
 
     private void refresh() {
@@ -160,7 +196,6 @@ public class Main extends Application {
 
     private void pickUpItemEvent() {
         map.getPlayer().pickUp();
-
         inventoryListLabel.setText(getInventoryDescription());
     }
 

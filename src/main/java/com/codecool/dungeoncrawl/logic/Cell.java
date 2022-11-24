@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Ghosts;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
@@ -13,7 +14,7 @@ public class Cell implements Drawable {
     private GameMap gameMap;
     private int x, y;
 
-    Cell(GameMap gameMap, int x, int y, CellType type) {
+    public Cell(GameMap gameMap, int x, int y, CellType type) {
         this.gameMap = gameMap;
         this.x = x;
         this.y = y;
@@ -35,8 +36,14 @@ public class Cell implements Drawable {
     public Actor getActor() {
         return actor;
     }
-    public Item getItem() { return item;}
-    public void setItem(Item item) {this.item = item;}
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
 
     public Cell getNeighbor(int dx, int dy) {
         if (isOutOfMap(x + dx, y + dy)) {
@@ -70,6 +77,18 @@ public class Cell implements Drawable {
 
     public boolean isPlayer() {
         return this.actor instanceof Player;
+    }
+
+    public boolean isGhosts() {
+        return this.actor instanceof Ghosts;
+    }
+
+    public boolean isOpen() {
+        return this.getType().equals(CellType.OPEN_DOOR);
+    }
+
+    public boolean isStairs() {
+        return this.getType().equals(CellType.STAIRS);
     }
 
     public boolean isOutOfMap(int x, int y) {

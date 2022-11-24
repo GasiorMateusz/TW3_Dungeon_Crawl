@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Octopus extends Actor {
-    public Octopus(Cell cell) {
+public class Ghosts extends Actor {
+    public Ghosts(Cell cell) {
         super(cell);
         setStrikeStrength(2);
         setHealth(20);
@@ -16,7 +16,7 @@ public class Octopus extends Actor {
 
     @Override
     public String getTileName() {
-        return "octopus";
+        return "ghosts";
     }
 
 
