@@ -153,6 +153,7 @@ public class Main extends Application {
                 direction = Direction.UP;
                 break;
         }
+        //SonarLint: NPE will be thrown (+4 locations)
         moveCamera(direction);
         if (!map.getPlayer().isAlive) {
             teleported = false;
