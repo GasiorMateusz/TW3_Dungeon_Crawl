@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.items.Inventory;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.items.weapons.Weapon;
 
 import java.util.stream.Stream;
 
@@ -10,6 +11,7 @@ public class Player extends Actor implements CanPick {
     private Inventory inventory = new Inventory();
     private String name;
     private int lifeCounter = 0;
+    private final int normalStrikeStrength = 5;
 
     public Player(Cell cell) {
         super(cell);
@@ -38,9 +40,25 @@ public class Player extends Actor implements CanPick {
         Item item = getCell().getItem();
         if (canPickUp()) {
             inventory.getItems().add(item);
+            if(item instanceof Weapon){
+                refreshPlayerStrikeStrenth();
+            }
         }
         getCell().setItem(null);
         return item;
+    }
+    public void refreshPlayerStrikeStrenth() {
+        int strength = normalStrikeStrength;
+        if (((Player) getCell().getActor()).getInventory().hasSword() && ((Player) getCell().getActor()).getInventory().hasBow()) {
+            strength = strength + 3;
+        } else if (((Player) getCell().getActor()).getInventory().hasBow()) {
+            strength = strength + 1;
+        } else if (((Player) getCell().getActor()).getInventory().hasSword()) {
+            strength = strength + 2;
+        } else {
+            strength = normalStrikeStrength;
+        }
+        this.setStrikeStrength(strength);
     }
 
     public void increaseLifeCounter() {
@@ -58,15 +76,6 @@ public class Player extends Actor implements CanPick {
 
     public String getTileName() {
         return "player";
-    }
-
-    public void deleteKeyFromInventory() {
-        for (int i = 0; i < inventory.getItems().size(); i++) {
-            if (inventory.getItems().get(i).getTileName().equals("key")) {
-                inventory.getItems().remove(i);
-                break;
-            }
-        }
     }
 
     public boolean hasDeveloperName() {

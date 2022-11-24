@@ -42,4 +42,12 @@ public class Inventory {
     public void setItems(List<Item> items) {
         this.items = items;
     }
+    public void deleteKeyFromInventory() {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getTileName().equals("key")) {
+                items.remove(i);
+                break;
+            }
+        }
+    }
 }
