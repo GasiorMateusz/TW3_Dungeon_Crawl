@@ -11,6 +11,7 @@ public class Octopus extends Actor {
     public Octopus(Cell cell) {
         super(cell);
         setStrikeStrength(2);
+        setHealth(20);
     }
 
     @Override

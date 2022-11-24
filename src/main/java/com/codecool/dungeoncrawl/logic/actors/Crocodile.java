@@ -15,6 +15,7 @@ public class Crocodile extends Actor {
     public Crocodile(Cell cell) {
         super(cell);
         setStrikeStrength(2);
+        setHealth(16);
     }
 
     @Override
