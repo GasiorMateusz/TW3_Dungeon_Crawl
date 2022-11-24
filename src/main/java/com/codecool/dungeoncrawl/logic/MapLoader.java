@@ -1,14 +1,12 @@
 package com.codecool.dungeoncrawl.logic;
+
 import com.codecool.dungeoncrawl.logic.actors.*;
-import com.codecool.dungeoncrawl.logic.actors.Crocodile;
-import com.codecool.dungeoncrawl.logic.actors.Octopus;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.items.Crown;
+import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.items.careThings.Bandage;
 import com.codecool.dungeoncrawl.logic.items.careThings.Medicine;
 import com.codecool.dungeoncrawl.logic.items.careThings.NewLife;
 import com.codecool.dungeoncrawl.logic.items.weapons.Bow;
-import com.codecool.dungeoncrawl.logic.items.Key;
 import com.codecool.dungeoncrawl.logic.items.weapons.Sword;
 
 import java.io.InputStream;
@@ -75,6 +73,10 @@ public class MapLoader {
                                     map.getPlayer().setName(currentPlayer[0].getName());
                                 }
                             }
+                            break;
+                        case 'd':
+                            cell.setType(CellType.FLOOR);
+                            new Crown(cell);
                             break;
                         case 'K':
                             cell.setType(CellType.FLOOR);

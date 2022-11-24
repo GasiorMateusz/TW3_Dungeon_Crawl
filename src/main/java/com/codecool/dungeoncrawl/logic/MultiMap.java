@@ -2,7 +2,7 @@ package com.codecool.dungeoncrawl.logic;
 
 public class MultiMap {
 
-    private final String[] maps = {"/mapT01.txt", "/mapT02.txt", "/mapT03.txt"};
+    private final String[] maps = {"/map.txt", "/mapT02.txt", "/mapT03.txt"};
 
     public MultiMap() {
     }
