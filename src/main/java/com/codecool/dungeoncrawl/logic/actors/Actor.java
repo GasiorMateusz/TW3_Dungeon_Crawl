@@ -1,24 +1,19 @@
 package com.codecool.dungeoncrawl.logic.actors;
-// =================test007===test008==ania===Dominika
 import com.codecool.dungeoncrawl.enums.Direction;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.GameMap;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public abstract class Actor implements Drawable {
 
-
     private Cell cell;
-    private int attack;
-
-    private int health = 10;
-
-
+    private int health = 7;
+    public boolean isAlive = true;
+    public boolean teleport = false;
     private int strikeStrength;
 
     public Actor(Cell cell) {
@@ -27,12 +22,8 @@ public abstract class Actor implements Drawable {
     }
 
     public void move(int dx, int dy) {
-
         Cell nextCell = cell.getNeighbor(dx, dy);
-
         if (isValidMove(cell, nextCell)) {
-
-
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
@@ -45,16 +36,15 @@ public abstract class Actor implements Drawable {
         move(coordinates[0],coordinates[1]);
     }
 
-
-
     Direction selectRandomDirection(){
+        // TOCONSIDER: use enum instead?
         List<Direction> directionList = Arrays.asList(Direction.RIGHT, Direction.LEFT, Direction.UP, Direction.DOWN);
         Random random = new Random();
         return directionList.get(random.nextInt(directionList.size()));
     }
 
-
     int[] convertDirectionToCoordinates(Direction direction){
+        // TOCONSIDER: maybe use enum values to do the same
         int[] coordinates = new int[2];
         switch (direction){
             case RIGHT: coordinates[0]=0; coordinates[1]=1; break;
@@ -66,22 +56,22 @@ public abstract class Actor implements Drawable {
     }
 
     boolean isValidMove(Cell origin, Cell cellTested) {
-
-//    ==================================    to będzie do walidowania ruchu
-//    ==================================    i triggerowania akcji np. walki
-//    ==================================    do rozbudowania w miarę rozwoju programu
-
         boolean accessibility = false;
         if (cellTested != null) {
-            //   if (cellTested.isOutOfMap(cellTested.getX(), cellTested.getY()))
 
             if (cellTested.isActor()) {
                 checkActorsCollision(origin, cellTested);
                 return accessibility;
             }
+
+            if (cellTested.isStairs() && origin.isPlayer()) {
+                goDownstairs();
+            }
+
             if (cellTested.isFloor() || cellTested.isOpenDoor()) {
                 accessibility = true;
             }
+
             if (origin.isPlayer() && cellTested.isClosedDoor() && ((Player) origin.getActor()).hasKey()) {
                 cellTested.setType(CellType.OPEN_DOOR);
                 ((Player) origin.getActor()).deleteKeyFromInventory();
@@ -93,6 +83,10 @@ public abstract class Actor implements Drawable {
         } else return accessibility;
     }
 
+
+    private void goDownstairs() {
+        this.teleport = true;
+    }
 
     private void checkActorsCollision(Cell origin, Cell cellTested) {
         if (origin.isPlayer()) {
@@ -107,13 +101,13 @@ public abstract class Actor implements Drawable {
         opponent.setHealth(opponent.getHealth() - this.getStrikeStrength());
         if (opponent.getHealth() > 0) {
             this.setHealth(this.getHealth() - opponent.getStrikeStrength());
-            if (this.getHealth() < 0) {
+            if (this.getHealth() < 1) {
+                this.setHealth(0);
                 defeated(this);
             }
         } else {
             defeated(opponent);
             opponent.getCell().setActor(null);
-
         }
     }
     public void refreshPlayerStrikeStrenth(){
@@ -132,24 +126,23 @@ public abstract class Actor implements Drawable {
 
     private void defeated(Actor killedInAction) {
         System.out.println(killedInAction.getClass().getSimpleName() + " is dead ");
+        if (killedInAction instanceof Player) {
+            System.out.println("\n\n [Y] [O] [U]   [D] [I] [E] [D]   [!]\n");
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            this.isAlive = false;
+        }
+    }
+
+    public boolean isAlive() {
+        return isAlive;
     }
 
     public void setHealth(int health) {
         this.health = health;
-    }
-
-    public boolean isDead(){
-        return false;
-    }
-
-
-
-    public void updateHealth(int healthChange){
-
-    }
-
-    public boolean tryToMove(int dx, int dy){
-        return false;
     }
 
     public int getHealth() {
@@ -159,9 +152,11 @@ public abstract class Actor implements Drawable {
     public Cell getCell() {
         return cell;
     }
+
     public void setCell(Cell cell) {
         this.cell = cell;
     }
+
     public int getX() {
         return cell.getX();
     }

@@ -12,11 +12,10 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class MapLoader {
-    private static final String mapName = "/map.txt";
-    public static GameMap loadMap() {
-        InputStream is = MapLoader.class.getResourceAsStream(mapName);
-        int [] size = getMapSize(is);
-        is = MapLoader.class.getResourceAsStream(mapName);
+    public static GameMap loadMap(String mapFile, boolean comingFromTeleport, Player... currentPlayer) {
+        InputStream is = MapLoader.class.getResourceAsStream(mapFile);
+        int[] size = getMapSize(is);
+        is = MapLoader.class.getResourceAsStream(mapFile);
         Scanner scanner = new Scanner(is);
         int width = size[0];
         int height = size[1];
@@ -41,6 +40,11 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             map.addMonsterToMonstersList(new Skeleton(cell));
                             break;
+
+                        case 'X':
+                            cell.setType(CellType.STAIRS);
+                            break;
+
                         case 'o':
                             cell.setType(CellType.FLOOR);
                             map.addMonsterToMonstersList(new Octopus(cell));
@@ -51,7 +55,18 @@ public class MapLoader {
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell));
+                            if (comingFromTeleport) {
+                                currentPlayer[0].setCell(cell);
+                                map.setPlayer(new Player(cell));
+                                map.getPlayer().setHealth(currentPlayer[0].getHealth());
+                                map.getPlayer().setName(currentPlayer[0].getName());
+                                // TODO? pass inventory information from currentPlayer to new player?
+                            } else {
+                                map.setPlayer(new Player(cell));
+                                if (currentPlayer.length != 0) {
+                                    map.getPlayer().setName(currentPlayer[0].getName());
+                                }
+                            }
                             break;
                         case 'K':
                             cell.setType(CellType.FLOOR);
@@ -65,10 +80,10 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             new Bow(cell);
                             break;
-                        case'O':
+                        case 'O':
                             cell.setType(CellType.OPEN_DOOR);
                             break;
-                        case'C':
+                        case 'C':
                             cell.setType(CellType.CLOSED_DOOR);
                             break;
                         default:
@@ -80,19 +95,19 @@ public class MapLoader {
         return map;
     }
 
-    private static int[] getMapSize(InputStream is){
+    private static int[] getMapSize(InputStream is) {
         int width = 0;
         int height = 0;
         Scanner scanner = new Scanner(is);
-        while(scanner.hasNextLine()){
+        while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            if(line.length()>width){
+            if (line.length() > width) {
                 width = line.length();
             }
-            height ++;
+            height++;
         }
         scanner.close();
-        return new int []{width, height };
+        return new int[]{width, height};
     }
 
 }
