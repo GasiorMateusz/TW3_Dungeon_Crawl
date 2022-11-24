@@ -12,6 +12,11 @@ public class Player extends Actor implements CanPick {
     private String name;
     private int lifeCounter = 0;
     private final int normalStrikeStrength = 5;
+    private Actor opponent;
+    private boolean unlockedDoor = false;
+    private String pickedUpItemName = "";
+    private boolean lifeCounterIncreased = false;
+    private boolean pickedUp = false;
 
     public Player(Cell cell) {
         super(cell);
@@ -31,6 +36,34 @@ public class Player extends Actor implements CanPick {
         return lifeCounter;
     }
 
+    public Actor getOpponent() {
+        return opponent;
+    }
+
+    public boolean isLifeCounterIncreased() {
+        return lifeCounterIncreased;
+    }
+
+    public void setOpponent(Actor opponent) {
+        this.opponent = opponent;
+    }
+
+    public boolean hasPickedUp() {
+        return pickedUp;
+    }
+
+    public void setPick(boolean pick) {
+        this.pickedUp = pick;
+    }
+
+    public boolean isUnlockedDoor() {
+        return unlockedDoor;
+    }
+
+    public void setUnlockedDoor(boolean unlockedDoor) {
+        this.unlockedDoor = unlockedDoor;
+    }
+
     public Player getPlayer() {
         return this;
     }
@@ -40,13 +73,18 @@ public class Player extends Actor implements CanPick {
         Item item = getCell().getItem();
         if (canPickUp()) {
             inventory.getItems().add(item);
-            if(item instanceof Weapon){
+            if (item instanceof Weapon) {
                 refreshPlayerStrikeStrenth();
             }
         }
         getCell().setItem(null);
+        if (item != null) {
+            pickedUpItemName = item.getTileName();
+            pickedUp = true;
+        }
         return item;
     }
+
     public void refreshPlayerStrikeStrenth() {
         int strength = normalStrikeStrength;
         if (((Player) getCell().getActor()).getInventory().hasSword() && ((Player) getCell().getActor()).getInventory().hasBow()) {
@@ -61,8 +99,14 @@ public class Player extends Actor implements CanPick {
         this.setStrikeStrength(strength);
     }
 
+    public String getPickedUpItemName() {
+        return pickedUpItemName;
+    }
+
     public void increaseLifeCounter() {
         lifeCounter++;
+        lifeCounterIncreased = true;
+
     }
 
     public void decreaseLifeCounter() {
