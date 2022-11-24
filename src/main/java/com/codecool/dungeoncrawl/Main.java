@@ -27,6 +27,7 @@ import java.awt.*;
 public class Main extends Application {
 
     int[] cameraSize = new int[]{25, 35};
+    int[] cameraCenterFactor = new int[]{5, 10};
     Cell centralCell;
     GameMap map = MapLoader.loadMap();
     Canvas canvas;
@@ -175,8 +176,10 @@ public class Main extends Application {
     private void moveCamera(Direction direction) {
         for (int xFactor = 0; xFactor < cameraSize[0] + 18; xFactor++) {
             for (int yFactor = 0; yFactor < cameraSize[1]; yFactor++) {
-                int x = centralCell.getX() + xFactor - cameraSize[0] / 2 + direction.getValue().getX() - 10;
-                int y = centralCell.getY() + yFactor - cameraSize[1] / 2 + direction.getValue().getY() + 5;
+                int x = centralCell.getX() + xFactor - cameraSize[0] / 2 +
+                        direction.getValue().getX() - cameraCenterFactor[1];
+                int y = centralCell.getY() + yFactor - cameraSize[1] / 2 +
+                        direction.getValue().getY() + cameraCenterFactor[0];
                 if (map.isInBounds(x, y)) {
                     Cell cell = map.getCell(x, y);
                     if (cell.getActor() != null) {
