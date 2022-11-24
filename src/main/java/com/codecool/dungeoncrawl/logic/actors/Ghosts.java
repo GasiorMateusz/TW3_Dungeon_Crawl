@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Ghosts extends Actor {
-    public Ghosts (Cell cell) {
+    public Ghosts(Cell cell) {
         super(cell);
         setStrikeStrength(2);
         setHealth(20);
