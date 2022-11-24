@@ -31,26 +31,24 @@ import java.awt.*;
 public class Main extends Application {
 
     public GameMap temporaryMap;
-    private boolean teleported = false;
     int[] cameraSize = new int[]{25, 35};
+    int[] cameraCenterFactor = new int[]{5, 10};
     Cell centralCell;
     MultiMap multiMap = new MultiMap();
-
     String firstMap = multiMap.getMapFromSet(0);
     GameMap map = MapLoader.loadMap(multiMap.getMapFromSet(0), false);
-
-    int currentMapIndex = 0;
-    Stage currentStage;
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
+    private final Player currentPlayer = map.getPlayer();
+    int currentMapIndex = 0;
+    Stage currentStage;
     Label healthLabel = new Label();
     Label inventoryListLabel = new Label();
     Button pickUpButton = new Button("Pick Up");
-
     Label name = new Label();
-    private Player currentPlayer = map.getPlayer();
+    private boolean teleported = false;
 
     public static void main(String[] args) {
         launch(args);
@@ -116,6 +114,7 @@ public class Main extends Application {
         context = canvas.getGraphicsContext2D();
         borderPane.setCenter(canvas);
         borderPane.setRight(ui);
+
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         initMap();
@@ -128,43 +127,41 @@ public class Main extends Application {
         }
     }
 
-    private void onKeyPressed(KeyEvent keyEvent) {
-        Direction direction = null;
+    private void worldMakeMove() {
         for (Actor monster : map.getMonstersList()) {
             if (monster.getHealth() > 0) {
                 monster.monsterMove(map);
-                refresh();
             }
         }
-//        map.getMonstersList().stream().forEach(monster -> monster.monsterMove(map)); //todo why it does not work?
+    }
+
+    private void onKeyPressedAction(Direction direction) {
+        map.getPlayer().move(direction.getValue().getX(), direction.getValue().getY());
+        worldMakeMove();
+        refresh();
+        moveCamera(direction);
+    }
+
+    private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                map.getPlayer().move(0, -1);
-                refresh();
-                direction = Direction.UP;
+                onKeyPressedAction(Direction.UP);
                 break;
             case DOWN:
-                map.getPlayer().move(0, 1);
-                refresh();
-                direction = Direction.DOWN;
+                onKeyPressedAction(Direction.DOWN);
                 break;
             case LEFT:
-                map.getPlayer().move(-1, 0);
-                refresh();
-                direction = Direction.LEFT;
+                onKeyPressedAction(Direction.LEFT);
                 break;
             case RIGHT:
-                map.getPlayer().move(1, 0);
-                refresh();
-                direction = Direction.RIGHT;
+                onKeyPressedAction(Direction.RIGHT);
                 break;
             case ENTER:
                 pickUpItemEvent();
-                direction = Direction.UP;
+                break;
+            default:
                 break;
         }
-        //SonarLint: NPE will be thrown (+4 locations)
-        moveCamera(direction);
         if (!map.getPlayer().isAlive) {
             teleported = false;
             restart();
@@ -198,8 +195,7 @@ public class Main extends Application {
     private void initMap() {
         refresh();
         centerCamera();
-        moveCamera(Direction.UP);
-        // TOCONSIDER: Direction.NOMOVE x=0 y=0
+        moveCamera(Direction.NONE);
     }
 
     private void centerCamera() {
@@ -223,8 +219,10 @@ public class Main extends Application {
     private void moveCamera(Direction direction) {
         for (int xFactor = 0; xFactor < cameraSize[0] + 18; xFactor++) {
             for (int yFactor = 0; yFactor < cameraSize[1]; yFactor++) {
-                int x = centralCell.getX() + xFactor - cameraSize[0] / 2 + direction.getValue().getX() - 10;
-                int y = centralCell.getY() + yFactor - cameraSize[1] / 2 + direction.getValue().getY() + 5;
+                int x = centralCell.getX() + xFactor - cameraSize[0] / 2 +
+                        direction.getValue().getX() - cameraCenterFactor[1];
+                int y = centralCell.getY() + yFactor - cameraSize[1] / 2 +
+                        direction.getValue().getY() + cameraCenterFactor[0];
                 if (map.isInBounds(x, y)) {
                     Cell cell = map.getCell(x, y);
                     if (cell.getActor() != null) {
