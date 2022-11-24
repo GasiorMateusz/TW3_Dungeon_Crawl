@@ -5,7 +5,6 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
-import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,7 +23,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 import java.awt.*;
 
@@ -215,10 +213,6 @@ public class Main extends Application {
         message.setText(text);
     }
 
-    private void clearMessage() {
-        message.setText("");
-    }
-
     private void onKeyPressedAction(Direction direction) {
         map.getPlayer().move(direction.getValue().getX(), direction.getValue().getY());
         worldMakeMove();
@@ -226,9 +220,6 @@ public class Main extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
-        PauseTransition pause = new PauseTransition(Duration.seconds(10));
-        pause.setOnFinished(event -> clearMessage());
-        pause.play();
         switch (keyEvent.getCode()) {
             case UP:
                 onKeyPressedAction(Direction.UP);
@@ -274,12 +265,12 @@ public class Main extends Application {
     }
 
     private void refresh() {
+        setMessage();
         context.setFill(Color.rgb(71, 45, 60));
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         healthLabel.setText("" + map.getPlayer().getHealth());
         pickUpButton.setVisible(map.getPlayer().canPickUp());
         inventoryListLabel.setText(getInventoryDescription());
-        setMessage();
     }
 
     private void initMap() {
