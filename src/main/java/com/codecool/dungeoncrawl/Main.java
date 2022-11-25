@@ -180,7 +180,7 @@ public class Main extends Application {
             map.getPlayer().setUnlockedDoor(false);
         }
         if (teleported) {
-            text = "You teleported to another map!";
+            text = "You moved to another map!";
             teleported = false;
         }
         if (map.getPlayer().getOpponent() != null && !map.getPlayer().getOpponent().isAlive()) {
