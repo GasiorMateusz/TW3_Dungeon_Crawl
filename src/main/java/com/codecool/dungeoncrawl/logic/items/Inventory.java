@@ -9,26 +9,20 @@ public class Inventory {
     private List<Item> items = new ArrayList<>();
 
     public boolean hasKey() {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getTileName().equals("key")) {
-                return true;
-            }
-        }
-        return false;
+        return searchItem("key");
     }
 
     public boolean hasSword() {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getTileName().equals("sword")) {
-                return true;
-            }
-        }
-        return false;
+       return searchItem("sword");
     }
 
     public boolean hasBow() {
+        return searchItem("bow");
+    }
+
+    public boolean searchItem(String itemName){
         for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getTileName().equals("bow")) {
+            if (items.get(i).getTileName().equals(itemName)) {
                 return true;
             }
         }
