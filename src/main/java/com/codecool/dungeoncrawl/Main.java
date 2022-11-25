@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
-import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
 import javafx.application.Application;
@@ -28,18 +27,15 @@ import java.awt.*;
 
 public class Main extends Application {
 
-    public GameMap temporaryMap;
     int[] cameraSize = new int[]{25, 35};
     int[] cameraCenterFactor = new int[]{5, 10};
     Cell centralCell;
     MultiMap multiMap = new MultiMap();
-    String firstMap = multiMap.getMapFromSet(0);
     GameMap map = MapLoader.loadMap(multiMap.getMapFromSet(0), false);
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
-    private final Player currentPlayer = map.getPlayer();
     int currentMapIndex = 0;
     Stage currentStage;
     Label healthLabel = new Label();
@@ -107,7 +103,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage){
         currentStage = primaryStage;
         GridPane ui = new GridPane();
         ui.setPrefWidth(250);
@@ -137,11 +133,7 @@ public class Main extends Application {
         layout.getChildren().addAll(ui, messages);
         layout.setPadding(new Insets(10));
 
-        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                pickUpItemEvent();
-            }
-        };
+        EventHandler<ActionEvent> event = e -> pickUpItemEvent();
         pickUpButton.setOnAction(event);
         BorderPane borderPane = new BorderPane();
         Dimension size
@@ -299,12 +291,12 @@ public class Main extends Application {
     }
 
     private String getInventoryDescription() {
-        String items = "";
+        StringBuilder items = new StringBuilder();
         for (int i = 0; i < map.getPlayer().getInventory().getItems().size(); i++) {
             inventoryListLabel.setText(map.getPlayer().getInventory().getItems().get(i).getTileName());
-            items = items + map.getPlayer().getInventory().getItems().get(i).getTileName() + "\n";
+            items.append(map.getPlayer().getInventory().getItems().get(i).getTileName()).append("\n");
         }
-        return items;
+        return items.toString();
     }
 
     private void moveCamera(Direction direction) {

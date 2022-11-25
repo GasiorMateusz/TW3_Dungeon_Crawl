@@ -11,8 +11,9 @@ public class Cell implements Drawable {
 
 
     private Item item;
-    private GameMap gameMap;
-    private int x, y;
+    private final GameMap gameMap;
+    private final int x;
+    private final int y;
 
     public Cell(GameMap gameMap, int x, int y, CellType type) {
         this.gameMap = gameMap;
@@ -81,10 +82,6 @@ public class Cell implements Drawable {
 
     public boolean isGhosts() {
         return this.actor instanceof Ghosts;
-    }
-
-    public boolean isOpen() {
-        return this.getType().equals(CellType.OPEN_DOOR);
     }
 
     public boolean isStairs() {

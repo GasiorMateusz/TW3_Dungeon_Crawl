@@ -40,14 +40,12 @@ public abstract class Actor implements Drawable {
     }
 
     Direction selectRandomDirection() {
-        // TOCONSIDER: use enum instead?
         List<Direction> directionList = Arrays.asList(Direction.RIGHT, Direction.LEFT, Direction.UP, Direction.DOWN);
         Random random = new Random();
         return directionList.get(random.nextInt(directionList.size()));
     }
 
     int[] convertDirectionToCoordinates(Direction direction) {
-        // TOCONSIDER: maybe use enum values to do the same
         int[] coordinates = new int[2];
         switch (direction) {
             case RIGHT:

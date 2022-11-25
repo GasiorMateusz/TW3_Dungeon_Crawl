@@ -8,12 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameMap {
-    private int width;
-    private int height;
-    private Cell[][] cells;
+    private final int width;
+    private final int height;
+    private final Cell[][] cells;
 
     private Player player;
-    private Octopus octopus;
     private List<Actor> monstersList;
 
     public GameMap(int width, int height, CellType defaultCellType) {
@@ -40,14 +39,6 @@ public class GameMap {
         return player;
     }
 
-    public Octopus getOctopus() {
-        return octopus;
-    }
-
-    public void setOctopus(Octopus octopus) {
-        this.octopus = octopus;
-    }
-
     public int getWidth() {
         return width;
     }
@@ -59,10 +50,6 @@ public class GameMap {
     public boolean isInBounds(int x, int y) {
         if (x < 0 || y < 0) return false;
         return x < width && y < height;
-    }
-
-    public Cell[][] getCells() {
-        return cells;
     }
 
     public List<Actor> getMonstersList() {

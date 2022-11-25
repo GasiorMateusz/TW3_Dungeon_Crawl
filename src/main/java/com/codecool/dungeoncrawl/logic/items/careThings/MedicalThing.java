@@ -6,7 +6,7 @@ import com.codecool.dungeoncrawl.logic.items.Item;
 public abstract class MedicalThing extends Item {
 
 
-    private int increaseHealth;
+    private final int increaseHealth;
     public MedicalThing(Cell cell, int increaseHealth) {
         super(cell);
         this.increaseHealth=increaseHealth;

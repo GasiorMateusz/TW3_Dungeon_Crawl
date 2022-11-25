@@ -65,8 +65,6 @@ public class MapLoader {
                                 map.getPlayer().setName(currentPlayer[0].getName());
                                 map.getPlayer().setInventory(currentPlayer[0].getInventory());
                                 map.getPlayer().setStrikeStrength(currentPlayer[0].getStrikeStrength());
-
-                                // TODO? pass inventory information from currentPlayer to new player?
                             } else {
                                 map.setPlayer(new Player(cell));
                                 if (currentPlayer.length != 0) {

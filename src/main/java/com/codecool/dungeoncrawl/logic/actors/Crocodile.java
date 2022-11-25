@@ -3,9 +3,6 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.enums.Direction;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
-
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class Crocodile extends Actor {
