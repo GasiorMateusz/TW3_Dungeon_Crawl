@@ -12,10 +12,10 @@ import java.util.Random;
 
 public abstract class Actor implements Drawable {
 
-    private Cell cell;
-    private int health = 7;
     public boolean isAlive = true;
     public boolean teleport = false;
+    private Cell cell;
+    private int health = 7;
     private int strikeStrength;
 
 
@@ -70,37 +70,37 @@ public abstract class Actor implements Drawable {
 
     boolean isValidMove(Cell origin, Cell cellTested) {
         boolean accessibility = false;
-        if (cellTested != null) {
-
-            if (cellTested.isActor()) {
-                checkActorsCollision(origin, cellTested);
-                return accessibility;
-            }
-
-            if (cellTested.isStairs() && origin.isPlayer()) {
-                goDownstairs();
-            }
-
-            if (cellTested.isFloor() || cellTested.isOpenDoor()) {
-                accessibility = true;
-            }
-
-            if (origin.isPlayer() && cellTested.isClosedDoor() && ((Player) origin.getActor()).getInventory().hasKey()) {
-                ((Player) origin.getActor()).setUnlockedDoor(true);
-                cellTested.setType(CellType.OPEN_DOOR);
-                ((Player) origin.getActor()).getInventory().deleteKeyFromInventory();
-            }
-            if (origin.isPlayer() && ((Player) origin.getActor()).hasDeveloperName()) {
-                accessibility = true;
-            }
-
-            if (origin.isGhosts()) {
-                accessibility = true;
-            }
-
-
+        if (cellTested == null) {
             return accessibility;
-        } else return accessibility;
+        }
+
+        if (cellTested.isActor()) {
+            checkActorsCollision(origin, cellTested);
+            return accessibility;
+        }
+
+        if (cellTested.isStairs() && origin.isPlayer()) {
+            goDownstairs();
+        }
+
+        if (cellTested.isFloor() || cellTested.isOpenDoor()) {
+            accessibility = true;
+        }
+        //todo extract to method
+        if (origin.isPlayer() && cellTested.isClosedDoor() && ((Player) origin.getActor()).getInventory().hasKey()) {
+            Player actor = (Player) origin.getActor();
+            actor.setUnlockedDoor(true);
+            cellTested.setType(CellType.OPEN_DOOR);
+            actor.getInventory().deleteKeyFromInventory();
+        }
+        if (origin.isPlayer() && ((Player) origin.getActor()).hasDeveloperName()) {
+            accessibility = true;
+        }
+
+        if (origin.isGhosts()) {
+            accessibility = true;
+        }
+        return accessibility;
     }
 
     private void goDownstairs() {
@@ -148,12 +148,12 @@ public abstract class Actor implements Drawable {
         return isAlive;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
     public int getHealth() {
         return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     public Cell getCell() {

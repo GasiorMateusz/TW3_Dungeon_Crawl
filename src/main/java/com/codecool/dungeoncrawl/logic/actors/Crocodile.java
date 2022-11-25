@@ -33,7 +33,8 @@ public class Crocodile extends Actor {
 
     private void teleportation(GameMap map) {
         Random random = new Random();
-
+//todo rename teleportationCount
+        //todo magic number
         teleportationCount = random.nextInt(6);
         int coordinateX = random.nextInt(map.getWidth());
         int coordinateY = random.nextInt(map.getHeight());

@@ -303,6 +303,7 @@ public class Main extends Application {
         refresh();
         for (int xFactor = 0; xFactor < cameraSize[0] + 18; xFactor++) {
             for (int yFactor = 0; yFactor < cameraSize[1]; yFactor++) {
+                //todo extract
                 int x = centralCell.getX() + xFactor - cameraSize[0] / 2 +
                         direction.getValue().getX() - cameraCenterFactor[1];
                 int y = centralCell.getY() + yFactor - cameraSize[1] / 2 +
@@ -320,5 +321,10 @@ public class Main extends Application {
             }
         }
         centralCell = map.getPlayer().getCell();
+    }
+
+    private int getX(int centralCell, int direction, int cameraCenterFactor) {
+        return centralCell +
+                direction - cameraCenterFactor;
     }
 }
