@@ -13,6 +13,9 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class MapLoader {
+    private static final String FLOORS = " .#XOC";
+    private static final String MONSTERS = "sgoc";
+    private static final String ITEMS = "DMHBWKd";
     public static GameMap loadMap(String mapFile, boolean comingFromTeleport, Player... currentPlayer) throws RuntimeException {
         InputStream is = MapLoader.class.getResourceAsStream(mapFile);
         int[] size = getMapSize(is);
@@ -27,23 +30,27 @@ public class MapLoader {
             for (int x = 0; x < width; x++) {
                 if (x < line.length()) {
                     Cell cell = map.getCell(x, y);
+                    String read = String.valueOf((line.charAt(x)));
+                    if (FLOORS.contains(read)) {
+                        cell.setType(CellType.getCellType((line.charAt(x))));
+                    } else {
                     switch (line.charAt(x)) {
-                        case ' ':
-                            cell.setType(CellType.EMPTY);
-                            break;
-                        case '#':
-                            cell.setType(CellType.WALL);
-                            break;
-                        case '.':
-                            cell.setType(CellType.FLOOR);
-                            break;
+//                        case ' ':
+//                            cell.setType(CellType.EMPTY);
+//                            break;
+//                        case '#':
+//                            cell.setType(CellType.WALL);
+//                            break;
+//                        case '.':
+//                            cell.setType(CellType.FLOOR);
+//                            break;
                         case 's':
                             cell.setType(CellType.FLOOR);
                             map.addMonsterToMonstersList(new Skeleton(cell));
                             break;
-                        case 'X':
-                            cell.setType(CellType.STAIRS);
-                            break;
+//                        case 'X':
+//                            cell.setType(CellType.STAIRS);
+//                            break;
                         case 'g':
                             cell.setType(CellType.FLOOR);
                             map.addMonsterToMonstersList(new Ghosts(cell));
@@ -100,15 +107,15 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             map.addToItemList(new Bandage(cell));
                             break;
-                        case 'O':
-                            cell.setType(CellType.OPEN_DOOR);
-                            break;
-                        case 'C':
-                            cell.setType(CellType.CLOSED_DOOR);
-                            break;
+//                        case 'O':
+//                            cell.setType(CellType.OPEN_DOOR);
+//                            break;
+//                        case 'C':
+//                            cell.setType(CellType.CLOSED_DOOR);
+//                            break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
-                    }
+                    }}
                 }
             }
         }
