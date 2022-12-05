@@ -1,12 +1,15 @@
 package com.codecool.dungeoncrawl.logic;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public enum CellType {
 
     EMPTY("empty", ' '),
     FLOOR("floor", '.'),
-    WALL("wall",'#'),
+    WALL("wall", '#'),
     CLOSED_DOOR("closedDoor", 'C'),
-    OPEN_DOOR("openDoor",'O'),
+    OPEN_DOOR("openDoor", 'O'),
     STAIRS("stairs", 'X');
 
     private final String tileName;
@@ -24,4 +27,18 @@ public enum CellType {
     public char getMapChar() {
         return mapChar;
     }
+
+    public static CellType getCellType(char mapChar) {
+        try {
+            return Arrays
+                    .stream(CellType.values())
+                    .filter(v -> Objects.equals(v.getMapChar(), mapChar))
+                    .findFirst()
+                    .orElseThrow(() ->
+                            new Exception(String.format("Unknown CellType.key: '%s'", mapChar)));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
+
