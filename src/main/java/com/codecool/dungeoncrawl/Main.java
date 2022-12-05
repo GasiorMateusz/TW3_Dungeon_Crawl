@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
@@ -14,6 +15,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -24,6 +28,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.awt.*;
+import java.sql.SQLException;
 
 public class Main extends Application {
 
@@ -45,6 +50,7 @@ public class Main extends Application {
     Label name = new Label();
     Label message = new Label();
     private boolean teleported = false;
+    GameDatabaseManager dbManager;
 
     public static void main(String[] args) {
         launch(args);
@@ -103,8 +109,9 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage){
+    public void start(Stage primaryStage)throws Exception{
         currentStage = primaryStage;
+        setupDbManager();
         GridPane ui = new GridPane();
         ui.setPrefWidth(250);
         ui.setPrefHeight(200);
@@ -149,6 +156,7 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         initMap();
         scene.setOnKeyPressed(this::onKeyPressed);
+        scene.setOnKeyReleased(this::onKeyReleased);
         primaryStage.setMaximized(true);
         primaryStage.setTitle("DUNGEON CRAWL by TeamONE");
         primaryStage.show();
@@ -162,6 +170,16 @@ public class Main extends Application {
             if (monster.getHealth() > 0) {
                 monster.monsterMove(map);
             }
+        }
+    }
+
+    private void onKeyReleased(KeyEvent keyEvent) {
+        KeyCombination exitCombinationMac = new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN);
+        KeyCombination exitCombinationWin = new KeyCodeCombination(KeyCode.F4, KeyCombination.ALT_DOWN);
+        if (exitCombinationMac.match(keyEvent)
+                || exitCombinationWin.match(keyEvent)
+                || keyEvent.getCode() == KeyCode.ESCAPE) {
+            exit();
         }
     }
 
@@ -323,8 +341,25 @@ public class Main extends Application {
         centralCell = map.getPlayer().getCell();
     }
 
+    private void setupDbManager() {
+        dbManager = new GameDatabaseManager();
+        try {
+            dbManager.setup();
+        } catch (SQLException ex) {
+            System.out.println("Cannot connect to database.");
+        }
+    }
+
     private int getX(int centralCell, int direction, int cameraCenterFactor) {
         return centralCell +
                 direction - cameraCenterFactor;
+    }
+    private void exit() {
+        try {
+            stop();
+        } catch (Exception e) {
+            System.exit(1);
+        }
+        System.exit(0);
     }
 }
