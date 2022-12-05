@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class MapLoader {
-    public static GameMap loadMap(String mapFile, boolean comingFromTeleport, Player... currentPlayer) {
+    public static GameMap loadMap(String mapFile, boolean comingFromTeleport, Player... currentPlayer) throws RuntimeException {
         InputStream is = MapLoader.class.getResourceAsStream(mapFile);
         int[] size = getMapSize(is);
         is = MapLoader.class.getResourceAsStream(mapFile);
@@ -74,31 +74,31 @@ public class MapLoader {
                             break;
                         case 'd':
                             cell.setType(CellType.FLOOR);
-                            new Crown(cell);
+                            map.addToItemList(new Crown(cell));
                             break;
                         case 'K':
                             cell.setType(CellType.FLOOR);
-                            new Key(cell);
+                            map.addToItemList(new Key(cell));
                             break;
                         case 'W':
                             cell.setType(CellType.FLOOR);
-                            new Sword(cell);
+                            map.addToItemList(new Sword(cell));
                             break;
                         case 'B':
                             cell.setType(CellType.FLOOR);
-                            new Bow(cell);
+                            map.addToItemList(new Bow(cell));
                             break;
                         case 'H':
                             cell.setType(CellType.FLOOR);
-                            new NewLife(cell);
+                            map.addToItemList(new NewLife(cell));
                             break;
                         case 'M':
                             cell.setType(CellType.FLOOR);
-                            new Medicine(cell);
+                            map.addToItemList(new Medicine(cell));
                             break;
                         case 'D':
                             cell.setType(CellType.FLOOR);
-                            new Bandage(cell);
+                            map.addToItemList(new Bandage(cell));
                             break;
                         case 'O':
                             cell.setType(CellType.OPEN_DOOR);
@@ -129,5 +129,4 @@ public class MapLoader {
         scanner.close();
         return new int[]{width, height};
     }
-
 }
