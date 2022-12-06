@@ -9,6 +9,7 @@ import com.codecool.dungeoncrawl.logic.MultiMap;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
+import com.codecool.dungeoncrawl.logic.MapSaver;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -332,6 +333,7 @@ public class Main extends Application {
 
         if (map.getPlayer().teleport) {
             System.out.println("TELEPORT " + map.getPlayer().getName());
+            MapSaver.saveMap(map, "saved");
             teleportation();
         }
     }
