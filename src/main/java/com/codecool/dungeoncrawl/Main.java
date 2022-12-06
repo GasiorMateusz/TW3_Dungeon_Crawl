@@ -5,7 +5,6 @@ import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
-import com.codecool.dungeoncrawl.logic.MapSaver;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -110,7 +109,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage)throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         currentStage = primaryStage;
         setupDbManager();
         GridPane ui = new GridPane();
@@ -256,16 +255,15 @@ public class Main extends Application {
             System.out.println(" RESTART =======================================================");
         }
 
-        if (map.getPlayer().teleport) {
-            System.out.println("TELEPORT " + map.getPlayer().getName());
-            MapSaver.saveMap(map, "saved");
-            teleportation();
+        if (map.getPlayer().teleport != 0) {
+            teleportation(map.getPlayer().teleport);
         }
     }
 
-    public void teleportation() {
+    public void teleportation(int teleportDirection) {
         teleported = true;
-        map = MapLoader.loadMap(multiMap.getMapFromSet(++currentMapIndex), true, map.getPlayer());
+        currentMapIndex = currentMapIndex + teleportDirection;
+        map = MapLoader.loadMap(multiMap.getMapFromSet(currentMapIndex), true, map.getPlayer());
         centerCamera();
         moveCamera(Direction.NONE);
     }
@@ -356,6 +354,7 @@ public class Main extends Application {
         return centralCell +
                 direction - cameraCenterFactor;
     }
+
     private void exit() {
         try {
             stop();
