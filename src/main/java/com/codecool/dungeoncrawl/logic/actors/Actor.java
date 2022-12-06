@@ -13,7 +13,7 @@ import java.util.Random;
 public abstract class Actor implements Drawable {
 
     public boolean isAlive = true;
-    public boolean teleport = false;
+    public int teleport = 0;
     private Cell cell;
     private int health = 7;
     private int strikeStrength;
@@ -79,8 +79,12 @@ public abstract class Actor implements Drawable {
             return accessibility;
         }
 
-        if (cellTested.isStairs() && origin.isPlayer()) {
-            goDownstairs();
+        if (cellTested.getType().equals(CellType.STAIRSDOWN) && origin.isPlayer()) {
+            goToStairs(1);
+        }
+
+        if (cellTested.getType().equals(CellType.STAIRSUP) && origin.isPlayer()) {
+            goToStairs(-1);
         }
 
         if (cellTested.isFloor() || cellTested.isOpenDoor()) {
@@ -103,8 +107,8 @@ public abstract class Actor implements Drawable {
         return accessibility;
     }
 
-    private void goDownstairs() {
-        this.teleport = true;
+    private void goToStairs(int direction) {
+        this.teleport = direction;
     }
 
     private void checkActorsCollision(Cell origin, Cell cellTested) {
