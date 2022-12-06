@@ -1,11 +1,17 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
+import com.codecool.dungeoncrawl.json.Deserialization;
+import com.codecool.dungeoncrawl.json.Serialization;
 import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
 import com.codecool.dungeoncrawl.logic.MapSaver;
+import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.google.gson.Gson;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -48,6 +54,8 @@ public class Main extends Application {
     Label inventoryListLabel = new Label();
     Label livesLabel = new Label();
     Button pickUpButton = new Button("Pick Up");
+
+    Button exportButton =  new Button("Export game state");
     Label name = new Label();
     Label message = new Label();
     private boolean teleported = false;
@@ -126,7 +134,10 @@ public class Main extends Application {
         ui.add(new Label("Inventory:"), 0, 3);
         ui.add(inventoryListLabel, 0, 4);
         ui.add(pickUpButton, 0, 5);
+        ui.add(exportButton, 0, 6);
+
         pickUpButton.setFocusTraversable(false);
+        exportButton.setFocusTraversable(false);
         inventoryListLabel.setMinHeight(50);
         pickUpButton.setVisible(false);
 
@@ -143,6 +154,8 @@ public class Main extends Application {
 
         EventHandler<ActionEvent> event = e -> pickUpItemEvent();
         pickUpButton.setOnAction(event);
+        EventHandler<ActionEvent> event2 = e -> exportToJson();
+        exportButton.setOnAction(event2);
         BorderPane borderPane = new BorderPane();
         Dimension size
                 = Toolkit.getDefaultToolkit().getScreenSize();
@@ -308,6 +321,25 @@ public class Main extends Application {
         pickUpButton.setVisible(false);
         livesLabel.setText(Integer.toString(map.getPlayer().getLifeCounter()));
         setMessage();
+    }
+    private void exportToJson() {
+        //Serialization serialization = new Serialization(map);
+        //Deserialization deserlizatoin = new Deserialization(serialization, map);
+
+        PlayerModel playerModel = new PlayerModel(map.getPlayer());
+        GameState gameState= new GameState(playerModel);
+        String json= new Gson().toJson(gameState);
+        System.out.println(json);
+
+        GameState gameStateDeserilised = new Gson().fromJson(json, GameState.class);
+        PlayerModel playerModel1 = gameStateDeserilised.getPlayer();
+        Player player = new Player(new Cell(map, playerModel1.getX(), playerModel1.getY(), map.getCell(playerModel1.getX(), playerModel1.getY()).getType()));
+    }
+    private void importFromJson(String json) {
+
+        GameState gameStateDeserilised = new Gson().fromJson(json, GameState.class);
+        PlayerModel playerModel1 = gameStateDeserilised.getPlayer();
+        Player player = new Player(new Cell(map, playerModel1.getX(), playerModel1.getY(), map.getCell(playerModel1.getX(), playerModel1.getY()).getType()));
     }
 
     private String getInventoryDescription() {

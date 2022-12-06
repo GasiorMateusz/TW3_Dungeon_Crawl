@@ -15,6 +15,9 @@ public class GameState extends BaseModel {
         this.savedAt = savedAt;
         this.player = player;
     }
+    public GameState(PlayerModel player) {
+        this.player = player;
+    }
 
     public Date getSavedAt() {
         return savedAt;
