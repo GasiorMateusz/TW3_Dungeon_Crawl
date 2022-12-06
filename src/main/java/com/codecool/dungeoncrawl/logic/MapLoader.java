@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class MapLoader {
-    private static final String FLOORS = " .#XOC";
+    private static final String FLOORS = " .#XYOC";
     private static final String MONSTERS = "sgoc";
     private static final String ITEMS = "DMHBWKd";
 
