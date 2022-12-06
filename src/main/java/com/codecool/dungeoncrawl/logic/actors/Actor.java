@@ -119,8 +119,6 @@ public abstract class Actor implements Drawable {
     }
 
     private void fight(Actor opponent) {
-        System.out.println(" FIGHT:  " + this.getClass().getSimpleName() + " health:" + this.getHealth() +
-                " vs. " + opponent.getClass().getSimpleName() + " health:" + opponent.getHealth());
         opponent.setHealth(opponent.getHealth() - this.getStrikeStrength());
         if (opponent.getHealth() > 0) {
             this.setHealth(this.getHealth() - opponent.getStrikeStrength());
@@ -135,9 +133,7 @@ public abstract class Actor implements Drawable {
     }
 
     private void defeated(Actor killedInAction) {
-        System.out.println(killedInAction.getClass().getSimpleName() + " is dead ");
         if (killedInAction instanceof Player) {
-            System.out.println("\n\n [Y] [O] [U]   [D] [I] [E] [D]   [!]\n");
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
