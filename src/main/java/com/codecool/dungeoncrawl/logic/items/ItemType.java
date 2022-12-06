@@ -1,11 +1,14 @@
 package com.codecool.dungeoncrawl.logic.items;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public enum ItemType {
     CROWN('d', "Game"),
     KEY('K',"Game"),
     SWORD('W', "Weapon"),
     BOW('B', "Weapon"),
-    NEWLIFE('H', "Game"),
+    LIFE('H', "Game"),
     MEDICINE('M', "Medical"),
     BANDAGE('D', "Medical");
 
@@ -22,5 +25,18 @@ public enum ItemType {
     }
     public static String getItemSubtype(ItemType item) {
         return item.subtype;
+    }
+
+    public static ItemType getItemType(char mapChar) {
+        try {
+            return Arrays
+                    .stream(ItemType.values())
+                    .filter(v -> Objects.equals(v.getItemMapChar(v), mapChar))
+                    .findFirst()
+                    .orElseThrow(() ->
+                            new Exception(String.format("Unknown cItemType.key: '%s'", mapChar)));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
