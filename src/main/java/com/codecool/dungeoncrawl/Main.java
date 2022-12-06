@@ -252,7 +252,6 @@ public class Main extends Application {
         if (!map.getPlayer().isAlive) {
             teleported = false;
             restart();
-            System.out.println(" RESTART =======================================================");
         }
 
         if (map.getPlayer().teleport != 0) {
