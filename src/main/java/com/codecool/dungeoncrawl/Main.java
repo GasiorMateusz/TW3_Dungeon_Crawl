@@ -138,10 +138,7 @@ public class Main extends Application {
         });
         Button cancelButton = new Button();
         cancelButton.setText("Cancel");
-        cancelButton.setOnAction(event -> {
-            save.close();
-            System.exit(0);
-        });
+        cancelButton.setOnAction(event -> save.close());
         buttonsHBox.getChildren().add(saveButton);
         buttonsHBox.getChildren().add(cancelButton);
         buttonsHBox.setAlignment(Pos.CENTER);
