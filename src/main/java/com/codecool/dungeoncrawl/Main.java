@@ -258,7 +258,7 @@ public class Main extends Application {
 
         if (map.getPlayer().teleport) {
             System.out.println("TELEPORT " + map.getPlayer().getName());
-            MapSaver.saveMap(map, "dummy");
+            MapSaver.saveMap(map, "saved");
             teleportation();
         }
     }

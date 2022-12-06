@@ -5,6 +5,12 @@ import com.codecool.dungeoncrawl.logic.actors.ActorType;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.StringJoiner;
+
 public class MapSaver {
 
     public static void saveMap(GameMap mapToSave, String mapFile) {
@@ -15,8 +21,13 @@ public class MapSaver {
         fillMapFloor(mapToSave, height, width, map);
         fillMapWithItems(mapToSave, map);
         fillMapWithMonsters(mapToSave, map);
-//        saveMapToTextFile(mapFile, height, width, map);
+//          If we want to save a map to a text file:
+        saveMapToTextFile(mapFile, height, width, map);
         System.out.println(getFinalMap(height, width, map));
+//          If we want to save monsters info separately:
+//        System.out.println("\nMONSTERS:\n" + getMonstersInfo(mapToSave));
+//          If we want to save inventory info separately:
+//        System.out.println("\nINVENTORY:\n" + getInventoryInfo(mapToSave));
         System.exit(0);
     }
 
@@ -55,16 +66,45 @@ public class MapSaver {
         return output.toString();
     }
 
-//    private static void saveMapToTextFile(String mapFile, int height, int width, char[][] map) throws IOException {
-//        String fileName = "/" + mapFile + LocalDateTime.now() + ".txt";
-//        try {
-//            FileWriter myWriter = new FileWriter(fileName);
-//            myWriter.write(getFinalMap(height, width, map));
-//            myWriter.close();
-//            System.out.println("Map successfully saved to the file " + fileName);
-//        } catch (IOException e) {
-//            System.out.println("An error occurred.");
-//            e.printStackTrace();
-//        }
-//    }
+
+    private static String getMonstersInfo(GameMap mapToSave) {
+        StringJoiner output = new StringJoiner(", ");
+        output.add(Integer.toString((int) mapToSave.getMonstersList()
+                .stream()
+                .filter(Actor::isAlive)
+                .count()));
+        for (Actor monster : mapToSave.getMonstersList()) {
+            if (monster.isAlive()) {
+                output.add(monster.getClass().getSimpleName());
+                output.add(Integer.toString(monster.getHealth()));
+                output.add(Integer.toString(monster.getX()));
+                output.add(Integer.toString(monster.getY()));
+            }
+        }
+        return output.toString();
+    }
+
+    private static String getInventoryInfo(GameMap mapToSave) {
+        StringJoiner output = new StringJoiner(", ");
+        output.add(Integer.toString((int) mapToSave.getPlayer().getInventory().getItems()
+                .stream()
+                .count()));
+        for (Item item : mapToSave.getPlayer().getInventory().getItems()) {
+            output.add(item.getItemType().toString());
+        }
+        return output.toString();
+    }
+
+    private static void saveMapToTextFile(String mapFile, int height, int width, char[][] map)  {
+        String fileName = "src/main/resources/" + mapFile + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-dd-M--HH-mm-ss")) + ".txt";
+        try {
+            FileWriter myWriter = new FileWriter(fileName);
+            myWriter.write(getFinalMap(height, width, map));
+            myWriter.close();
+            System.out.println("Map successfully saved to the file " + fileName);
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
 }
