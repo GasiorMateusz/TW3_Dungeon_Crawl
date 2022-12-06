@@ -5,7 +5,6 @@ import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
-import com.codecool.dungeoncrawl.logic.MapSaver;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -50,8 +49,8 @@ public class Main extends Application {
     Button pickUpButton = new Button("Pick Up");
     Label name = new Label();
     Label message = new Label();
-    private boolean teleported = false;
     GameDatabaseManager dbManager;
+    private boolean teleported = false;
 
     public static void main(String[] args) {
         launch(args);
@@ -110,7 +109,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage)throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         currentStage = primaryStage;
         setupDbManager();
         GridPane ui = new GridPane();
@@ -352,10 +351,6 @@ public class Main extends Application {
         }
     }
 
-    private int getX(int centralCell, int direction, int cameraCenterFactor) {
-        return centralCell +
-                direction - cameraCenterFactor;
-    }
     private void exit() {
         try {
             stop();
