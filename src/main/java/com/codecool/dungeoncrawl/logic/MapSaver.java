@@ -20,14 +20,9 @@ public class MapSaver {
 
         fillMapFloor(mapToSave, height, width, map);
         fillMapWithItems(mapToSave, map);
-        fillMapWithMonsters(mapToSave, map);
-//          If we want to save a map to a text file:
         saveMapToTextFile(mapFile, height, width, map);
         System.out.println(getFinalMap(height, width, map));
-//          If we want to save monsters info separately:
-//        System.out.println("\nMONSTERS:\n" + getMonstersInfo(mapToSave));
-//          If we want to save inventory info separately:
-//        System.out.println("\nINVENTORY:\n" + getInventoryInfo(mapToSave));
+        System.out.println("\nMONSTERS:\n" + getMonstersInfo(mapToSave));
         System.exit(0);
     }
 
