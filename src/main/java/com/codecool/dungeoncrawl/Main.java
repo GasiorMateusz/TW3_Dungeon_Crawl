@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
+import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -112,6 +113,10 @@ public class Main extends Application {
     public void start(Stage primaryStage)throws Exception{
         currentStage = primaryStage;
         setupDbManager();
+        map.getPlayer().setName("DUMMY NAME");
+
+        dbManager.savePlayer(map.getPlayer());
+        PlayerModel playerModel = dbManager.loadPlayer(0);
         GridPane ui = new GridPane();
         ui.setPrefWidth(250);
         ui.setPrefHeight(200);
