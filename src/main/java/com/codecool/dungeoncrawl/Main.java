@@ -109,9 +109,10 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage)  {
         currentStage = primaryStage;
         setupDbManager();
+
         GridPane ui = new GridPane();
         ui.setPrefWidth(250);
         ui.setPrefHeight(200);
