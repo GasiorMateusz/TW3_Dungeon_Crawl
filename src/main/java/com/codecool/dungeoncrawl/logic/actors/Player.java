@@ -3,8 +3,8 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.items.Inventory;
 import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.logic.items.careThings.MedicalThing;
-import com.codecool.dungeoncrawl.logic.items.weapons.Weapon;
+import com.codecool.dungeoncrawl.logic.items.MedicalThing;
+import com.codecool.dungeoncrawl.logic.items.Weapon;
 
 import java.util.stream.Stream;
 
@@ -93,7 +93,7 @@ public class Player extends Actor implements CanPick {
     public void refreshPlayerStrikeStrenth() {
         int strength = normalStrikeStrength;
 
-       if (((Player) getCell().getActor()).getInventory().hasSword() && ((Player) getCell().getActor()).getInventory().hasBow()) {
+        if (((Player) getCell().getActor()).getInventory().hasSword() && ((Player) getCell().getActor()).getInventory().hasBow()) {
             strength = strength + 3;
         } else if (((Player) getCell().getActor()).getInventory().hasBow()) {
             strength = strength + 1;
@@ -104,9 +104,10 @@ public class Player extends Actor implements CanPick {
         }
         this.setStrikeStrength(strength);
     }
+
     public void refreshHealthValue() {
         int health = getHealth();
-            health = health +  ((MedicalThing)getCell().getItem()).getIncreaseHealth();
+        health = health + ((MedicalThing) getCell().getItem()).getIncreaseHealth();
         this.setHealth(health);
     }
 
@@ -117,7 +118,6 @@ public class Player extends Actor implements CanPick {
     public void increaseLifeCounter() {
         lifeCounter++;
         lifeCounterIncreased = true;
-
     }
 
     public void decreaseLifeCounter() {
@@ -148,5 +148,4 @@ public class Player extends Actor implements CanPick {
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
     }
-
 }

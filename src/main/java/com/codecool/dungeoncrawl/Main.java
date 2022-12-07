@@ -253,19 +253,17 @@ public class Main extends Application {
         if (!map.getPlayer().isAlive) {
             teleported = false;
             restart();
-            System.out.println(" RESTART =======================================================");
         }
 
-        if (map.getPlayer().teleport) {
-            System.out.println("TELEPORT " + map.getPlayer().getName());
-            MapSaver.saveMap(map, "saved");
-            teleportation();
+        if (map.getPlayer().teleport != 0) {
+            teleportation(map.getPlayer().teleport);
         }
     }
 
-    public void teleportation() {
+    public void teleportation(int teleportDirection) {
         teleported = true;
-        map = MapLoader.loadMap(multiMap.getMapFromSet(++currentMapIndex), true, map.getPlayer());
+        currentMapIndex = currentMapIndex + teleportDirection;
+        map = MapLoader.loadMap(multiMap.getMapFromSet(currentMapIndex), true, map.getPlayer());
         centerCamera();
         moveCamera(Direction.NONE);
     }
