@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.util.List;
 
 public class GameState extends BaseModel {
-    private Date savedAt;
+    private Date savedAt;  //TODO Dawid D date and time  LocalDate, check with Mateusz
     private String currentMap;
     private final List<String> notDiscoveredMaps = new ArrayList<>(); //todo consult Marcin, Mateusz
     private final List<String> discoveredMapsInJSON = new ArrayList<>(); //todo consult Marcin, Mateusz

@@ -37,6 +37,7 @@ import javafx.stage.StageStyle;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Main extends Application {
 
@@ -160,8 +161,8 @@ public class Main extends Application {
         pickUpButton.setOnAction(event);
         EventHandler<ActionEvent> event2 = e -> exportToJson(); //todo Dominika serialization.importToJson()
         exportButton.setOnAction(event2);
-        EventHandler<ActionEvent> event3 = e -> importGame("FileName"); //todo Dominika metoda odtwarzajaca gre Marcin
-        exportButton.setOnAction(event3);
+        EventHandler<ActionEvent> event3 = e -> importGame("FileName"); //todo Dominika metoda odtwarzajaca gre Marcin Main.importGame()
+        importButton.setOnAction(event3);
         BorderPane borderPane = new BorderPane();
         Dimension size
                 = Toolkit.getDefaultToolkit().getScreenSize();
@@ -411,9 +412,11 @@ public class Main extends Application {
         ArrayList<Actor> monsterList = deserialization.getMonsterList();
     }
 
-    private void exportGame(){
+    private void exportGame(){   // todo Dawid
+        Date date = new Date();
         String  stringMap= MapSaver.convertGameMapToString(map);
         Serialization serialization = new Serialization();
+//        serialization.exportToJson(stringMap, );
 
 
     }
