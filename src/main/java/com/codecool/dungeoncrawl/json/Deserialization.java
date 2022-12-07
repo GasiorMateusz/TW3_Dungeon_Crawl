@@ -51,6 +51,8 @@ public class Deserialization {
         Player player = new Player(cell);
         return player;
     }
+
+
     public ArrayList<Actor> getMonsterList() {
         this.monsterList = new ArrayList<>();
         return monsterList;

@@ -24,7 +24,7 @@ public class MapSaver {
         String stringMap = getFinalMap(height, width, map);
         return stringMap;
     }
-
+    //todo dd consult Dominika i Marcin (it could replace part of or entire saveMap method)
 
     public static void saveMap(GameMap mapToSave, String mapFile) {
         int width = mapToSave.getWidth();

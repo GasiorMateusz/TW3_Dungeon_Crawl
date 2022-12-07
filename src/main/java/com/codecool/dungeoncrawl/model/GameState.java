@@ -9,7 +9,8 @@ import java.util.List;
 public class GameState extends BaseModel {
     private Date savedAt;
     private String currentMap;
-    private List<String> discoveredMaps = new ArrayList<>();
+    private final List<String> notDiscoveredMaps = new ArrayList<>(); //todo consult Marcin, Mateusz
+    private final List<String> discoveredMapsInJSON = new ArrayList<>(); //todo consult Marcin, Mateusz
     private ArrayList<Actor> monstersList; //todo consult Marcin, Mateusz
     private PlayerModel player;
 
@@ -39,13 +40,7 @@ public class GameState extends BaseModel {
         this.currentMap = currentMap;
     }
 
-    public List<String> getDiscoveredMaps() {
-        return discoveredMaps;
-    }
 
-    public void addDiscoveredMap(String map) {
-        this.discoveredMaps.add(map);
-    }
 
     public PlayerModel getPlayer() {
         return player;

@@ -158,9 +158,9 @@ public class Main extends Application {
 
         EventHandler<ActionEvent> event = e -> pickUpItemEvent();
         pickUpButton.setOnAction(event);
-        EventHandler<ActionEvent> event2 = e -> exportToJson(); //serialization.importToJson()
+        EventHandler<ActionEvent> event2 = e -> exportToJson(); //todo Dominika serialization.importToJson()
         exportButton.setOnAction(event2);
-        EventHandler<ActionEvent> event3 = e -> exportToJson(); //metoda odtwarzajaca gre Marcin
+        EventHandler<ActionEvent> event3 = e -> importGame("FileName"); //todo Dominika metoda odtwarzajaca gre Marcin
         exportButton.setOnAction(event3);
         BorderPane borderPane = new BorderPane();
         Dimension size
@@ -403,9 +403,10 @@ public class Main extends Application {
         System.exit(0);
     }
 
-    private void importGame(){
-        Deserialization deserialization = new Deserialization("yyyy-mm-dd.txt");
+    private void importGame(String fileName){
+        Deserialization deserialization = new Deserialization(fileName);
         this.map = deserialization.getGameMap();
+
         Player player = deserialization.getPlayer();
         ArrayList<Actor> monsterList = deserialization.getMonsterList();
     }
