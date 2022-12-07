@@ -56,6 +56,7 @@ public class Main extends Application {
     Button pickUpButton = new Button("Pick Up");
 
     Button exportButton =  new Button("Export game state");
+    Button importButton = new Button(("Import game state"));
     Label name = new Label();
     Label message = new Label();
     private boolean teleported = false;
@@ -135,9 +136,11 @@ public class Main extends Application {
         ui.add(inventoryListLabel, 0, 4);
         ui.add(pickUpButton, 0, 5);
         ui.add(exportButton, 0, 6);
+        ui.add(exportButton, 0, 7);
 
         pickUpButton.setFocusTraversable(false);
         exportButton.setFocusTraversable(false);
+        importButton.setFocusTraversable(false);
         inventoryListLabel.setMinHeight(50);
         pickUpButton.setVisible(false);
 
@@ -154,8 +157,10 @@ public class Main extends Application {
 
         EventHandler<ActionEvent> event = e -> pickUpItemEvent();
         pickUpButton.setOnAction(event);
-        EventHandler<ActionEvent> event2 = e -> exportToJson();
+        EventHandler<ActionEvent> event2 = e -> exportToJson(); //serialization.importToJson()
         exportButton.setOnAction(event2);
+        EventHandler<ActionEvent> event3 = e -> exportToJson(); //metoda odtwarzajaca gre Marcin
+        exportButton.setOnAction(event3);
         BorderPane borderPane = new BorderPane();
         Dimension size
                 = Toolkit.getDefaultToolkit().getScreenSize();
