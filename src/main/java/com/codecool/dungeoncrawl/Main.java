@@ -49,8 +49,8 @@ public class Main extends Application {
     Button pickUpButton = new Button("Pick Up");
     Label name = new Label();
     Label message = new Label();
-    private boolean teleported = false;
     GameDatabaseManager dbManager;
+    private boolean teleported = false;
 
     public static void main(String[] args) {
         launch(args);
@@ -109,9 +109,10 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage)  {
         currentStage = primaryStage;
         setupDbManager();
+
         GridPane ui = new GridPane();
         ui.setPrefWidth(250);
         ui.setPrefHeight(200);
@@ -347,11 +348,6 @@ public class Main extends Application {
         } catch (SQLException ex) {
             System.out.println("Cannot connect to database.");
         }
-    }
-
-    private int getX(int centralCell, int direction, int cameraCenterFactor) {
-        return centralCell +
-                direction - cameraCenterFactor;
     }
 
     private void exit() {
