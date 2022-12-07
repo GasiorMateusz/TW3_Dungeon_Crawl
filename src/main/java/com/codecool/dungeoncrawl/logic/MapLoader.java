@@ -41,7 +41,6 @@ public class MapLoader {
                                 if (read.equals("@")) {
                                     if (comingFromTeleport) {
                                         teleportPlayer(map, cell, currentPlayer);
-
                                     } else {
                                         map.setPlayer(new Player(cell));
                                         if (currentPlayer.length != 0) {
