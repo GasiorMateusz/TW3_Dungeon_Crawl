@@ -1,7 +1,6 @@
-package com.codecool.dungeoncrawl.logic.items.weapons;
+package com.codecool.dungeoncrawl.logic.items;
 
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.items.weapons.Weapon;
 
 public class Bow extends Weapon {
     public Bow(Cell cell) {

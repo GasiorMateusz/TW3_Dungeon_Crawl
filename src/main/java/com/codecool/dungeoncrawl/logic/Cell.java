@@ -84,8 +84,8 @@ public class Cell implements Drawable {
         return this.actor instanceof Ghosts;
     }
 
-    public boolean isStairs() {
-        return this.getType().equals(CellType.STAIRS);
+    public boolean isStairsDown() {
+        return this.getType().equals(CellType.STAIRSDOWN);
     }
 
     public boolean isOutOfMap(int x, int y) {

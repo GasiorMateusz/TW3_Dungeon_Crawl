@@ -1,11 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.Direction;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.MultiMap;
+import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
@@ -176,9 +172,10 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage)  {
         currentStage = primaryStage;
         setupDbManager();
+
         GridPane ui = new GridPane();
         ui.setPrefWidth(250);
         ui.setPrefHeight(200);
@@ -328,19 +325,17 @@ public class Main extends Application {
         if (!map.getPlayer().isAlive) {
             teleported = false;
             restart();
-            System.out.println(" RESTART =======================================================");
         }
 
-        if (map.getPlayer().teleport) {
-            System.out.println("TELEPORT " + map.getPlayer().getName());
-            MapSaver.saveMap(map, "saved");
-            teleportation();
+        if (map.getPlayer().teleport != 0) {
+            teleportation(map.getPlayer().teleport);
         }
     }
 
-    public void teleportation() {
+    public void teleportation(int teleportDirection) {
         teleported = true;
-        map = MapLoader.loadMap(multiMap.getMapFromSet(++currentMapIndex), true, map.getPlayer());
+        currentMapIndex = currentMapIndex + teleportDirection;
+        map = MapLoader.loadMap(multiMap.getMapFromSet(currentMapIndex), true, map.getPlayer());
         centerCamera();
         moveCamera(Direction.NONE);
     }
@@ -426,11 +421,6 @@ public class Main extends Application {
         } catch (SQLException ex) {
             System.out.println("Cannot connect to database.");
         }
-    }
-
-    private int getX(int centralCell, int direction, int cameraCenterFactor) {
-        return centralCell +
-                direction - cameraCenterFactor;
     }
 
     private void exit() {
