@@ -109,7 +109,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage)  {
         currentStage = primaryStage;
         setupDbManager();
 
@@ -258,6 +258,7 @@ public class Main extends Application {
 
         if (map.getPlayer().teleport) {
             System.out.println("TELEPORT " + map.getPlayer().getName());
+            MapSaver.saveMap(map, "saved");
             teleportation();
         }
     }
@@ -349,11 +350,6 @@ public class Main extends Application {
         } catch (SQLException ex) {
             System.out.println("Cannot connect to database.");
         }
-    }
-
-    private int getX(int centralCell, int direction, int cameraCenterFactor) {
-        return centralCell +
-                direction - cameraCenterFactor;
     }
 
     private void exit() {
