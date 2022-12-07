@@ -25,6 +25,7 @@ public class PlayerModel extends BaseModel {
         this.x = player.getX();
         this.y = player.getY();
 
+
         this.hp = player.getHealth();
         this.inventory=new InventoryModel(player.getInventory());
 

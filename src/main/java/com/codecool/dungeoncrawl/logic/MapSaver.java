@@ -13,6 +13,19 @@ import java.util.StringJoiner;
 
 public class MapSaver {
 
+    //todo dd consult Dominika i Marcin (it could replace part of or entire saveMap method)
+    public static String convertGameMapToString(GameMap mapToSave) {
+        int width = mapToSave.getWidth();
+        int height = mapToSave.getHeight();
+        char[][] map = new char[height][width];
+
+        fillMapFloor(mapToSave, height, width, map);
+        fillMapWithItems(mapToSave, map);
+        String stringMap = getFinalMap(height, width, map);
+        return stringMap;
+    }
+
+
     public static void saveMap(GameMap mapToSave, String mapFile) {
         int width = mapToSave.getWidth();
         int height = mapToSave.getHeight();
@@ -49,6 +62,7 @@ public class MapSaver {
             map[item.getCell().getY()][item.getCell().getX()] = itemChar;
         }
     }
+
 
     private static String getFinalMap(int height, int width, char[][] map) {
         StringBuilder output = new StringBuilder();

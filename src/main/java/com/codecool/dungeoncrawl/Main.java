@@ -36,6 +36,7 @@ import javafx.stage.StageStyle;
 
 import java.awt.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Main extends Application {
 
@@ -400,5 +401,19 @@ public class Main extends Application {
             System.exit(1);
         }
         System.exit(0);
+    }
+
+    private void importGame(){
+        Deserialization deserialization = new Deserialization("yyyy-mm-dd.txt");
+        this.map = deserialization.getGameMap();
+        Player player = deserialization.getPlayer();
+        ArrayList<Actor> monsterList = deserialization.getMonsterList();
+    }
+
+    private void exportGame(){
+        String  stringMap= MapSaver.convertGameMapToString(map);
+        Serialization serialization = new Serialization();
+
+
     }
 }

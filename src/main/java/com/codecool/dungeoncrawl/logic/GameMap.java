@@ -70,4 +70,8 @@ public class GameMap {
     public List<Item> getItemList() {
         return itemList;
     }
+
+    public Cell[][] getCells() {
+        return cells;
+    }
 }
