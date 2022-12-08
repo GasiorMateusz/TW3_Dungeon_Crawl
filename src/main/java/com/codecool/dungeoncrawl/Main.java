@@ -36,8 +36,10 @@ import javafx.stage.StageStyle;
 
 import java.awt.*;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class Main extends Application {
 
@@ -159,7 +161,7 @@ public class Main extends Application {
 
         EventHandler<ActionEvent> event = e -> pickUpItemEvent();
         pickUpButton.setOnAction(event);
-        EventHandler<ActionEvent> event2 = e -> exportToJson(); //todo Dominika serialization.importToJson()
+        EventHandler<ActionEvent> event2 = e -> exportGame(); //todo Dominika serialization.importToJson()
         exportButton.setOnAction(event2);
         EventHandler<ActionEvent> event3 = e -> importGame("FileName"); //todo Dominika metoda odtwarzajaca gre Marcin Main.importGame()
         importButton.setOnAction(event3);
@@ -329,25 +331,6 @@ public class Main extends Application {
         livesLabel.setText(Integer.toString(map.getPlayer().getLifeCounter()));
         setMessage();
     }
-    private void exportToJson() {
-        //Serialization serialization = new Serialization(map);
-        //Deserialization deserlizatoin = new Deserialization(serialization, map);
-
-        PlayerModel playerModel = new PlayerModel(map.getPlayer());
-        GameState gameState= new GameState(playerModel);
-        String json= new Gson().toJson(gameState);
-        System.out.println(json);
-
-        GameState gameStateDeserilised = new Gson().fromJson(json, GameState.class);
-        PlayerModel playerModel1 = gameStateDeserilised.getPlayer();
-        Player player = new Player(new Cell(map, playerModel1.getX(), playerModel1.getY(), map.getCell(playerModel1.getX(), playerModel1.getY()).getType()));
-    }
-    private void importFromJson(String json) {
-
-        GameState gameStateDeserilised = new Gson().fromJson(json, GameState.class);
-        PlayerModel playerModel1 = gameStateDeserilised.getPlayer();
-        Player player = new Player(new Cell(map, playerModel1.getX(), playerModel1.getY(), map.getCell(playerModel1.getX(), playerModel1.getY()).getType()));
-    }
 
     private String getInventoryDescription() {
         StringBuilder items = new StringBuilder();
@@ -413,10 +396,10 @@ public class Main extends Application {
     }
 
     private void exportGame(){   // todo Dawid
-        Date date = new Date();
+        LocalDate date = LocalDate.now() ;
         String  stringMap= MapSaver.convertGameMapToString(map);
         Serialization serialization = new Serialization();
-//        serialization.exportToJson(stringMap, );
+        //serialization.exportToJson( currentMap,  date,  player,  monstersList,  fileName);
 
 
     }

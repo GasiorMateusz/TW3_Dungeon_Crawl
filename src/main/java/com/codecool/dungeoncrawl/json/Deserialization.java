@@ -30,7 +30,6 @@ public class Deserialization {
 
     }
 
-
     private GameState importFromJson(String filename) {
         FileLoader fileLoader = new FileLoader();
         String json= fileLoader.loadFromFile(filename);
