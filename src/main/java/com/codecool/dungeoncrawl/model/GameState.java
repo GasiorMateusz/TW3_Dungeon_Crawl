@@ -1,7 +1,7 @@
 package com.codecool.dungeoncrawl.model;
 
-import java.util.ArrayList;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameState extends BaseModel {
@@ -14,6 +14,11 @@ public class GameState extends BaseModel {
         this.currentMap = currentMap;
         this.savedAt = savedAt;
         this.player = player;
+    }
+
+    public GameState(String currentMap, Date savedAt) {
+        this.currentMap = currentMap;
+        this.savedAt = savedAt;
     }
 
     public Date getSavedAt() {

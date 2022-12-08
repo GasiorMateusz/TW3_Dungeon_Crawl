@@ -1,8 +1,22 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.actors.*;
+import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.ActorType;
+import com.codecool.dungeoncrawl.logic.actors.Crocodile;
+import com.codecool.dungeoncrawl.logic.actors.Ghosts;
+import com.codecool.dungeoncrawl.logic.actors.Octopus;
+import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.items.Bandage;
+import com.codecool.dungeoncrawl.logic.items.Bow;
+import com.codecool.dungeoncrawl.logic.items.Crown;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
+import com.codecool.dungeoncrawl.logic.items.Key;
+import com.codecool.dungeoncrawl.logic.items.Life;
+import com.codecool.dungeoncrawl.logic.items.Medicine;
+import com.codecool.dungeoncrawl.logic.items.Sword;
+import com.codecool.dungeoncrawl.model.PlayerModel;
 
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -94,6 +108,7 @@ public class MapLoader {
         String itemClassString = itemClassRead.substring(0, 1).toUpperCase() + itemClassRead.substring(1);
         return ("com.codecool.dungeoncrawl.logic.items." + itemClassString);
     }
+
     private static Constructor<?> getMonsterConstructor(String read) {
         Class<?> monsterClass;
         try {
@@ -140,5 +155,15 @@ public class MapLoader {
         } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void createPlayer(PlayerModel playerModel, GameMap map){
+        Player player = new Player(map.getCell(playerModel.getX(), playerModel.getY()));
+        map.setPlayer(player);
+        map.getCell(player.getX(), player.getY()).setActor(player);
+        player.setCell(map.getCell(player.getX(), player.getY()));
+        player.setName(playerModel.getPlayerName());
+        player.setHealth(playerModel.getHp());
+
     }
 }

@@ -1,11 +1,17 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.logic.*;
+import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.Direction;
+import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.MapSaver;
+import com.codecool.dungeoncrawl.logic.MultiMap;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
-import com.codecool.dungeoncrawl.logic.MapSaver;
+import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -127,10 +133,10 @@ public class Main extends Application {
         saveButton.setOnAction(event -> {
             if (!saveName.getText().isEmpty()) {
                 String savedGameName = saveName.getText();
-                System.out.println(savedGameName);
+                String filename = MapSaver.saveMap(map, "testMap");
+                dbManager.saveAll(map.getPlayer(), filename, savedGameName);
                 save.close();
             }
-//            dbManager.saveAll(savedGameName);
 
         });
         Button cancelButton = new Button();
@@ -146,21 +152,26 @@ public class Main extends Application {
         save.show();
     }
 
-    private static void loadPopUp() {
+    private void loadPopUp() {
         Stage load = new Stage();
         load.setTitle("Choose saved state!");
         VBox loadVBox = new VBox();
         loadVBox.setAlignment(Pos.CENTER);
-        String string1 = "Option 1";
-        String string2 = "Option 2";
-        String string3 = "Option 3";
-        ComboBox<String> comboBox = new ComboBox<>(FXCollections.observableArrayList(string1, string2, string3));
+        ComboBox<String> comboBox = new ComboBox<>(FXCollections.observableArrayList(dbManager.getLoadNames()));
         comboBox.getSelectionModel().select(0);
         comboBox.setId("changed");
         loadVBox.getChildren().add(comboBox);
         Button selectButton = new Button();
         selectButton.setText("Select");
-        selectButton.setOnAction(event -> load.close());
+        selectButton.setOnAction(event -> {
+            load.close();
+            PlayerModel playerModel = dbManager.getSelectedPlayer(comboBox.getValue());
+            GameState gameState = dbManager.getGameState(playerModel.getId());
+            map = MapLoader.loadMap(gameState.getCurrentMap(), false);
+            MapLoader.createPlayer(playerModel, map);
+            initMap();
+            refresh();
+        });
         Button cancelButton = new Button();
         cancelButton.setText("Cancel");
         cancelButton.setOnAction(event -> load.close());
@@ -172,7 +183,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage)  {
+    public void start(Stage primaryStage) {
         currentStage = primaryStage;
         setupDbManager();
 
@@ -351,6 +362,7 @@ public class Main extends Application {
         setMessage();
         context.setFill(Color.rgb(71, 45, 60));
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        name.setText("" + map.getPlayer().getName());
         healthLabel.setText("" + map.getPlayer().getHealth());
         pickUpButton.setVisible(map.getPlayer().canPickUp());
         inventoryListLabel.setText(getInventoryDescription());

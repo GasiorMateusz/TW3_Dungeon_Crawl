@@ -13,17 +13,19 @@ import java.util.StringJoiner;
 
 public class MapSaver {
 
-    public static void saveMap(GameMap mapToSave, String mapFile) {
+    public static String saveMap(GameMap mapToSave, String mapFile) {
         int width = mapToSave.getWidth();
         int height = mapToSave.getHeight();
         char[][] map = new char[height][width];
 
         fillMapFloor(mapToSave, height, width, map);
         fillMapWithItems(mapToSave, map);
-        saveMapToTextFile(mapFile, height, width, map);
+        fillMapWithMonsters(mapToSave, map);
+        String name = saveMapToTextFile(mapFile, height, width, map);
         System.out.println(getFinalMap(height, width, map));
         System.out.println("\nMONSTERS:\n" + getMonstersInfo(mapToSave));
-        System.exit(0);
+//        System.exit(0);
+        return name;
     }
 
     private static void fillMapFloor(GameMap mapToSave, int height, int width, char[][] map) {
@@ -50,7 +52,7 @@ public class MapSaver {
         }
     }
 
-    private static String getFinalMap(int height, int width, char[][] map) {
+    public static String getFinalMap(int height, int width, char[][] map) {
         StringBuilder output = new StringBuilder();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -90,7 +92,7 @@ public class MapSaver {
         return output.toString();
     }
 
-    private static void saveMapToTextFile(String mapFile, int height, int width, char[][] map)  {
+    public static String saveMapToTextFile(String mapFile, int height, int width, char[][] map) {
         String fileName = "src/main/resources/" + mapFile + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-dd-M--HH-mm-ss")) + ".txt";
         try {
             FileWriter myWriter = new FileWriter(fileName);
@@ -101,5 +103,6 @@ public class MapSaver {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+        return "/" + mapFile + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-dd-M--HH-mm-ss")) + ".txt";
     }
 }

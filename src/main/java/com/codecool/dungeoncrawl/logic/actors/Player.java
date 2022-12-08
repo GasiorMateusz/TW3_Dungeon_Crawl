@@ -41,9 +41,6 @@ public class Player extends Actor implements CanPick {
         return opponent;
     }
 
-    public boolean isLifeCounterIncreased() {
-        return lifeCounterIncreased;
-    }
 
     public void setOpponent(Actor opponent) {
         this.opponent = opponent;
