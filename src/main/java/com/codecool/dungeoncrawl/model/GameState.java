@@ -1,20 +1,23 @@
 package com.codecool.dungeoncrawl.model;
 
+import com.codecool.dungeoncrawl.logic.actors.Actor;
 
-
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import java.util.List;
 
 public class GameState extends BaseModel {
-    private String savedAt;  //TODO Dawid D date and time  LocalDate, check with Mateusz
+
+    private LocalDate savedAt;  //TODO DD convert Strings to LocalDateTime
     private String currentMap;
 
     private final List<String> discoveredMapsInJSON = new ArrayList<>(); //todo consult Marcin, Mateusz
     private List<MonsterModel> monstersList; //todo consult Marcin, Mateusz
     private PlayerModel player;
 
-    public GameState(String currentMap, String savedAt, PlayerModel player, List<MonsterModel> monstersList) {
+
+    public GameState(String currentMap, LocalDate savedAt,, PlayerModel player, List<MonsterModel> monstersList) {
         this.currentMap = currentMap;
         this.savedAt = savedAt;
         this.player = player;
@@ -24,11 +27,11 @@ public class GameState extends BaseModel {
         this.player = player;
     }
 
-    public String getSavedAt() {
+    public LocalDate getSavedAt() {
         return savedAt;
     }
 
-    public void setSavedAt(String savedAt) {
+    public void setSavedAt(LocalDate savedAt) {
         this.savedAt = savedAt;
     }
 
