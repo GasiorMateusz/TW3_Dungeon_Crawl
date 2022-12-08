@@ -12,6 +12,16 @@ public class GameMap {
     private final int height;
     private final Cell[][] cells;
 
+    public Cell getStartingPlayersPosition() {
+        return startingPlayersPosition;
+    }
+
+    public void setStartingPlayersPosition(Cell startingPlayersPosition) {
+        this.startingPlayersPosition = startingPlayersPosition;
+    }
+
+    private Cell startingPlayersPosition;
+
     private Player player;
     private List<Actor> monstersList;
     private final List<Item> itemList;
@@ -35,7 +45,6 @@ public class GameMap {
     public void setPlayer(Player player) {
         this.player = player;
     }
-
 
     public Player getPlayer() {
         return player;

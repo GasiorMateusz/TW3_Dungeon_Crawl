@@ -8,6 +8,7 @@ import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.MapSaver;
 import com.codecool.dungeoncrawl.logic.MultiMap;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
 import com.codecool.dungeoncrawl.model.GameState;
@@ -47,7 +48,7 @@ public class Main extends Application {
     int[] cameraCenterFactor = new int[]{5, 10};
     Cell centralCell;
     MultiMap multiMap = new MultiMap();
-    GameMap map = MapLoader.loadMap(multiMap.getMapFromSet(0), false);
+    GameMap map = multiMap.getMapFromSet(0);
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -81,7 +82,8 @@ public class Main extends Application {
         acceptButton.setDefaultButton(true);
         acceptButton.setOnAction(event -> {
             stage.close();
-            map = MapLoader.loadMap(multiMap.getMapFromSet(0), false, map.getPlayer());
+            map = multiMap.getMapFromSet(0);
+            map.setPlayer(MapLoader.loadMap());
             moveCamera(Direction.NONE);
             centerCamera();
             moveCamera(Direction.NONE);
@@ -346,14 +348,14 @@ public class Main extends Application {
     public void teleportation(int teleportDirection) {
         teleported = true;
         currentMapIndex = currentMapIndex + teleportDirection;
-        map = MapLoader.loadMap(multiMap.getMapFromSet(currentMapIndex), true, map.getPlayer());
+        map = multiMap.getMapFromSet(currentMapIndex,map.getPlayer());
         centerCamera();
         moveCamera(Direction.NONE);
     }
 
     public void restart() {
         Popup.display();
-        map = MapLoader.loadMap(multiMap.getMapFromSet(0), false, map.getPlayer());
+        map = multiMap.getMapFromSet(0,map.getPlayer());
         centerCamera();
         moveCamera(Direction.NONE);
     }

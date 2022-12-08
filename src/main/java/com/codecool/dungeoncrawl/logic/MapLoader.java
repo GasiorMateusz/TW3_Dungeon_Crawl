@@ -29,7 +29,7 @@ public class MapLoader {
     private static final String MONSTERS = "sgoc";
     private static final String ITEMS = "DMHBWKd";
 
-    public static GameMap loadMap(String mapFile, boolean comingFromTeleport, Player... currentPlayer) {
+    public static GameMap loadMap(String mapFile) {
         InputStream is;
         int height, width;
         if (mapFile.startsWith("STR")) {
@@ -65,14 +65,7 @@ public class MapLoader {
                                 addNewItem(map, cell, getItemConstructor(read));
                             } else {
                                 if (read.equals("@")) {
-                                    if (comingFromTeleport) {
-                                        teleportPlayer(map, cell, currentPlayer);
-                                    } else {
-                                        map.setPlayer(new Player(cell));
-                                        if (currentPlayer.length != 0) {
-                                            map.getPlayer().setName(currentPlayer[0].getName());
-                                        }
-                                    }
+                                    assert true;
                                 } else {
                                     throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                                 }
@@ -83,6 +76,48 @@ public class MapLoader {
             }
         }
         return map;
+    }
+
+    public Cell findPlayersPositionOnTheMapInTheFile(String mapFile){
+        InputStream is;
+        int height, width;
+        if (mapFile.startsWith("STR")) {
+            String mapString = mapFile.substring(3);
+            is = new ByteArrayInputStream(mapString.getBytes());
+            int[] size = getMapSize(is);
+            width = size[0];
+            height = size[1];
+            is = new ByteArrayInputStream(mapString.getBytes());
+        } else {
+            is = MapLoader.class.getResourceAsStream(mapFile);
+            int[] size = getMapSize(is);
+            width = size[0];
+            height = size[1];
+            is = MapLoader.class.getResourceAsStream(mapFile);
+        }
+        Scanner scanner = new Scanner(is);
+        GameMap map = new GameMap(width, height, CellType.EMPTY);
+        for (int y = 0; y < height; y++) {
+            String line = scanner.nextLine();
+            for (int x = 0; x < width; x++) {
+                if (x < line.length()) {
+                    Cell cell = map.getCell(x, y);
+                    String read = String.valueOf((line.charAt(x)));
+                    if (read.equals("@")) {
+                        return new Cell(map, x, y, CellType.FLOOR);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public void addPlayerToMap(Player player, boolean comingFromTeleport, GameMap map){
+        if (comingFromTeleport) {
+            teleportPlayer(map, player.getCell(), new Player[]{player});
+        } else {
+            map.setPlayer(new Player(player.getCell()));
+        }
     }
 
     private static void teleportPlayer(GameMap map, Cell cell, Player[] currentPlayer) {
