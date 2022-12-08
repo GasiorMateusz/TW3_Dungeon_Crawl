@@ -10,7 +10,8 @@ public enum CellType {
     WALL("wall", '#'),
     CLOSED_DOOR("closedDoor", 'C'),
     OPEN_DOOR("openDoor", 'O'),
-    STAIRS("stairs", 'X');
+    STAIRSDOWN("stairsDown", 'X'),
+    STAIRSUP("stairsUp", 'Y');
 
     private final String tileName;
     private final char mapChar;
