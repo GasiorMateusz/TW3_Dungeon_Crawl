@@ -383,19 +383,25 @@ public class Main extends Application {
 
     private void importGame() {
         Deserialization deserialization = new Deserialization(fileName);
-        this.map = deserialization.getGameMap();
+        System.out.println("import");
+//        this.map = deserialization.getGameMap();
 
 //        GameMap gameMap = deserialization.getGameMap();
 //        this.map = deserialization.getGameMap();
 
+
         String stringMap = deserialization.getStringMap();
         Player player = deserialization.getPlayer();
         java.util.List<Actor> monsterList = deserialization.getMonsterList();
+        System.out.println(monsterList.toString());
+        System.out.println(player.toString());
+        System.out.println(stringMap);
     }
 
     private void exportGame() {   // todo Dawid
-        String fileName = "src/main/resources/gameState.json";
+        this.fileName = "src/main/resources/gameState.json";
         Date date = new Date();
+        System.out.println("export");
 
         String stringMap = MapSaver.convertGameMapToString(map);
         PlayerModel playerModel = new PlayerModel(map.getPlayer());
