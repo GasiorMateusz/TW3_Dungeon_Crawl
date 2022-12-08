@@ -18,17 +18,10 @@ public class MonsterModel extends BaseModel {
     }
 
 
-
-
-
-
     public String getMonsterType() {
         return monsterType;
     }
 
-    public int getHealthPoints() {
-        return healthPoints;
-    }
 
     public int getX() {
         return x;

@@ -47,7 +47,7 @@ public class Deserialization {
     }
 
 
-        private List<Actor> createMonsterList() {
+    private List<Actor> createMonsterList() {
         List<MonsterModel> monsterModelList = gameState.getMonstersList();
         List<Actor> monsterList = new ArrayList<>();
 

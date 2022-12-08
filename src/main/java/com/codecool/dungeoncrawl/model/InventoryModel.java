@@ -8,11 +8,12 @@ import java.util.stream.Collectors;
 
 public class InventoryModel {
     private final List<String> items;
+
     public InventoryModel(Inventory inventory) {
-        this.items=convertItemsToStrings(inventory);
+        this.items = convertItemsToStrings(inventory);
     }
 
-    public List<String> convertItemsToStrings(Inventory inventory){
+    public List<String> convertItemsToStrings(Inventory inventory) {
         return inventory.getItems().stream().map(Drawable::getTileName).collect(Collectors.toList());
 
     }

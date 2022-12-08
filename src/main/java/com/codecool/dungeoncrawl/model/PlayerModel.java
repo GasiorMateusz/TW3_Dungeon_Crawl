@@ -1,7 +1,7 @@
 package com.codecool.dungeoncrawl.model;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.items.Inventory;
+
 
 public class PlayerModel extends BaseModel {
     private String playerName;
@@ -10,9 +10,7 @@ public class PlayerModel extends BaseModel {
     private int y;
 
 
-
     private InventoryModel inventory;
-
 
 
     public PlayerModel(Player player) {
@@ -22,7 +20,7 @@ public class PlayerModel extends BaseModel {
 
 
         this.hp = player.getHealth();
-        this.inventory=new InventoryModel(player.getInventory());
+        this.inventory = new InventoryModel(player.getInventory());
 
     }
 
@@ -30,23 +28,9 @@ public class PlayerModel extends BaseModel {
         return playerName;
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
 
-    public InventoryModel getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(InventoryModel inventory) {
-        this.inventory = inventory;
-    }
     public int getHp() {
         return hp;
-    }
-
-    public void setHp(int hp) {
-        this.hp = hp;
     }
 
     public int getX() {
