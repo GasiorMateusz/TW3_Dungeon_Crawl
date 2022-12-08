@@ -6,6 +6,7 @@ import com.codecool.dungeoncrawl.model.MonsterModel;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import com.google.gson.Gson;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 public class Serialization {
 
     //    public void exportToJson(String currentMap, LocalDate date, PlayerModel player, List<MonsterModel> monstersList, String fileName) {//todo skonsultuj z Dominiką
-    public void exportToJson(String currentMap, String date, PlayerModel player, List<MonsterModel> monstersList, String fileName) {//todo skonsultuj z Dominiką
+    public void exportToJson(String currentMap, Date date, PlayerModel player, List<MonsterModel> monstersList, String fileName) {//todo skonsultuj z Dominiką
         GameState gameState = new GameState(currentMap, date, player, monstersList);
         String json = new Gson().toJson(gameState);
         FileWritter fileWriter = new FileWritter();

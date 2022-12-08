@@ -80,7 +80,7 @@ public class Deserialization {
     }
 
     public String getStringMap() {
-        return StringMap;
+        return gameState.getCurrentMap();
     }
 
     public List<String> getMapList() {
