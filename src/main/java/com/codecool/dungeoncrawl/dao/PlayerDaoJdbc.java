@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.model.PlayerModel;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerDaoJdbc implements PlayerDao {
@@ -67,6 +68,11 @@ public class PlayerDaoJdbc implements PlayerDao {
             throw new RuntimeException(e);
         }
     }
+
+//    @Override
+//    public PlayerModel get(int id) {
+//        return null;
+//    }
 
     @Override
     public PlayerModel get(String player_name) {
