@@ -179,4 +179,9 @@ public abstract class Actor implements Drawable {
     public void setStrikeStrength(int strikeStrength) {
         this.strikeStrength = strikeStrength;
     }
+
+    public void setTeleport(int teleport) {
+        this.teleport = teleport;
+    }
+
 }
