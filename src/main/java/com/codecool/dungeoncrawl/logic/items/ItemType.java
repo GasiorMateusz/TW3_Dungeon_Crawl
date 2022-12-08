@@ -23,9 +23,6 @@ public enum ItemType {
     public static char getItemMapChar(ItemType item) {
         return item.mapChar;
     }
-    public static String getItemSubtype(ItemType item) {
-        return item.subtype;
-    }
 
     public static ItemType getItemType(char mapChar) {
         try {
