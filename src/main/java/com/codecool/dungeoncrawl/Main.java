@@ -39,6 +39,7 @@ import java.sql.SQLException;
 
 
 public class Main extends Application {
+    String fileName;
 
     int[] cameraSize = new int[]{25, 35};
     int[] cameraCenterFactor = new int[]{5, 10};
@@ -160,7 +161,7 @@ public class Main extends Application {
         pickUpButton.setOnAction(event);
         EventHandler<ActionEvent> event2 = e -> exportGame(); //todo Dominika serialization.importToJson()
         exportButton.setOnAction(event2);
-        EventHandler<ActionEvent> event3 = e -> importGame("FileName"); //todo Dominika metoda odtwarzajaca gre Marcin Main.importGame()
+        EventHandler<ActionEvent> event3 = e -> importGame(); //todo Dominika metoda odtwarzajaca gre Marcin Main.importGame()
         importButton.setOnAction(event3);
         BorderPane borderPane = new BorderPane();
         Dimension size
@@ -381,18 +382,18 @@ public class Main extends Application {
         System.exit(0);
     }
 
-    private void importGame(String nameOfTheFile) {
-        Deserialization deserialization = new Deserialization(nameOfTheFile);
+    private void importGame() {
+        Deserialization deserialization = new Deserialization(fileName);
         this.map = deserialization.getGameMap();
 
-        Player player = deserialization.getPlayer();
-        java.util.List<Actor> monsterList = deserialization.getMonsterList();
+        //Player player = deserialization.getPlayer();
+        //java.util.List<Actor> monsterList = deserialization.getMonsterList();
     }
 
     private void exportGame() {   // todo Dawid
-        String fileName = "src/main/resources/gameState.json";
+        fileName = "src/main/resources/gameState.json";
 //        LocalDate date = LocalDate.now();
-        String date = "dddd";
+        String date = "ddddd";
         String stringMap = MapSaver.convertGameMapToString(map);
         PlayerModel playerModel = new PlayerModel(map.getPlayer());
 

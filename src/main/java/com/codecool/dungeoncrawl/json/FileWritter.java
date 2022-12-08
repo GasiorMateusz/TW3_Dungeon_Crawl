@@ -7,8 +7,11 @@ import java.io.FileWriter;
 public class FileWritter {
 
     public void saveTofile(String json, String filename) {
+
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+            FileWriter fileWriter= new FileWriter(filename);
+            BufferedWriter writer = new BufferedWriter(fileWriter);
+            writer.write("");
             writer.write(json);
             writer.close();
         } catch (Exception IOException) {
