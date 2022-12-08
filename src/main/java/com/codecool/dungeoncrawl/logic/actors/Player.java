@@ -74,6 +74,7 @@ public class Player extends Actor implements CanPick {
         Item item = getCell().getItem();
         if (canPickUp()) {
             inventory.getItems().add(item);
+
             if (item instanceof Weapon) {
                 refreshPlayerStrikeStrenth();
             }
