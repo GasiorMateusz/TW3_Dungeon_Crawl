@@ -184,7 +184,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage){
         currentStage = primaryStage;
-//        setupDbManager();
+        setupDbManager();
 
         GridPane ui = new GridPane();
         ui.setPrefWidth(250);
