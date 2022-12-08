@@ -35,8 +35,7 @@ import javafx.stage.StageStyle;
 
 import java.awt.*;
 import java.sql.SQLException;
-
-
+import java.util.Date;
 
 public class Main extends Application {
 
@@ -383,16 +382,19 @@ public class Main extends Application {
 
     private void importGame(String nameOfTheFile) {
         Deserialization deserialization = new Deserialization(nameOfTheFile);
-        this.map = deserialization.getGameMap();
 
+//        GameMap gameMap = deserialization.getGameMap();
+//        this.map = deserialization.getGameMap();
+
+        String stringMap = deserialization.getStringMap();
         Player player = deserialization.getPlayer();
         java.util.List<Actor> monsterList = deserialization.getMonsterList();
     }
 
     private void exportGame() {   // todo Dawid
         String fileName = "src/main/resources/gameState.json";
-//        LocalDate date = LocalDate.now();
-        String date = "dddd";
+        Date date = new Date();
+
         String stringMap = MapSaver.convertGameMapToString(map);
         PlayerModel playerModel = new PlayerModel(map.getPlayer());
 
@@ -400,6 +402,5 @@ public class Main extends Application {
         java.util.List<MonsterModel> monsterList = serialization.getMonsterModelList(map.getMonstersList());
 
         serialization.exportToJson(stringMap, date, playerModel, monsterList, fileName);
-
     }
 }
