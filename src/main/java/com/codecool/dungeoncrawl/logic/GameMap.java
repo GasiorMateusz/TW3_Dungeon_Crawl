@@ -10,6 +10,9 @@ import java.util.List;
 public class GameMap {
     private final int width;
     private final int height;
+
+
+
     private final Cell[][] cells;
 
     private Player player;
@@ -70,4 +73,5 @@ public class GameMap {
     public List<Item> getItemList() {
         return itemList;
     }
+
 }

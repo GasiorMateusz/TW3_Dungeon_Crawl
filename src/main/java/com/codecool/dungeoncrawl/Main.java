@@ -1,11 +1,16 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
+import com.codecool.dungeoncrawl.json.Deserialization;
+import com.codecool.dungeoncrawl.json.Serialization;
 import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
 import com.codecool.dungeoncrawl.logic.MapSaver;
+import com.codecool.dungeoncrawl.model.MonsterModel;
+import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -34,8 +39,10 @@ import javafx.stage.StageStyle;
 
 import java.awt.*;
 import java.sql.SQLException;
+import java.util.Date;
 
 public class Main extends Application {
+    String fileName;
 
     int[] cameraSize = new int[]{25, 35};
     int[] cameraCenterFactor = new int[]{5, 10};
@@ -52,6 +59,9 @@ public class Main extends Application {
     Label inventoryListLabel = new Label();
     Label livesLabel = new Label();
     Button pickUpButton = new Button("Pick Up");
+
+    Button exportButton = new Button("Export game state");
+    Button importButton = new Button(("Import game state"));
     Label name = new Label();
     Label message = new Label();
     private boolean teleported = false;
@@ -172,9 +182,9 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage)  {
+    public void start(Stage primaryStage){
         currentStage = primaryStage;
-        setupDbManager();
+//        setupDbManager();
 
         GridPane ui = new GridPane();
         ui.setPrefWidth(250);
@@ -193,7 +203,14 @@ public class Main extends Application {
         ui.add(new Label("Inventory:"), 0, 4);
         ui.add(inventoryListLabel, 0, 5);
         ui.add(pickUpButton, 0, 6);
+        ui.add(exportButton, 0, 7);
+        ui.add(importButton, 0, 8);
+
+
+
         pickUpButton.setFocusTraversable(false);
+        exportButton.setFocusTraversable(false);
+        importButton.setFocusTraversable(false);
         inventoryListLabel.setMinHeight(50);
         pickUpButton.setVisible(false);
         loadGameButton.setFocusTraversable(false);
@@ -211,6 +228,10 @@ public class Main extends Application {
 
         EventHandler<ActionEvent> event = e -> pickUpItemEvent();
         pickUpButton.setOnAction(event);
+        EventHandler<ActionEvent> event2 = e -> exportGame();
+        exportButton.setOnAction(event2);
+        EventHandler<ActionEvent> event3 = e -> importGame();
+        importButton.setOnAction(event3);
         BorderPane borderPane = new BorderPane();
         Dimension size
                 = Toolkit.getDefaultToolkit().getScreenSize();
@@ -430,5 +451,38 @@ public class Main extends Application {
             System.exit(1);
         }
         System.exit(0);
+    }
+
+    private void importGame() {
+        Deserialization deserialization = new Deserialization(fileName);
+
+//        this.map = deserialization.getGameMap();
+
+//        GameMap gameMap = deserialization.getGameMap();
+//        this.map = deserialization.getGameMap();
+
+
+        String stringMap = deserialization.getStringMap();
+        Player player = deserialization.getPlayer();
+        java.util.List<Actor> monsterList = deserialization.getMonsterList();
+
+        System.out.println("===========Print deserialized objects =========");
+        System.out.println(monsterList.toString());
+        System.out.println(player.toString());
+        System.out.println(stringMap);
+    }
+
+    private void exportGame() {
+        this.fileName = "src/main/resources/gameState.json";
+        Date date = new Date();
+        System.out.println("export");
+
+        String stringMap = MapSaver.convertGameMapToString(map);
+        PlayerModel playerModel = new PlayerModel(map.getPlayer());
+
+        Serialization serialization = new Serialization();
+        java.util.List<MonsterModel> monsterList = serialization.getMonsterModelList(map.getMonstersList());
+
+        serialization.exportToJson(stringMap, date, playerModel, monsterList, fileName);
     }
 }

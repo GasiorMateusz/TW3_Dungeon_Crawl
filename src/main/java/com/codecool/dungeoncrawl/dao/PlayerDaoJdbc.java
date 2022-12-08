@@ -1,5 +1,9 @@
 package com.codecool.dungeoncrawl.dao;
 
+import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
+import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 
 import javax.sql.DataSource;
@@ -35,6 +39,8 @@ public class PlayerDaoJdbc implements PlayerDao {
     public void update(PlayerModel player) {
 
     }
+
+
 
     @Override
     public PlayerModel get(int playerId) {

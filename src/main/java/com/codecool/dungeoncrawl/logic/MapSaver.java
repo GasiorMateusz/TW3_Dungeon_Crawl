@@ -12,11 +12,27 @@ import java.time.format.DateTimeFormatter;
 import java.util.StringJoiner;
 
 public class MapSaver {
+    static int  height;
+    static int width;
+    static char[][] map;
+    //todo dd consult Dominika i Marcin (it could replace part of or entire saveMap method)
+    public static String convertGameMapToString(GameMap mapToSave) {
+        width = mapToSave.getWidth();
+        height = mapToSave.getHeight();
+        map = new char[height][width];
+
+        fillMapFloor(mapToSave, height, width, map);
+        fillMapWithItems(mapToSave, map);
+        String stringMap = getFinalMap(height, width, map);
+        return stringMap;
+    }
+    //todo dd consult Dominika i Marcin (it could replace part of or entire saveMap method)
+
 
     public static void saveMap(GameMap mapToSave, String mapFile) {
-        int width = mapToSave.getWidth();
-        int height = mapToSave.getHeight();
-        char[][] map = new char[height][width];
+         width = mapToSave.getWidth();
+         height = mapToSave.getHeight();
+         map = new char[height][width];
 
         fillMapFloor(mapToSave, height, width, map);
         fillMapWithItems(mapToSave, map);
@@ -50,7 +66,8 @@ public class MapSaver {
         }
     }
 
-    private static String getFinalMap(int height, int width, char[][] map) {
+
+    public static String getFinalMap(int height, int width, char[][] map) {
         StringBuilder output = new StringBuilder();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
