@@ -44,6 +44,8 @@ public class GameMap {
 
     public void setPlayer(Player player) {
         this.player = player;
+//        player.getCell().setActor(player);
+//        getCell(player.getX(), player.getY()).setActor(player);
     }
 
     public Player getPlayer() {

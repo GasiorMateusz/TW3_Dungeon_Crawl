@@ -65,7 +65,7 @@ public class MapLoader {
                                 addNewItem(map, cell, getItemConstructor(read));
                             } else {
                                 if (read.equals("@")) {
-                                    assert true;
+                                    map.setStartingPlayersPosition( new Cell(map, x, y, CellType.FLOOR));
                                 } else {
                                     throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                                 }

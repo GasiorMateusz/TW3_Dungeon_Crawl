@@ -11,6 +11,7 @@ public class MultiMap {
     public MultiMap() {
         IntStream.range(0, mapsNames.length)
                 .forEach(mapIndex -> maps[mapIndex] = MapLoader.loadMap(mapsNames[mapIndex]));
+        maps[0].setPlayer(new Player(new Cell(maps[0],5,5,CellType.FLOOR)));
     }
 
     public GameMap getMapFromSet(int index) {

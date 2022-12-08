@@ -83,7 +83,7 @@ public class Main extends Application {
         acceptButton.setOnAction(event -> {
             stage.close();
             map = multiMap.getMapFromSet(0);
-            map.setPlayer(MapLoader.loadMap());
+            map.setPlayer(new Player(map.getStartingPlayersPosition()));
             moveCamera(Direction.NONE);
             centerCamera();
             moveCamera(Direction.NONE);
@@ -169,7 +169,7 @@ public class Main extends Application {
             load.close();
             PlayerModel playerModel = dbManager.getSelectedPlayer(comboBox.getValue());
             GameState gameState = dbManager.getGameState(playerModel.getId());
-            map = MapLoader.loadMap(gameState.getCurrentMap(), false);
+            map = MapLoader.loadMap(gameState.getCurrentMap());
             MapLoader.createPlayer(playerModel, map);
             initMap();
             refresh();
@@ -348,14 +348,19 @@ public class Main extends Application {
     public void teleportation(int teleportDirection) {
         teleported = true;
         currentMapIndex = currentMapIndex + teleportDirection;
-        map = multiMap.getMapFromSet(currentMapIndex,map.getPlayer());
+        Player tmpPLayer = map.getPlayer();
+        map = multiMap.getMapFromSet(currentMapIndex);
+        tmpPLayer.setCell(map.getStartingPlayersPosition());
+        map.setPlayer(tmpPLayer);
         centerCamera();
+        teleported = false;
         moveCamera(Direction.NONE);
     }
 
     public void restart() {
         Popup.display();
-        map = multiMap.getMapFromSet(0,map.getPlayer());
+        map = multiMap.getMapFromSet(0);
+        map.setPlayer(new Player(map.getStartingPlayersPosition()));
         centerCamera();
         moveCamera(Direction.NONE);
     }
