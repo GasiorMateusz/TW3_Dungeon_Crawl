@@ -405,7 +405,7 @@ public class Main extends Application {
         LocalDate date = LocalDate.now() ;
         String  stringMap= MapSaver.convertGameMapToString(map);
         Serialization serialization = new Serialization();
-        //serialization.exportToJson( currentMap,  date,  player,  monstersList,  fileName);
+        //serialization.exportToJson( stringMap,  date,  new PlayerModel(map.getPlayer()),  monstersList,  fileName);
 
     }
 
