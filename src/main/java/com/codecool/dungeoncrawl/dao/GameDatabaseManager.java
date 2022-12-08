@@ -7,6 +7,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class GameDatabaseManager {
@@ -18,6 +19,7 @@ public class GameDatabaseManager {
         playerDao = new PlayerDaoJdbc(dataSource);
         gameStateDao = new GameStateDaoJdbc(dataSource);
     }
+
     public void setPlayer(PlayerModel player) {
         playerDao.set(player);
     }
@@ -31,11 +33,10 @@ public class GameDatabaseManager {
     }
 
     public void saveAll(Player player, String currentMap, String savedGameName) {
-        long now = System.currentTimeMillis();
-        java.sql.Date currentDate = new java.sql.Date(now);
+        LocalDateTime currentDate = LocalDateTime.now();
         PlayerModel model = new PlayerModel(player, savedGameName);
-        GameState gameState = new GameState(currentMap, currentDate, model);
         savePlayer(model);
+        GameState gameState = new GameState(currentMap, currentDate, model);
         saveGameState(gameState);
     }
 
@@ -43,7 +44,7 @@ public class GameDatabaseManager {
 //        return playerDao.get(index);
 //    }
 
-    public PlayerModel getSelectedPlayer(String selectedPlayer){
+    public PlayerModel getSelectedPlayer(String selectedPlayer) {
         return playerDao.get(selectedPlayer);
     }
 
@@ -64,11 +65,11 @@ public class GameDatabaseManager {
         return dataSource;
     }
 
-    public List<String> getLoadNames(){
+    public List<String> getLoadNames() {
         return playerDao.getSaveNames();
     }
 
-    public GameState getGameState(int playerId){
+    public GameState getGameState(int playerId) {
         return gameStateDao.get(playerId);
     }
 }
