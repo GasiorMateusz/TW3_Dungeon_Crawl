@@ -2,7 +2,7 @@ package com.codecool.dungeoncrawl.json;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.IOException;
+
 
 public class FileWritter {
 
@@ -11,10 +11,10 @@ public class FileWritter {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
             writer.write(json);
             writer.close();
-        }catch (Exception IOException){
+        } catch (Exception IOException) {
             System.out.println("Can't save");
         }
-        }
-
     }
+
+}
 

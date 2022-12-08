@@ -9,9 +9,8 @@ import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
 import com.codecool.dungeoncrawl.logic.MapSaver;
-import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.MonsterModel;
 import com.codecool.dungeoncrawl.model.PlayerModel;
-import com.google.gson.Gson;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -31,20 +30,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.awt.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+
+
 
 public class Main extends Application {
 
@@ -64,7 +56,7 @@ public class Main extends Application {
     Label livesLabel = new Label();
     Button pickUpButton = new Button("Pick Up");
 
-    Button exportButton =  new Button("Export game state");
+    Button exportButton = new Button("Export game state");
     Button importButton = new Button(("Import game state"));
     Label name = new Label();
     Label message = new Label();
@@ -128,7 +120,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage)throws Exception{
+    public void start(Stage primaryStage) {
         currentStage = primaryStage;
         setupDbManager();
         GridPane ui = new GridPane();
@@ -379,10 +371,7 @@ public class Main extends Application {
         }
     }
 
-    private int getX(int centralCell, int direction, int cameraCenterFactor) {
-        return centralCell +
-                direction - cameraCenterFactor;
-    }
+
     private void exit() {
         try {
             stop();
@@ -392,21 +381,25 @@ public class Main extends Application {
         System.exit(0);
     }
 
-    private void importGame(String fileName){
-        Deserialization deserialization = new Deserialization(fileName);
+    private void importGame(String nameOfTheFile) {
+        Deserialization deserialization = new Deserialization(nameOfTheFile);
         this.map = deserialization.getGameMap();
 
         Player player = deserialization.getPlayer();
-        ArrayList<Actor> monsterList = deserialization.getMonsterList();
+        java.util.List<Actor> monsterList = deserialization.getMonsterList();
     }
 
     private void exportGame() {   // todo Dawid
         String fileName = "src/main/resources/gameState.json";
-        LocalDate date = LocalDate.now() ;
-        String  stringMap= MapSaver.convertGameMapToString(map);
+//        LocalDate date = LocalDate.now();
+        String date = "dddd";
+        String stringMap = MapSaver.convertGameMapToString(map);
+        PlayerModel playerModel = new PlayerModel(map.getPlayer());
+
         Serialization serialization = new Serialization();
-        //serialization.exportToJson( stringMap,  date,  new PlayerModel(map.getPlayer()),  monstersList,  fileName);
+        java.util.List<MonsterModel> monsterList = serialization.getMonsterModelList(map.getMonstersList());
+
+        serialization.exportToJson(stringMap, date, playerModel, monsterList, fileName);
 
     }
-
 }
