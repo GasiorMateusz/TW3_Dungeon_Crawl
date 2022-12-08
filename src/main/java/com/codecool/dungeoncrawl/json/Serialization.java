@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.MonsterModel;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,8 @@ public class Serialization {
 
     public void exportToJson(String currentMap, Date date, PlayerModel player, List<MonsterModel> monstersList, String fileName) {
         GameState gameState = new GameState(currentMap, date, player, monstersList);
-        String json = new Gson().toJson(gameState);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(gameState);
         FileWritter fileWriter = new FileWritter();
         fileWriter.saveTofile(json, fileName);
     }
