@@ -39,7 +39,7 @@ public class PlayerDaoJdbc implements PlayerDao {
     public void update(PlayerModel player) {
         try (Connection conn = dataSource.getConnection()) {
             String query = "UPDATE player set " +
-                    " hp = '" + player.getHp()+
+                    " hp = '" + player.getHp() +
                     "' ,x = '" + player.getX() +
                     "' ,y = '" + player.getY() +
                     "' WHERE player_name = '" + player.getPlayerName() + "'";
@@ -58,9 +58,9 @@ public class PlayerDaoJdbc implements PlayerDao {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             resultSet.next();
-            if (resultSet.getInt(1) != 0 ){
+            if (resultSet.getInt(1) != 0) {
                 update(playerModel);
-            }else {
+            } else {
                 add(playerModel);
             }
 

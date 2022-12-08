@@ -18,7 +18,7 @@ public class GameDatabaseManager {
         playerDao = new PlayerDaoJdbc(dataSource);
         gameStateDao = new GameStateDaoJdbc(dataSource);
     }
-    public void setPlayer(PlayerModel player){
+    public void setPlayer(PlayerModel player) {
         playerDao.set(player);
     }
 
@@ -27,7 +27,7 @@ public class GameDatabaseManager {
     }
 
     public void saveGameState(GameState gameState) {
-        gameStateDao.add(gameState);
+        gameStateDao.set(gameState);
     }
 
     public void saveAll(Player player, String currentMap, String savedGameName) {
