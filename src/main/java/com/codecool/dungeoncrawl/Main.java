@@ -140,7 +140,7 @@ public class Main extends Application {
         ui.add(inventoryListLabel, 0, 4);
         ui.add(pickUpButton, 0, 5);
         ui.add(exportButton, 0, 6);
-        ui.add(exportButton, 0, 7);
+        ui.add(importButton, 0, 7);
 
         pickUpButton.setFocusTraversable(false);
         exportButton.setFocusTraversable(false);

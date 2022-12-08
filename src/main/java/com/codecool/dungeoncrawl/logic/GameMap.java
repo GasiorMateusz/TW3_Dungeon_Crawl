@@ -74,10 +74,4 @@ public class GameMap {
         return itemList;
     }
 
-    public Cell[][] getCells() {
-        return cells;
-    }
-    public Cell[][] getCells() {
-        return cells;
-    }
 }
