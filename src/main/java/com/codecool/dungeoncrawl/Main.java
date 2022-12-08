@@ -277,7 +277,7 @@ public class Main extends Application {
         }
         if (teleported) {
             text = "You teleported to another map!";
-            teleported = false;
+//            teleported = false;
         }
         if (map.getPlayer().getOpponent() != null && !map.getPlayer().getOpponent().isAlive()) {
             text = map.getPlayer().getOpponent().getTileName() + " is dead!";
@@ -349,11 +349,13 @@ public class Main extends Application {
         teleported = true;
         currentMapIndex = currentMapIndex + teleportDirection;
         Player tmpPLayer = map.getPlayer();
+        map.removePlayerFromMap(map.getPlayer());
         map = multiMap.getMapFromSet(currentMapIndex);
         tmpPLayer.setCell(map.getStartingPlayersPosition());
         map.setPlayer(tmpPLayer);
+        tmpPLayer.setTeleport(0);
         centerCamera();
-        teleported = false;
+//        teleported = false;
         moveCamera(Direction.NONE);
     }
 
