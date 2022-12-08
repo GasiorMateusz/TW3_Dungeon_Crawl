@@ -23,4 +23,9 @@ class CellTest {
         cell = map.getCell(1, 2);
         assertNull(cell.getNeighbor(0, 1));
     }
+
+    @Test
+    void getCellTypeWithWrongLetterShouldThrowException() {
+        assertThrows(RuntimeException.class, () -> CellType.getCellType('!'));
+    }
 }
