@@ -5,14 +5,18 @@ import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
+import com.codecool.dungeoncrawl.logic.MapSaver;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -21,6 +25,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -49,8 +54,8 @@ public class Main extends Application {
     Button pickUpButton = new Button("Pick Up");
     Label name = new Label();
     Label message = new Label();
-    GameDatabaseManager dbManager;
     private boolean teleported = false;
+    GameDatabaseManager dbManager;
 
     public static void main(String[] args) {
         launch(args);
@@ -108,6 +113,64 @@ public class Main extends Application {
         stage.show();
     }
 
+    private void savePopUp() {
+
+        Stage save = new Stage();
+        save.setTitle("Save your game!");
+        VBox saveVBox = new VBox();
+        saveVBox.setAlignment(Pos.CENTER);
+        TextField saveName = new TextField();
+        saveVBox.getChildren().addAll(new Label("Name: "), saveName);
+        HBox buttonsHBox = new HBox();
+        Button saveButton = new Button();
+        saveButton.setText("Save");
+        saveButton.setOnAction(event -> {
+            if (!saveName.getText().isEmpty()) {
+                String savedGameName = saveName.getText();
+                System.out.println(savedGameName);
+                save.close();
+            }
+//            dbManager.saveAll(savedGameName);
+
+        });
+        Button cancelButton = new Button();
+        cancelButton.setText("Cancel");
+        cancelButton.setOnAction(event -> save.close());
+        buttonsHBox.getChildren().add(saveButton);
+        buttonsHBox.getChildren().add(cancelButton);
+        buttonsHBox.setAlignment(Pos.CENTER);
+        buttonsHBox.setSpacing(15);
+        saveVBox.getChildren().add(buttonsHBox);
+        Scene saveScene = new Scene(saveVBox, 300, 200);
+        save.setScene(saveScene);
+        save.show();
+    }
+
+    private static void loadPopUp() {
+        Stage load = new Stage();
+        load.setTitle("Choose saved state!");
+        VBox loadVBox = new VBox();
+        loadVBox.setAlignment(Pos.CENTER);
+        String string1 = "Option 1";
+        String string2 = "Option 2";
+        String string3 = "Option 3";
+        ComboBox<String> comboBox = new ComboBox<>(FXCollections.observableArrayList(string1, string2, string3));
+        comboBox.getSelectionModel().select(0);
+        comboBox.setId("changed");
+        loadVBox.getChildren().add(comboBox);
+        Button selectButton = new Button();
+        selectButton.setText("Select");
+        selectButton.setOnAction(event -> load.close());
+        Button cancelButton = new Button();
+        cancelButton.setText("Cancel");
+        cancelButton.setOnAction(event -> load.close());
+        loadVBox.getChildren().add(selectButton);
+        loadVBox.getChildren().add(cancelButton);
+        Scene loadScene = new Scene(loadVBox, 300, 200);
+        load.setScene(loadScene);
+        load.show();
+    }
+
     @Override
     public void start(Stage primaryStage)  {
         currentStage = primaryStage;
@@ -117,18 +180,23 @@ public class Main extends Application {
         ui.setPrefWidth(250);
         ui.setPrefHeight(200);
         ui.setPadding(new Insets(10));
-        ui.add(new Label("Name: "), 0, 0);
-        ui.add(name, 1, 0);
-        ui.add(new Label("Health: "), 0, 1);
-        ui.add(healthLabel, 1, 1);
-        ui.add(new Label("Extra Lives:"), 0, 2);
-        ui.add(livesLabel, 1, 2);
-        ui.add(new Label("Inventory:"), 0, 3);
-        ui.add(inventoryListLabel, 0, 4);
-        ui.add(pickUpButton, 0, 5);
+        Button loadGameButton = new Button();
+        loadGameButton.setText("LOAD GAME");
+        loadGameButton.setOnAction(event -> loadPopUp());
+        ui.add(loadGameButton, 0, 0);
+        ui.add(new Label("Name: "), 0, 1);
+        ui.add(name, 1, 1);
+        ui.add(new Label("Health: "), 0, 2);
+        ui.add(healthLabel, 1, 2);
+        ui.add(new Label("Extra Lives:"), 0, 3);
+        ui.add(livesLabel, 1, 3);
+        ui.add(new Label("Inventory:"), 0, 4);
+        ui.add(inventoryListLabel, 0, 5);
+        ui.add(pickUpButton, 0, 6);
         pickUpButton.setFocusTraversable(false);
         inventoryListLabel.setMinHeight(50);
         pickUpButton.setVisible(false);
+        loadGameButton.setFocusTraversable(false);
 
         GridPane messages = new GridPane();
         messages.setPrefWidth(250);
@@ -177,6 +245,10 @@ public class Main extends Application {
     private void onKeyReleased(KeyEvent keyEvent) {
         KeyCombination exitCombinationMac = new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN);
         KeyCombination exitCombinationWin = new KeyCodeCombination(KeyCode.F4, KeyCombination.ALT_DOWN);
+        KeyCombination saveCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY);
+        if (saveCombination.match(keyEvent)) {
+            savePopUp();
+        }
         if (exitCombinationMac.match(keyEvent)
                 || exitCombinationWin.match(keyEvent)
                 || keyEvent.getCode() == KeyCode.ESCAPE) {
@@ -271,6 +343,7 @@ public class Main extends Application {
     public void restart() {
         Popup.display();
         map = MapLoader.loadMap(multiMap.getMapFromSet(0), false, map.getPlayer());
+        centerCamera();
         moveCamera(Direction.NONE);
     }
 
