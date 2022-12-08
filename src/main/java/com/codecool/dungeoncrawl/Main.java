@@ -31,10 +31,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -395,12 +400,13 @@ public class Main extends Application {
         ArrayList<Actor> monsterList = deserialization.getMonsterList();
     }
 
-    private void exportGame(){   // todo Dawid
+    private void exportGame() {   // todo Dawid
+        String fileName = "src/main/resources/gameState.json";
         LocalDate date = LocalDate.now() ;
         String  stringMap= MapSaver.convertGameMapToString(map);
         Serialization serialization = new Serialization();
         //serialization.exportToJson( currentMap,  date,  player,  monstersList,  fileName);
 
-
     }
+
 }
