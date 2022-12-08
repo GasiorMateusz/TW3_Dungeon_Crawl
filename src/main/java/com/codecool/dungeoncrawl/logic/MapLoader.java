@@ -18,6 +18,7 @@ import com.codecool.dungeoncrawl.logic.items.Medicine;
 import com.codecool.dungeoncrawl.logic.items.Sword;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -29,12 +30,23 @@ public class MapLoader {
     private static final String ITEMS = "DMHBWKd";
 
     public static GameMap loadMap(String mapFile, boolean comingFromTeleport, Player... currentPlayer) {
-        InputStream is = MapLoader.class.getResourceAsStream(mapFile);
-        int[] size = getMapSize(is);
-        is = MapLoader.class.getResourceAsStream(mapFile);
+        InputStream is;
+        int height, width;
+        if (mapFile.startsWith("STR")) {
+            String mapString = mapFile.substring(3);
+            is = new ByteArrayInputStream(mapString.getBytes());
+            int[] size = getMapSize(is);
+            width = size[0];
+            height = size[1];
+            is = new ByteArrayInputStream(mapString.getBytes());
+        } else {
+            is = MapLoader.class.getResourceAsStream(mapFile);
+            int[] size = getMapSize(is);
+            width = size[0];
+            height = size[1];
+            is = MapLoader.class.getResourceAsStream(mapFile);
+        }
         Scanner scanner = new Scanner(is);
-        int width = size[0];
-        int height = size[1];
         GameMap map = new GameMap(width, height, CellType.EMPTY);
         for (int y = 0; y < height; y++) {
             String line = scanner.nextLine();

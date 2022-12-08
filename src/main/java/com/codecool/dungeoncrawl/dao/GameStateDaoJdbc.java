@@ -37,7 +37,7 @@ public class GameStateDaoJdbc implements GameStateDao {
     }
 
     @Override
-    public void update(GameState state) {
+    public void set(GameState state) {
 
     }
 
