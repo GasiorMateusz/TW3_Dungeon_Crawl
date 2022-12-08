@@ -7,6 +7,8 @@ import java.sql.*;
 import java.util.List;
 
 public class PlayerDaoJdbc implements PlayerDao {
+    private final int ADD_INDEX = 1;
+
     private final DataSource dataSource;
 
     public PlayerDaoJdbc(DataSource dataSource) {
@@ -25,7 +27,7 @@ public class PlayerDaoJdbc implements PlayerDao {
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
-            player.setId(resultSet.getInt(1));
+            player.setId(resultSet.getInt(ADD_INDEX));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -33,7 +35,36 @@ public class PlayerDaoJdbc implements PlayerDao {
 
     @Override
     public void update(PlayerModel player) {
+        try (Connection conn = dataSource.getConnection()) {
+            String query = "UPDATE player set " +
+                    " hp = '" + player.getHp()+
+                    "' ,x = '" + player.getX() +
+                    "' ,y = '" + player.getY() +
+                    "' WHERE player_name = '" + player.getPlayerName() + "'";
+            Statement statement = conn.createStatement();
+            statement.executeUpdate(query);
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void set(PlayerModel playerModel) {
+        try (Connection conn = dataSource.getConnection()) {
+            String query = "SELECT COUNT(*) from player";
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            resultSet.next();
+            if (resultSet.getInt(1) != 0 ){
+                update(playerModel);
+            }else {
+                add(playerModel);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
