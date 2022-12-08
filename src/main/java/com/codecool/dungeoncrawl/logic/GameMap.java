@@ -48,6 +48,10 @@ public class GameMap {
 //        getCell(player.getX(), player.getY()).setActor(player);
     }
 
+    public void removePlayerFromMap(Player player) {
+        this.player.getCell().setActor(null);
+    }
+
     public Player getPlayer() {
         return player;
     }
