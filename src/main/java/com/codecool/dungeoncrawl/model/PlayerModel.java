@@ -14,11 +14,6 @@ public class PlayerModel extends BaseModel {
     private InventoryModel inventory;
 
 
-    public PlayerModel(String playerName, int x, int y) {
-        this.playerName = playerName;
-        this.x = x;
-        this.y = y;
-    }
 
     public PlayerModel(Player player) {
         this.playerName = player.getName();

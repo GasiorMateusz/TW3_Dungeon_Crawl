@@ -10,6 +10,7 @@ import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.userCom.Popup;
 import com.codecool.dungeoncrawl.logic.MapSaver;
 import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.MonsterModel;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import com.google.gson.Gson;
 import javafx.application.Application;
@@ -36,8 +37,8 @@ import javafx.stage.StageStyle;
 
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Main extends Application {
 
@@ -138,7 +139,7 @@ public class Main extends Application {
         ui.add(inventoryListLabel, 0, 4);
         ui.add(pickUpButton, 0, 5);
         ui.add(exportButton, 0, 6);
-        ui.add(exportButton, 0, 7);
+        ui.add(importButton, 0, 7);
 
         pickUpButton.setFocusTraversable(false);
         exportButton.setFocusTraversable(false);
@@ -409,14 +410,18 @@ public class Main extends Application {
         this.map = deserialization.getGameMap();
 
         Player player = deserialization.getPlayer();
-        ArrayList<Actor> monsterList = deserialization.getMonsterList();
+        java.util.List<Actor> monsterList = deserialization.getMonsterList();
     }
 
     private void exportGame(){   // todo Dawid
-        Date date = new Date();
+        String saveDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-M-dd--HH-mm-ss"));
         String  stringMap= MapSaver.convertGameMapToString(map);
+        PlayerModel playerModel=new PlayerModel(map.getPlayer());
+
         Serialization serialization = new Serialization();
-//        serialization.exportToJson(stringMap, );
+        java.util.List<MonsterModel> monsterList = serialization.getMonsterModelList(map.getMonstersList());
+
+        serialization.exportToJson(stringMap,saveDate,playerModel, monsterList);
 
 
     }

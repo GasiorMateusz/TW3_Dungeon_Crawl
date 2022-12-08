@@ -4,9 +4,9 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Actor;
-import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.MonsterModel;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import com.google.gson.Gson;
 
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Deserialization {
     Player player;
-    ArrayList<Actor> monsterList;
+    List<Actor> monsterList;
 
     String StringMap;
     List<String> mapList;
@@ -26,6 +26,7 @@ public class Deserialization {
     public Deserialization(String fileName) {
         this.gameState = importFromJson(fileName);
         this.gameMap = MapLoader.loadMap(gameState.getCurrentMap(), false);
+        this.monsterList = createMonsterList();
 
 
     }
@@ -33,28 +34,45 @@ public class Deserialization {
 
     private GameState importFromJson(String filename) {
         FileLoader fileLoader = new FileLoader();
-        String json= fileLoader.loadFromFile(filename);
+        String json = fileLoader.loadFromFile(filename);
         GameState gameStateDeserialized = new Gson().fromJson(json, GameState.class);
         return gameStateDeserialized;
     }
 
 
-
-
-
-
-
-
     public Player getPlayer() {
         PlayerModel playerModel = gameState.getPlayer();
-        Cell cell = new Cell(gameMap, playerModel.getX(),playerModel.getY(), CellType.FLOOR);
+        Cell cell = new Cell(gameMap, playerModel.getX(), playerModel.getY(), CellType.FLOOR);
         Player player = new Player(cell);
         return player;
     }
 
 
-    public ArrayList<Actor> getMonsterList() {   //TODO DAWID D
-        this.monsterList = new ArrayList<>();
+        private List<Actor> createMonsterList() {
+        List<MonsterModel> monsterModelList = gameState.getMonstersList();
+        List<Actor> monsterList = new ArrayList<>();
+
+        for (MonsterModel monster : monsterModelList) {
+            Cell cell = new Cell(gameMap, monster.getX(), monster.getY(), CellType.FLOOR);
+            switch (monster.getMonsterType()) {
+                case "skeleton":
+                    monsterList.add(new Skeleton(cell));
+                    break;
+                case "ghosts":
+                    monsterList.add(new Ghosts(cell));
+                    break;
+                case "octopus":
+                    monsterList.add(new Octopus(cell));
+                    break;
+                case "crocodile":
+                    monsterList.add(new Crocodile(cell));
+                    break;
+            }
+        }
+        return monsterList;
+    }
+
+    public List<Actor> getMonsterList() {
         return monsterList;
     }
 
@@ -62,7 +80,7 @@ public class Deserialization {
         return gameMap;
     }
 
-    public String getStringMap(){
+    public String getStringMap() {
         return StringMap;
     }
 
