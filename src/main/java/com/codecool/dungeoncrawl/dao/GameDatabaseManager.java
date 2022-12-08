@@ -20,9 +20,10 @@ public class GameDatabaseManager {
         playerDao.add(model);
     }
 
-    public PlayerModel getPlayerById(int index) {
-        return playerDao.get(index);
-    }
+//    public PlayerModel getPlayerById(int index) {
+//        return playerDao.get(index);
+//    }
+    //todo dd uncomment this method Mateusz DAO and JSON conflict
 
     private DataSource connect() throws SQLException {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();

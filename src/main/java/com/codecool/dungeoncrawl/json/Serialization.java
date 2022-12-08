@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 
 public class Serialization {
 
-    //    public void exportToJson(String currentMap, LocalDate date, PlayerModel player, List<MonsterModel> monstersList, String fileName) {//todo skonsultuj z Dominiką
-    public void exportToJson(String currentMap, Date date, PlayerModel player, List<MonsterModel> monstersList, String fileName) {//todo skonsultuj z Dominiką
+
+    public void exportToJson(String currentMap, Date date, PlayerModel player, List<MonsterModel> monstersList, String fileName) {
         GameState gameState = new GameState(currentMap, date, player, monstersList);
         String json = new Gson().toJson(gameState);
         FileWritter fileWriter = new FileWritter();

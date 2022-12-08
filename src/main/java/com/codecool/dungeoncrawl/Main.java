@@ -184,7 +184,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage){
         currentStage = primaryStage;
-        setupDbManager();
+//        setupDbManager();
 
         GridPane ui = new GridPane();
         ui.setPrefWidth(250);
@@ -228,9 +228,9 @@ public class Main extends Application {
 
         EventHandler<ActionEvent> event = e -> pickUpItemEvent();
         pickUpButton.setOnAction(event);
-        EventHandler<ActionEvent> event2 = e -> exportGame(); //todo Dominika serialization.importToJson()
+        EventHandler<ActionEvent> event2 = e -> exportGame();
         exportButton.setOnAction(event2);
-        EventHandler<ActionEvent> event3 = e -> importGame(); //todo Dominika metoda odtwarzajaca gre Marcin Main.importGame()
+        EventHandler<ActionEvent> event3 = e -> importGame();
         importButton.setOnAction(event3);
         BorderPane borderPane = new BorderPane();
         Dimension size
@@ -455,7 +455,7 @@ public class Main extends Application {
 
     private void importGame() {
         Deserialization deserialization = new Deserialization(fileName);
-        System.out.println("import");
+
 //        this.map = deserialization.getGameMap();
 
 //        GameMap gameMap = deserialization.getGameMap();
@@ -465,12 +465,14 @@ public class Main extends Application {
         String stringMap = deserialization.getStringMap();
         Player player = deserialization.getPlayer();
         java.util.List<Actor> monsterList = deserialization.getMonsterList();
+
+        System.out.println("===========Print deserialized objects =========");
         System.out.println(monsterList.toString());
         System.out.println(player.toString());
         System.out.println(stringMap);
     }
 
-    private void exportGame() {   // todo Dawid
+    private void exportGame() {
         this.fileName = "src/main/resources/gameState.json";
         Date date = new Date();
         System.out.println("export");

@@ -13,7 +13,7 @@ public class GameState extends BaseModel {
     private final String currentMap;
 
     private final List<String> discoveredMapsInJSON = new ArrayList<>();
-    private final List<MonsterModel> monstersList; //todo consult Marcin, Mateusz
+    private final List<MonsterModel> monstersList;
     private PlayerModel player;
 
 

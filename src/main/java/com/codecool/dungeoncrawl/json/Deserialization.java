@@ -25,21 +25,13 @@ public class Deserialization {
 
     public Deserialization(String fileName) {
         this.gameState = importFromJson(fileName);
-        System.out.println("import check2");
-        System.out.println(gameState.getCurrentMap());
-
-        System.out.println("import check3");
         this.gameMap = MapLoader.loadMap("STR"+gameState.getCurrentMap(), false);
-        System.out.println("import check4");
         this.monsterList = createMonsterList();
-
-
     }
 
     private GameState importFromJson(String filename) {
         FileLoader fileLoader = new FileLoader();
         String json = fileLoader.loadFromFile(filename);
-        System.out.println(json);
         GameState gameStateDeserialized = new Gson().fromJson(json, GameState.class);
         return gameStateDeserialized;
     }
