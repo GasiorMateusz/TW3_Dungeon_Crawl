@@ -380,6 +380,7 @@ public class Main extends Application {
 
     private void pickUpItemEvent() {
         Item pickedUpItem = map.getPlayer().pickUp();
+        map.getItemList().remove(pickedUpItem);
         if (pickedUpItem.getTileName().equals("life")) {
             map.getPlayer().increaseLifeCounter();
         }
